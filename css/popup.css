@@ -1,0 +1,98 @@
+html {
+  background-color: #393636;
+  color: #fff;
+}
+
+body {
+  text-align: center;
+  margin: 0px;
+  width: 15em;
+  font-family: Roboto, Arial, Helvetica, sans-serif
+}
+
+.container {
+  width: 15em;
+  height: 15em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clock {
+  width: 12em;
+  height: 12em;
+  position: absolute;
+  border-radius: 50%;
+  background-color: #514d4d;
+}
+
+.pointer {
+  top: 2.25em;
+  width: 1.5em;
+  height: 1.5em;
+  position: absolute;
+
+  border-radius: 50%;
+  -webkit-transition: 1s;
+  transition: 1s;
+  transform-origin: 0.75em 5.25em;
+
+  background-color: #d66868;
+}
+
+.textcontainer {
+  position: absolute;
+}
+
+.time {
+  margin: 0;
+  font-size: 3.5em;
+  font-weight: 400;
+}
+
+.min {
+  margin: 0;
+  font-size: 1.25em;
+  font-weight: 300;
+}
+
+.alarmbutton {
+  background-color: #d66868;
+  color: #fff;
+  border: none;
+  border-radius: 1em;
+
+  width: 90%;
+  padding: 0.5em;
+  cursor: pointer;
+}
+
+.alarmbutton:hover {
+  background-color: #e87f7f;
+}
+
+.dropdownbutton {
+  background-color: #393636;
+  color: #fff;
+  border: none;
+  
+  width: 100%;
+  padding: 0.25em;
+  cursor: pointer;
+}
+
+.dropdownbutton:hover {
+  background-color: #514d4d;
+}
+
+.dropdown {
+  display: none;
+}
+
+.dropdownshow {
+  display: block;
+}
+
+.menu {
+  transition: 0.5s;
+}

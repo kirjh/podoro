@@ -60,10 +60,10 @@ body {
   background-color: #d66868;
   color: #fff;
   border: none;
-  border-radius: 1em;
+  border-radius: 1.25em;
 
   width: 90%;
-  padding: 0.5em;
+  
   cursor: pointer;
 }
 
@@ -73,7 +73,7 @@ body {
 
 .dropdownbutton {
   background-color: #393636;
-  color: #fff;
+  color: #8d8787;
   border: none;
   
   width: 100%;

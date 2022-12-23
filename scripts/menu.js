@@ -7,13 +7,14 @@ import { updateTime } from "./time.js";
 const buttonToggle = (button) => {
   if (button.id == "init" || button.id == "stop") {
     clearTimers();
-    button.innerHTML = "Start";
+    button.innerHTML = "<i class=\"material-icons\">play_arrow</i>";
     button.id = "start";
     updateTime();
     return;
   }
   if (button.id == "start") createTimer();
-  button.innerHTML = "Stop";
+
+  button.innerHTML = "<i class=\"material-icons\">pause</i>";;
   button.id = "stop"
   updateTime();
   return;
@@ -22,13 +23,14 @@ const buttonToggle = (button) => {
 // Toggle between menus
 const menuToggle = (button) => {
   button.id = (button.id == "down") ? "up" : "down";
-  button.innerHTML = (button.id == "up") ? "up" : "down";
+  button.innerHTML = (button.id == "up") ? "&#9650;&#xFE0E;" : "&#9660;&#xFE0E;";
 
   let divs = document.getElementsByClassName("dropdown");
 
   for (let div of divs) {
     div.classList.toggle("dropdownshow");
   }
+  return;
 }
 
 // Updates input
@@ -41,4 +43,5 @@ const inputChange = (inputListItem) => {
   if (input.value > parseInt(input.max)) input.value = parseInt(input.max);
 
   chrome.storage.local.set({[input.id] : input.value})
+  return;
 }

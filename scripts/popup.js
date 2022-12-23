@@ -1,18 +1,15 @@
-import { getStorageTime, updateTime } from "./time.js";
+import { alarmExists, getStorageTime, updateTime } from "./time.js";
 import { buttonToggle, menuToggle, inputChange } from "./menu.js";
-
-import JSON from "../config.json" assert {type: 'json'};
 
 document.addEventListener('DOMContentLoaded', async () => {
   let button = document.getElementsByClassName("alarmbutton")[0];
   let dropDownButton = document.getElementsByClassName("dropdownbutton")[0];
   let inputList = document.getElementsByClassName("timeinput");
 
-  console.log(JSON.timeInputs);
+  const storage = await getStorageTime();
+
   // Initialize play/pause button
-  let alarm = await chrome.alarms.get("pomowork");
-  if (!alarm) alarm = await chrome.alarms.get("pomobreak");
-  if (alarm) button.id = "exist";
+  if (await alarmExists()) button.id = "exist";
   
   buttonToggle(button);
 

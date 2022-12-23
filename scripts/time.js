@@ -1,6 +1,15 @@
-export {getStorageTime, updateTime};
+export {alarmExists, getStorageTime, updateTime};
 
 import JSON from "../config.json" assert {type: 'json'};
+
+// Checks if pomoalarms exist
+const alarmExists = async () => {
+  for (const alarm of JSON.timeInputs) {
+    let activeAlarm = await chrome.alarms.get(alarm);
+    if (activeAlarm) return activeAlarm;
+  }
+  return null;
+}
 
 // Get time values from storage
 // If time value does not exist, initialize it with default value;
@@ -25,9 +34,7 @@ const updateTime = async () => {
   let clockPointer = document.getElementById("clockPointer");
   //const settings = document.getElementsById();
   
-
-  let alarm = await chrome.alarms.get("pomowork");
-  if (!alarm) alarm = await chrome.alarms.get("pomobreak");
+  let alarm = await alarmExists();
   if (!alarm) {
     timeDisplay.innerHTML = "25";
     clockPointer.style.setProperty("transform", "rotate(0)");

@@ -1,4 +1,19 @@
-export {createWorkAlarm, createBreakAlarm};
+export {createTimer, clearTimers, createWorkAlarm, createBreakAlarm};
+
+// Create an alarm 
+const createTimer = () => {
+  console.log("creating timer");
+  createWorkAlarm();
+  return;
+}
+
+// Clear pomo alarms
+const clearTimers = async () => {
+  console.log("clearing timers");
+  await chrome.alarms.clear("pomowork")
+  await chrome.alarms.clear("pomobreak")
+  return;
+}
 
 // Creates a 25 minute work alarm
 const createWorkAlarm = () => {

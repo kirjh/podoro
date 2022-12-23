@@ -1,10 +1,11 @@
+import { createWorkAlarm, createBreakAlarm } from "./alarms.js";
+
 const breakmsg = {
   type:"basic",
   iconUrl: "../icons/pomo128.png",
   title:"Break time!",
   message: "5 minute break starts now"
 }
-import { createWorkAlarm, createBreakAlarm } from "./alarms.js";
 
 const workmsg = {
   type:"basic",

@@ -87,12 +87,43 @@ body {
 
 .dropdown {
   display: none;
+  margin: 0.5em;
 }
 
 .dropdownshow {
-  display: block;
+  display: inline-block;
 }
 
 .menu {
   transition: 0.5s;
+}
+
+.menutext {
+  font-size: 1.1em;
+  margin: 0em;
+}
+
+.menuinput {
+  color: #fff;
+  background-color: #514d4d;
+  text-align: center;
+  font-size: 1.1em;
+  width: 90%;
+
+  border-radius: 1.5em;
+  border-style:none;
+}
+
+button:focus {
+  outline:none;
+}
+
+.menuinput:focus {
+  background-color: #767171;
+  outline:none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
 }

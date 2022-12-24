@@ -79,6 +79,7 @@ body {
   width: 100%;
   padding: 0.25em;
   cursor: pointer;
+  text-align: right;
 }
 
 .dropdownbutton:hover {

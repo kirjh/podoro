@@ -1,17 +1,17 @@
-import { createWorkAlarm, createBreakAlarm } from "./alarms.js";
+import { createAlarm } from "./alarms.js";
 
 const breakmsg = {
   type:"basic",
   iconUrl: "../icons/pomo128.png",
   title:"Break time!",
-  message: "5 minute break starts now"
+  message: "default"
 }
 
 const workmsg = {
   type:"basic",
   iconUrl: "../icons/pomo128.png",
-  title:"Work time!",
-  message: "25 minute session starts now"
+  title:"Focus time!",
+  message: "default"
 }
 
 const createNotification = (msg) => {
@@ -20,16 +20,22 @@ const createNotification = (msg) => {
   });
 }
 
-chrome.alarms.onAlarm.addListener((alarm)=> {
+chrome.alarms.onAlarm.addListener(async (alarm)=> {
   console.log(`${alarm.name} has triggered`);
+
+  let time;
   switch (alarm.name) {
     case "pomowork":
+      time = await chrome.storage.local.get(["pomobreak"]);
+      breakmsg.message = `${time.pomobreak} minute break starts now`
       createNotification(breakmsg);
-      createBreakAlarm();
+      createAlarm("pomobreak", parseInt(time.pomobreak));
       break;
     case "pomobreak":
+      time = await chrome.storage.local.get(["pomowork"]);
+      workmsg.message = `${time.pomowork} minute pomodoro starts now`
       createNotification(workmsg);
-      createWorkAlarm();
+      createAlarm("pomowork", parseInt(time.pomowork));
       break;
     default:
       break;

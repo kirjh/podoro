@@ -1,9 +1,10 @@
-export {createTimer, clearTimers, createWorkAlarm, createBreakAlarm};
+export {createTimer, clearTimers, createAlarm};
 
 // Create an alarm 
-const createTimer = () => {
+const createTimer = async () => {
   console.log("creating timer");
-  createWorkAlarm();
+  const time = await chrome.storage.local.get(["pomowork"]);
+  createAlarm("pomowork", parseInt(time.pomowork));
   return;
 }
 
@@ -15,16 +16,8 @@ const clearTimers = async () => {
   return;
 }
 
-// Creates a 25 minute work alarm
-const createWorkAlarm = () => {
-  chrome.alarms.create("pomowork", {delayInMinutes: 25});
-  console.log("creating pomowork");
-  return;
-}
-
-// Creates a 5 minute break alarm
-const createBreakAlarm = () => {
-  chrome.alarms.create("pomobreak", {delayInMinutes: 5});
-  console.log("creating pomobreak");
+const createAlarm = (name, time) => {
+  chrome.alarms.create(name, {delayInMinutes: time});
+  console.log(`created alarm "${name}" with a delay of (${time}) minutes`);
   return;
 }

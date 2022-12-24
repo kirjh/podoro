@@ -4,7 +4,7 @@ import { createTimer, clearTimers } from "./alarms.js";
 import { updateTime } from "./time.js";
 
 // Toggle play/pause button
-const buttonToggle = (button) => {
+const buttonToggle = async (button) => {
   if (button.id == "init" || button.id == "stop") {
     clearTimers();
     button.innerHTML = "<i class=\"material-icons\">play_arrow</i>";
@@ -12,7 +12,7 @@ const buttonToggle = (button) => {
     updateTime();
     return;
   }
-  if (button.id == "start") createTimer();
+  if (button.id == "start") await createTimer();
 
   button.innerHTML = "<i class=\"material-icons\">pause</i>";;
   button.id = "stop"
@@ -23,7 +23,7 @@ const buttonToggle = (button) => {
 // Toggle between menus
 const menuToggle = (button) => {
   button.id = (button.id == "down") ? "up" : "down";
-  button.innerHTML = (button.id == "up") ? "&#9650;&#xFE0E;" : "&#9660;&#xFE0E;";
+  button.innerHTML = (button.id == "up") ? "Less &#9650;&#xFE0E;" : "More &#9660;&#xFE0E;";
 
   let divs = document.getElementsByClassName("dropdown");
 

@@ -2,21 +2,21 @@ import { createAlarm } from "./alarms.js";
 
 const breakmsg = {
   type:"basic",
-  iconUrl: "../icons/pomo128.png",
+  iconUrl: "../icons/zoe256x256.png",
   title:"Break time!",
   message: "default"
 }
 
 const workmsg = {
   type:"basic",
-  iconUrl: "../icons/pomo128.png",
+  iconUrl: "../icons/zoe256x256.png",
   title:"Focus time!",
   message: "default"
 }
 
 const createNotification = (msg) => {
   chrome.notifications.create("pomoalarm", msg, (notifId) => {
-    setTimeout(() => {chrome.notifications.clear(notifId);}, 5000);
+    setTimeout(() => {chrome.notifications.clear(notifId);}, 20000);
   });
 }
 

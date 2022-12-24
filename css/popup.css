@@ -115,6 +115,11 @@ body {
   border-style:none;
 }
 
+.menuinput:disabled {
+  color: #8d8787;
+  background-color: #454141;
+}
+
 button:focus {
   outline:none;
 }

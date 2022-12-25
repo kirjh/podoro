@@ -49,6 +49,5 @@ const updateTime = async () => {
 
   timeDisplay.innerHTML = time;
   clockPointer.style.setProperty("transform", `rotate(${-((360/inputTime.value)*time)}deg)`);
-  console.log(`At ${-((360/inputTime.value)*time)} degrees`);
   return;
 }

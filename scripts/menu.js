@@ -2,7 +2,25 @@ export {buttonToggle, menuToggle, inputChange};
 
 import { createTimer, clearTimers } from "./alarms.js";
 import { updateTime } from "./time.js";
-import JSON from "../config.json" assert {type: 'json'};
+
+const updateTimeInputs = (inputList, boolean) => {
+  for (const input of inputList) {
+    const element = document.getElementById(input.id);
+    
+    if (element.title) element.removeAttribute("title");
+    if (boolean) element.title="Cannot change time during an active session";
+
+    element.disabled = boolean;
+  }
+  return;
+}
+
+const updateButton = (button, id, icon, title) => {
+  button.innerHTML = `<i class=\"material-icons\">${icon}</i>`;
+  button.id = id;
+  button.title= title;
+  return;
+}
 
 // Toggle play/pause button
 const buttonToggle = async (button) => {
@@ -10,21 +28,15 @@ const buttonToggle = async (button) => {
 
   if (button.id == "init" || button.id == "stop") {
     clearTimers();
-    button.innerHTML = "<i class=\"material-icons\">play_arrow</i>";
-    button.id = "start";
-    for (const input of inputList) {
-      document.getElementById(input.id).disabled = false;
-    }
+    updateButton(button, "start", "play_arrow", "Start session");
+    updateTimeInputs(inputList, false);
     updateTime();
     return;
   }
   if (button.id == "start") await createTimer();
 
-  button.innerHTML = "<i class=\"material-icons\">pause</i>";;
-  button.id = "stop"
-  for (const input of inputList) {
-    document.getElementById(input.id).disabled = true;
-  }
+  updateButton(button, "stop", "stop", "Stop session");
+  updateTimeInputs(inputList, true);
   updateTime();
   return;
 }

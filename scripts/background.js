@@ -1,17 +1,29 @@
 import { createAlarm } from "./alarms.js";
+import { setSecret } from "./time.js";
 
-const breakmsg = {
-  type:"basic",
+const pomoNotif = {
+  type: "basic",
   iconUrl: "../icons/zoe256x256.png",
-  title:"Break time!",
+  title:"default",
   message: "default"
 }
 
-const workmsg = {
-  type:"basic",
-  iconUrl: "../icons/zoe256x256.png",
-  title:"Focus time!",
-  message: "default"
+const notifTitle = {
+  pomowork: "Focus Time!",
+  pomobreak: "Break Time!",
+  pomobreaklong: "Long Break Time!"
+}
+
+const notifMsg = {
+  pomowork: " minute focus session starts now",
+  pomobreak: " minute break starts now",
+  pomobreaklong: " minute break starts now"
+}
+
+const notifIcon = {
+  pomowork: "../icons/zoe256x256.png",
+  pomobreak: "../icons/zoe256x256.png",
+  pomobreaklong: "../icons/zoe256x256.png"
 }
 
 const createNotification = (msg) => {
@@ -24,20 +36,42 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
   console.log(`${alarm.name} has triggered`);
 
   let time;
+  let alarmName;
+  let tempMsg;
+  // let [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true }) ;
+
+  // Toggle to the next alarm
   switch (alarm.name) {
     case "pomowork":
-      time = await chrome.storage.local.get(["pomobreak"]);
-      breakmsg.message = `${time.pomobreak} minute break starts now`
-      createNotification(breakmsg);
-      createAlarm("pomobreak", parseInt(time.pomobreak));
+      alarmName = "pomobreak";
       break;
     case "pomobreak":
-      time = await chrome.storage.local.get(["pomowork"]);
-      workmsg.message = `${time.pomowork} minute pomodoro starts now`
-      createNotification(workmsg);
-      createAlarm("pomowork", parseInt(time.pomowork));
+      alarmName = "pomowork";
+      break;
+    case "pomobreaklong":
+      alarmName = "pomowork";
       break;
     default:
-      break;
+      return;
   }
+
+  // Update time 
+  time = await chrome.storage.local.get([alarmName]);
+  time = time[alarmName];
+
+  tempMsg = notifMsg[alarmName];
+  notifMsg[alarmName] = time.toString().concat(notifMsg[alarmName]);
+
+  pomoNotif.iconUrl = notifIcon[alarmName];
+  pomoNotif.title = notifTitle[alarmName];
+  pomoNotif.message = notifMsg[alarmName];
+
+  createNotification(pomoNotif);
+
+  // Reset message
+  notifMsg[alarmName] = tempMsg;
+
+  // Create Alarm and notify content scripts
+  // chrome.tabs.sendMessage(tab.id, {pomomsg: time});
+  createAlarm(alarmName, parseInt(time));
 });

@@ -44,13 +44,11 @@ const buttonToggle = async (button) => {
 // Toggle between menus
 const menuToggle = (button) => {
   button.id = (button.id == "down") ? "up" : "down";
-  button.innerHTML = (button.id == "up") ? "Less &#9650;&#xFE0E;" : "More &#9660;&#xFE0E;";
+  button.innerHTML = (button.id == "up") ? "Less &#9206;&#xFE0E;" : "More &#9207;&#xFE0E;";
 
-  let divs = document.getElementsByClassName("dropdown");
+  let div = document.getElementsByClassName("innermenu")[0];
 
-  for (let div of divs) {
-    div.classList.toggle("dropdownshow");
-  }
+  div.classList.toggle("innermenushow");
   return;
 }
 

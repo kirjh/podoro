@@ -1,4 +1,17 @@
-export {createTimer, clearTimers, createAlarm};
+export {alarmList, alarmExists, createTimer, clearTimers, createAlarm};
+
+const alarmList = {
+  timeInputs: ["pomowork", "pomobreak", "pomobreaklong", "pomointerval"]
+}
+
+// Checks if pomoalarms exist
+const alarmExists = async () => {
+  for (const alarm of alarmList.timeInputs) {
+    let activeAlarm = await chrome.alarms.get(alarm);
+    if (activeAlarm) return activeAlarm;
+  }
+  return null;
+}
 
 // Create an alarm 
 const createTimer = async () => {

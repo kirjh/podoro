@@ -1,20 +1,18 @@
-export {alarmExists, getStorageTime, updateTime};
+export { alarmExists, setSecret, getStorageTime, updateTime};
 
-import JSON from "../config.json" assert {type: 'json'};
+import { alarmList, alarmExists } from "./alarms.js";
 
-// Checks if pomoalarms exist
-const alarmExists = async () => {
-  for (const alarm of JSON.timeInputs) {
-    let activeAlarm = await chrome.alarms.get(alarm);
-    if (activeAlarm) return activeAlarm;
-  }
-  return null;
+// set the secret value
+const setSecret = async (alarmTime) => {
+  const secret = document.getElementsByClassName("secret")[0];
+  secret.innerHTML = alarmTime;
+  return;
 }
 
 // Get time values from storage
 // If time value does not exist, initialize it with default value;
 const getStorageTime = async () => {
-  const keyArray = JSON.timeInputs;
+  const keyArray = alarmList.timeInputs;
   let storage = await chrome.storage.local.get(keyArray);
 
   for (const key of keyArray) {

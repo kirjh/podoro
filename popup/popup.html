@@ -19,6 +19,7 @@
         <p class="time" id="timeDisplay">00</p>
         <p class="min">min</p>
       </div>
+      <div class="secret">00</div>
     </div>
 
     <div>
@@ -27,17 +28,28 @@
     <div class="menu">
       <div class="innermenu">
         <div class="dropdown">
-          <p class="menutext">Pomodoro</p>
+          <p class="menutext" title="Change length of a work (pomodoro) session">Pomodoro</p>
           <input type="number" class= "menuinput timeinput" id="pomowork" name="pomowork" value="25" min="1" max="60">
         </div>
         <div class="dropdown">
-          <p class="menutext">Short Break</p>
+          <p class="menutext" title="Change length of a short break session">Short Break</p>
           <input type="number" class= "menuinput timeinput" id="pomobreak" name="pomobreak" value="5" min="1" max="60">
         </div>
+        <div class="dropdown">
+          <p class="menutext" title="Number of pomodoros before a long break session">Intervals</p>
+          <input type="number" class= "menuinput timeinput" id="pomointerval" name="pomointerval" value="4" min="1" max="60">
+        </div>
+        <div class="dropdown">
+          <p class="menutext" title="Change length of a long break session">Long Break</p>
+          <input type="number" class= "menuinput timeinput" id="pomobreaklong" name="pomobreaklong" value="15" min="1" max="60">
+        </div>
+        
+        <div class="ver subtext">Version</div>
+        <div class="version subtext"><a href="https://github.com/kirjh/podoro" target="_blank">0.9.1</a></div>
       </div>
       
       <button class="dropdownbutton" id="down">
-        More &#9660;&#xFE0E;
+        More &#9207;&#xFE0E;
       </button>
     </div>
   </body>

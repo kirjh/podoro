@@ -1,4 +1,5 @@
-import { alarmExists, getStorageTime, updateTime } from "./time.js";
+import { alarmExists } from "./alarms.js";
+import { setSecret, getStorageTime, updateTime } from "./time.js";
 import { buttonToggle, menuToggle, inputChange } from "./menu.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -9,7 +10,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const storage = await getStorageTime();
 
   // Initialize play/pause button
-  if (await alarmExists()) button.id = "exist";
+  // If alarm exists, retrieve it and set the hidden value to its length
+  const alarm = await alarmExists();
+  if (alarm) {
+    button.id = "exist";
+    let alarmTime = await chrome.storage.local.get([alarm.name]);
+    await setSecret(alarmTime[alarm.name]);
+  } 
   
   buttonToggle(button);
 
@@ -28,4 +35,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById(input.id).value = storage[input.id];
     input.addEventListener('change', ()=> {inputChange(input);})
   }
+
+  // WIP
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.pomomsg) {
+      console.log(message.pomomsg);
+      console.log(sender);
+    }
+  });
 });

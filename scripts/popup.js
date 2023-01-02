@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateTime(); // Initial set
   setInterval(updateTime, 1000);
 
-  // Listener for play/pause button
+  // Listener for menu buttons
   button.addEventListener('click', () => {buttonToggle(button);});
   dropDownButton.addEventListener('click', () => {menuToggle(dropDownButton);});
 

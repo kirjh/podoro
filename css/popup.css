@@ -35,8 +35,8 @@ body {
   position: absolute;
 
   border-radius: 50%;
-  -webkit-transition: 0.75s;
-  transition: 0.75s;
+  -webkit-transition: 1s;
+  transition: 1s;
   transform-origin: 0.75em 5.25em;
 
   background-color: #d66868;

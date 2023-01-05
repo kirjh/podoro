@@ -4,17 +4,24 @@ import { alarmExists, startTimer, clearTimers } from "./alarms.js";
 import { updateTime } from "./time.js";
 
 // Popup
-const alertChange = async () => {
+const createAlert = async (msg) => {
+  const existing = document.getElementsByClassName("helppopup")[0]
   if (!await alarmExists()) return;
+  if (existing) existing.remove();
 
   const dropDownButton = document.getElementsByClassName("dropdownbutton")[0];
   dropDownButton.insertAdjacentHTML("afterend", 
     `
     <div class="helppopup">
-      <p>Changes will apply to the next alarm</p>
+      <p>${msg}</p>
+      <button id="closealert">&#215;&#xFE0E;</button>
     </div>
     `
   );
+  const alertButton = document.getElementById("closealert");
+  alertButton.addEventListener("click", () => {
+    document.getElementsByClassName("helppopup")[0].remove();
+  });
   return;
 }
 
@@ -33,7 +40,7 @@ const updateTimeInputs = (inputList, boolean) => {
 
 // Update play/pause icon in main button
 const updateButton = (button, id, icon, title) => {
-  button.innerHTML = `<i class=\"material-icons\">${icon}</i>`;
+  button.innerHTML = `<i class="material-icons">${icon}</i>`;
   button.id = id;
   button.title= title;
   return;
@@ -79,6 +86,7 @@ const inputChange = (inputListItem) => {
   if (input.value > parseInt(input.max)) input.value = parseInt(input.max);
 
   chrome.storage.local.set({[input.id] : input.value})
-  alertChange();
+  createAlert("Changes will be applied to all future alarms");
+  input.blur();
   return;
 }

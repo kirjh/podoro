@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Initialize play/pause button
   // If alarm exists, retrieve it and set the hidden value to its length
   const alarm = await alarmExists();
+  console.log(alarm);
   if (alarm) {
     button.id = "exist";
     let alarmTime = await chrome.storage.local.get([alarm.name]);

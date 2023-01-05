@@ -129,6 +129,7 @@ button:focus {
 
   border-radius: 1.5em;
   border-style:none;
+  transition: 0.25s;
 }
 
 .menuinput:disabled {
@@ -170,9 +171,26 @@ input::-webkit-inner-spin-button {
 
 .helppopup {
   color: #8d8787;
+  display: grid;
+  grid-template-columns: auto auto;
 }
 
 .helppopup p {
   margin: 0em 0.5em 0em 0.5em;
   text-align: left;
+}
+
+.helppopup button {
+  background-color: #d66868;
+  color: #fff;
+  border: none;
+  
+  width: 100%;
+  cursor: pointer;
+  text-align: right;
+  font-size: 1.2em;
+}
+
+.helppopup button:hover {
+  background-color: #e87f7f;
 }

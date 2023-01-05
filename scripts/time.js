@@ -30,22 +30,23 @@ const getStorageTime = async () => {
 const updateTime = async () => {
   const timeDisplay = document.getElementById("timeDisplay");
   const clockPointer = document.getElementById("clockPointer");
-  const pomoAlarm = document.getElementById("pomowork");
+  let currentAlarm = document.getElementsByClassName("secret")[0].innerHTML;
   
   const alarm = await alarmExists();
   if (!alarm) {
-    timeDisplay.innerHTML = pomoAlarm.value;
+    timeDisplay.innerHTML = currentAlarm;
     clockPointer.style.setProperty("transform", "rotate(0)");
     return;
   }
 
-  const inputTime = document.getElementById(alarm.name);
+  //const inputTime = document.getElementById(alarm.name);
   let time = Math.ceil((alarm.scheduledTime-Date.now())/60000);
 
+  currentAlarm = parseInt(currentAlarm)
   // Correct time overcalculation due to rounding
-  if (time > inputTime.value) time = inputTime.value;
+  if (time > currentAlarm) time = currentAlarm;
 
   timeDisplay.innerHTML = time;
-  clockPointer.style.setProperty("transform", `rotate(${-((360/inputTime.value)*time)}deg)`);
+  clockPointer.style.setProperty("transform", `rotate(${-((360/currentAlarm)*time)}deg)`);
   return;
 }

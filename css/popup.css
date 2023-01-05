@@ -167,3 +167,12 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   display: none;
 }
+
+.helppopup {
+  color: #8d8787;
+}
+
+.helppopup p {
+  margin: 0em 0.5em 0em 0.5em;
+  text-align: left;
+}

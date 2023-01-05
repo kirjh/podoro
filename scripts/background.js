@@ -1,5 +1,4 @@
 import { createAlarm } from "./alarms.js";
-import { setSecret } from "./time.js";
 
 const pomoNotif = {
   type: "basic",
@@ -38,7 +37,6 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
   let time;
   let alarmName;
   let tempMsg;
-  // let [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true }) ;
 
   // Toggle to the next alarm
   switch (alarm.name) {
@@ -59,6 +57,7 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
   time = await chrome.storage.local.get([alarmName]);
   time = time[alarmName];
 
+  // Update notification message template
   tempMsg = notifMsg[alarmName];
   notifMsg[alarmName] = time.toString().concat(notifMsg[alarmName]);
 
@@ -68,10 +67,14 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
 
   createNotification(pomoNotif);
 
-  // Reset message
+  // Reset notification message to avoid concatenation problems
   notifMsg[alarmName] = tempMsg;
 
-  // Create Alarm and notify content scripts
-  // chrome.tabs.sendMessage(tab.id, {pomomsg: time});
+  chrome.runtime.sendMessage({pomomsg: time})
+    .catch((e) => {console.log(`[${e}] Likely popup is not active`)});
   createAlarm(alarmName, parseInt(time));
+});
+
+chrome.storage.onChanged.addListener((changes, namespace) => {
+
 });

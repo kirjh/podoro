@@ -1,8 +1,24 @@
 export {buttonToggle, menuToggle, inputChange};
 
-import { createTimer, clearTimers } from "./alarms.js";
+import { alarmExists, startTimer, clearTimers } from "./alarms.js";
 import { updateTime } from "./time.js";
 
+// Popup
+const alertChange = async () => {
+  if (!await alarmExists()) return;
+
+  const dropDownButton = document.getElementsByClassName("dropdownbutton")[0];
+  dropDownButton.insertAdjacentHTML("afterend", 
+    `
+    <div class="helppopup">
+      <p>Changes will apply to the next alarm</p>
+    </div>
+    `
+  );
+  return;
+}
+
+// Toggle disable on settings inputs
 const updateTimeInputs = (inputList, boolean) => {
   for (const input of inputList) {
     const element = document.getElementById(input.id);
@@ -15,6 +31,7 @@ const updateTimeInputs = (inputList, boolean) => {
   return;
 }
 
+// Update play/pause icon in main button
 const updateButton = (button, id, icon, title) => {
   button.innerHTML = `<i class=\"material-icons\">${icon}</i>`;
   button.id = id;
@@ -24,19 +41,19 @@ const updateButton = (button, id, icon, title) => {
 
 // Toggle play/pause button
 const buttonToggle = async (button) => {
-  let inputList = document.getElementsByClassName("timeinput");
+  //let inputList = document.getElementsByClassName("timeinput");
 
   if (button.id == "init" || button.id == "stop") {
     clearTimers();
     updateButton(button, "start", "play_arrow", "Start session");
-    updateTimeInputs(inputList, false);
+    // updateTimeInputs(inputList, false);
     updateTime();
     return;
   }
-  if (button.id == "start") await createTimer();
+  if (button.id == "start") await startTimer();
 
   updateButton(button, "stop", "stop", "Stop session");
-  updateTimeInputs(inputList, true);
+  // updateTimeInputs(inputList, true);
   updateTime();
   return;
 }
@@ -62,5 +79,6 @@ const inputChange = (inputListItem) => {
   if (input.value > parseInt(input.max)) input.value = parseInt(input.max);
 
   chrome.storage.local.set({[input.id] : input.value})
+  alertChange();
   return;
 }

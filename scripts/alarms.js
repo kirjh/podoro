@@ -19,6 +19,8 @@ const alarmExists = async () => {
 const startTimer = async () => {
   console.log("creating timer");
   const time = await chrome.storage.local.get(["pomowork"]);
+  chrome.storage.local.set({["currentAlarm"] : time.pomowork});
+
   setSecret(time.pomowork);
   createAlarm("pomowork", parseInt(time.pomowork));
   return;

@@ -70,6 +70,8 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
   // Reset notification message to avoid concatenation problems
   notifMsg[alarmName] = tempMsg;
 
+  chrome.storage.local.set({["currentAlarm"] : time});
+
   chrome.runtime.sendMessage({pomomsg: time})
     .catch((e) => {console.log(`[${e}] Likely popup is not active`)});
   createAlarm(alarmName, parseInt(time));

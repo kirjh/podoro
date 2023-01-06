@@ -81,7 +81,7 @@ const menuToggle = (button) => {
 // Then reflects value change to alarms
 const inputChange = (inputListItem) => {
   let input = document.getElementById(inputListItem.id);
-  input.value = (isNaN(parseFloat(input.value))) ? input.value = input.min : Math.round(parseFloat(input.value));
+  input.value = (isNaN(parseFloat(input.value))) ? input.min : Math.round(parseFloat(input.value));
   if (input.value < parseInt(input.min)) input.value = parseInt(input.min);
   if (input.value > parseInt(input.max)) input.value = parseInt(input.max);
 

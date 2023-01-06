@@ -34,7 +34,7 @@ const updateTime = async () => {
   
   const alarm = await alarmExists();
   if (!alarm) {
-    timeDisplay.innerHTML = document.getElementById("pomowork").value;
+    timeDisplay.innerHTML = (!document.getElementById("pomowork").value) ? 0 : document.getElementById("pomowork").value;
     clockPointer.style.setProperty("transform", "rotate(0)");
     return;
   }

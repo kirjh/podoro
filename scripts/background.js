@@ -20,8 +20,8 @@ const notifMsg = {
 }
 
 const notifIcon = {
-  pomowork: "../icons/zoe256x256.png",
-  pomobreak: "../icons/zoe256x256.png",
+  pomowork: "../icons/work_zoe.png",
+  pomobreak: "../icons/break_zoe.png",
   pomobreaklong: "../icons/zoe256x256.png"
 }
 

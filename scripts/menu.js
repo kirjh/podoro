@@ -1,6 +1,6 @@
-export {buttonToggle, menuToggle, inputChange, increaseLength};
+export {buttonToggle, stopAlarms, menuToggle, inputChange, increaseLength};
 
-import { alarmExists, startTimer, clearTimers, createAlarm } from "./alarms.js";
+import { alarmExists, startTimer, clearTimers, resumeTimer, createAlarm } from "./alarms.js";
 import { updateTime } from "./time.js";
 
 // Popup
@@ -14,7 +14,7 @@ const createAlert = async (msg, alarmMustExist) => {
     `
     <div class="helppopup">
       <p>${msg}</p>
-      <button id="closealert">&#215;&#xFE0E;</button>
+      <button id="closealert" type="button">&#215;&#xFE0E;</button>
     </div>
     `
   );
@@ -30,21 +30,70 @@ const updateButton = (button, id, icon, title) => {
   button.innerHTML = `<i class="material-icons">${icon}</i>`;
   button.id = id;
   button.title= title;
+
+  return;
+}
+
+const pauseAlarm = async() => {
+  const secret = document.getElementsByClassName("secret")[0];
+  const alarm = await alarmExists();
+  if (!alarm) return;
+  clearTimers();
+
+  alarm.scheduledTime -= Date.now();
+  alarm.paused = true;
+
+  await chrome.storage.local.set({paused: true, activeAlarm: {alarm: alarm, length: secret}});
+  return;
+} 
+
+const resumeAlarm = async() => {
+  const storage = await chrome.storage.local.get(["activeAlarm"]);
+  console.log(storage);
+
+  await resumeTimer(storage.activeAlarm.alarm);
+  chrome.storage.local.set({paused: false});
   return;
 }
 
 // Toggle play/pause button
 const buttonToggle = async (button) => {
+  const stopButton = document.getElementsByClassName("stopbutton")[0];
 
-  if (button.id == "init" || button.id == "stop") {
+  if (button.id == "init") {
     clearTimers();
     updateButton(button, "start", "play_arrow", "Start session");
     updateTime();
     return;
   }
+
+  button.classList.add("alarmbuttonactive");
+  stopButton.classList.add("stopbuttonactive");
+  if (button.id == "pause" || button.id == "paused") {
+    if (button.id == "pause") await pauseAlarm();
+    updateButton(button, "resume", "play_arrow", "Resume session");
+    updateTime();
+    return;
+  }
+  if (button.id == "resume") {
+    await resumeAlarm();
+    updateButton(button, "pause", "pause", "Pause session");
+    updateTime();
+    return;
+  }
   if (button.id == "start") await startTimer();
 
-  updateButton(button, "stop", "stop", "Stop session");
+  updateButton(button, "pause", "pause", "Pause session");
+  updateTime();
+  return;
+}
+
+const stopAlarms = async (button, stopButton) => {
+  clearTimers();
+  chrome.storage.local.set({paused: false});
+  button.classList.remove("alarmbuttonactive");
+  stopButton.classList.remove("stopbuttonactive");
+  updateButton(button, "start", "play_arrow", "Start session");
   updateTime();
   return;
 }
@@ -79,7 +128,10 @@ const inputChange = (inputListItem) => {
 const increaseLength = async () => {
   const alarm = await alarmExists();
   const alarmLength = document.getElementsByClassName("secret")[0].innerHTML;
-  if (!alarm) return;
+  if (!alarm || alarm.paused) {
+    createAlert("Alarm is not active", false);
+    return;
+  }
   let time = (alarm.scheduledTime-Date.now());
 
   await chrome.alarms.clear(alarm.name);

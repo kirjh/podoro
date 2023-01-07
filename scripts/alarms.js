@@ -1,4 +1,4 @@
-export { alarmList, alarmExists, startTimer, clearTimers, createAlarm };
+export { alarmList, alarmExists, startTimer, resumeTimer, clearTimers, createAlarm };
 
 import { setSecret } from "./time.js";
 
@@ -12,6 +12,10 @@ const alarmExists = async () => {
     let activeAlarm = await chrome.alarms.get(alarm);
     if (activeAlarm) return activeAlarm;
   }
+  const storage = await chrome.storage.local.get(["paused", "activeAlarm"]);
+  if (storage.paused && storage.paused == true) {
+    return storage.activeAlarm.alarm;
+  }
   return null;
 }
 
@@ -23,6 +27,13 @@ const startTimer = async () => {
 
   setSecret(time.pomowork);
   createAlarm("pomowork", parseInt(time.pomowork));
+  return;
+}
+
+// Resume Timer
+const resumeTimer = async (alarm) => {
+  console.log("resuming timer");
+  createAlarm(alarm.name, alarm.scheduledTime/60000);
   return;
 }
 

@@ -31,7 +31,7 @@ const updateTime = async () => {
   const timeDisplay = document.getElementById("timeDisplay");
   const clockPointer = document.getElementById("clockPointer");
   let alarmLength = document.getElementsByClassName("secret")[0].innerHTML;
-  
+  let time;
   const alarm = await alarmExists();
   if (!alarm) {
     timeDisplay.innerHTML = (!document.getElementById("pomowork").value) ? 0 : document.getElementById("pomowork").value;
@@ -40,7 +40,13 @@ const updateTime = async () => {
   }
 
   //const inputTime = document.getElementById(alarm.name);
-  let time = Math.ceil((alarm.scheduledTime-Date.now())/60000);
+  if (alarm.paused) {
+    console.log("time left:" + (alarm.scheduledTime)/60000);
+    time = Math.ceil(alarm.scheduledTime/60000);
+  } else {
+    console.log("time left:" + (alarm.scheduledTime-Date.now())/60000);
+    time = Math.ceil((alarm.scheduledTime-Date.now())/60000);
+  }
 
   alarmLength = parseInt(alarmLength)
   // Correct time overcalculation due to rounding

@@ -101,7 +101,16 @@ body {
   background-color: #514d4d;
 }
 
+.interval:active,
+.adjusttime:active {
+  background-color: #393636;
+}
+
 /* Buttons */
+#playpausecontainer {
+  font-size:0;
+}
+
 .alarmbutton {
   background-color: #d66868;
   color: #fff;
@@ -113,9 +122,61 @@ body {
   cursor: pointer;
 }
 
+.alarmbuttonactive,
+.stopbutton {
+  background-color: #d66868;
+  color: #fff;
+  cursor: pointer;
+}
+.alarmbuttonactive {
+  border-style: none solid none solid;
+  border-width: 0 0.15em 0 0.5em;
+  border-radius: 1.25em 0 0 1.25em;
+  border-color: #393636 #393636 #393636 #d66868;
+  display: inline;
+  width: 65%;
+}
+
+.stopbutton {
+  display: none;
+}
+
+.stopbuttonactive {
+  border-style: none solid none solid;
+  border-width: 0 0.5em 0 0.15em;
+  border-radius: 0 1.25em 1.25em 0;
+  border-color: #393636 #d66868 #393636 #393636;
+  display: inline;
+  width: 25%;
+}
+
 .alarmbutton:hover {
   background-color: #e87f7f;
 }
+
+.alarmbuttonactive:hover {
+  border-color: #393636 #393636 #393636 #e87f7f;
+  background-color: #e87f7f;
+}
+.stopbutton:hover {
+  border-color: #393636 #e87f7f #393636 #393636;
+  background-color: #e87f7f;
+}
+
+.alarmbutton:active {
+  background-color: #d66868;
+}
+
+.alarmbuttonactive:active {
+  background-color: #d66868;
+  border-color: #393636 #393636 #393636 #d66868;
+}
+
+.stopbuttonactive:active {
+  background-color: #d66868;
+  border-color: #393636 #d66868 #393636 #393636;
+}
+
 
 .dropdownbutton {
   background-color: #393636;
@@ -223,7 +284,6 @@ input::-webkit-inner-spin-button {
   color: #fff;
   border: none;
   
-  width: 100%;
   cursor: pointer;
   text-align: right;
   font-size: 1.2em;

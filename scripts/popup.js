@@ -1,9 +1,10 @@
 import { alarmExists } from "./alarms.js";
 import { setSecret, getStorageTime, updateTime } from "./time.js";
-import { buttonToggle, menuToggle, inputChange, increaseLength } from "./menu.js";
+import { buttonToggle, stopAlarms, menuToggle, inputChange, increaseLength } from "./menu.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
   const button = document.getElementsByClassName("alarmbutton")[0];
+  const stopButton = document.getElementsByClassName("stopbutton")[0];
   const dropDownButton = document.getElementsByClassName("dropdownbutton")[0];
   const inputList = document.getElementsByClassName("timeinput");
   const increaseTime = document.getElementsByClassName("adjusttime")[0];
@@ -15,12 +16,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const alarm = await alarmExists();
   
   if (alarm) {
-    button.id = "exist";
+    button.id = (alarm.paused) ? "paused" : "exist";
     let alarmTime = await chrome.storage.local.get("currentAlarm");
-    console.log(alarmTime);
     if (alarmTime.currentAlarm) await setSecret(alarmTime.currentAlarm);
   } else {
     await setSecret(storage.pomowork);
+    chrome.storage.local.set({paused: false});
   }
   
   buttonToggle(button);
@@ -31,6 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Listener for menu buttons
   button.addEventListener('click', () => {buttonToggle(button);});
+  stopButton.addEventListener('click', () => {stopAlarms(button, stopButton);});
   dropDownButton.addEventListener('click', () => {menuToggle(dropDownButton);});
 
   // Listen for alarm increase request

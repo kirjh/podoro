@@ -74,11 +74,14 @@ body {
 
 .interval {
   right: 1em;
+  font-weight: 700;
 }
 
 .adjusttime {
   left: 1em;
+  font-weight: 700;
 }
+
 .interval,
 .adjusttime {
   position: absolute;

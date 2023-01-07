@@ -103,7 +103,7 @@ const increaseLength = async () => {
   if ((time+60000) < (alarmLength*60000)) {
     time += 60000
   } else {
-    createAlert("Cannot adjust time past original alarm length", false);
+    createAlert("Cannot adjust time past the original alarm's length", false);
   }
   createAlarm(alarm.name, Math.floor(time)/60000)
   return;

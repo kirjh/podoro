@@ -29,9 +29,9 @@ const startTimer = async () => {
 // Clear pomo alarms
 const clearTimers = async () => {
   console.log("clearing timers");
-  await chrome.alarms.clear("pomowork")
-  await chrome.alarms.clear("pomobreak")
-  await chrome.alarms.clear("pomobreaklong")
+  await chrome.alarms.clear("pomowork");
+  await chrome.alarms.clear("pomobreak");
+  await chrome.alarms.clear("pomobreaklong");
   return;
 }
 

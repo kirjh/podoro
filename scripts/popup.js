@@ -1,11 +1,12 @@
 import { alarmExists } from "./alarms.js";
 import { setSecret, getStorageTime, updateTime } from "./time.js";
-import { buttonToggle, menuToggle, inputChange } from "./menu.js";
+import { buttonToggle, menuToggle, inputChange, increaseLength } from "./menu.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
-  let button = document.getElementsByClassName("alarmbutton")[0];
-  let dropDownButton = document.getElementsByClassName("dropdownbutton")[0];
-  let inputList = document.getElementsByClassName("timeinput");
+  const button = document.getElementsByClassName("alarmbutton")[0];
+  const dropDownButton = document.getElementsByClassName("dropdownbutton")[0];
+  const inputList = document.getElementsByClassName("timeinput");
+  const increaseTime = document.getElementsByClassName("textcontainer")[0];
 
   const storage = await getStorageTime();
 
@@ -31,6 +32,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Listener for menu buttons
   button.addEventListener('click', () => {buttonToggle(button);});
   dropDownButton.addEventListener('click', () => {menuToggle(dropDownButton);});
+
+  // Listen for alarm increase request
+  increaseTime.addEventListener('click', () => {increaseLength();});
 
   // Listen for input field changes
   for (const input of inputList) {

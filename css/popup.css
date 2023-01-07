@@ -35,7 +35,6 @@ body {
   position: absolute;
 
   border-radius: 50%;
-  -webkit-transition: 1s;
   transition: 1s;
   transform-origin: 0.75em 5.25em;
 
@@ -44,6 +43,16 @@ body {
 
 .textcontainer {
   position: absolute;
+
+  border-radius: 50%;
+  border: none;
+  color: #fff;
+  background-color:#514d4d;
+  cursor: pointer;
+}
+
+.textcontainer:hover .time {
+  color: #ddd;
 }
 
 .time {
@@ -59,8 +68,25 @@ body {
 }
 
 .secret {
- position: absolute;
- display: none;
+  position: absolute;
+  display: none;
+}
+
+.interval {
+  position: absolute;
+  top: 8.5em;
+  right: 1em;
+  border-radius: 50%;
+  padding: 0.75em;
+  font-size: 1.25em;
+  background-color: #393636;
+
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+.interval:hover {
+  color: #ddd;
 }
 
 /* Buttons */

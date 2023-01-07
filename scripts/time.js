@@ -30,7 +30,7 @@ const getStorageTime = async () => {
 const updateTime = async () => {
   const timeDisplay = document.getElementById("timeDisplay");
   const clockPointer = document.getElementById("clockPointer");
-  let currentAlarm = document.getElementsByClassName("secret")[0].innerHTML;
+  let alarmLength = document.getElementsByClassName("secret")[0].innerHTML;
   
   const alarm = await alarmExists();
   if (!alarm) {
@@ -42,11 +42,11 @@ const updateTime = async () => {
   //const inputTime = document.getElementById(alarm.name);
   let time = Math.ceil((alarm.scheduledTime-Date.now())/60000);
 
-  currentAlarm = parseInt(currentAlarm)
+  alarmLength = parseInt(alarmLength)
   // Correct time overcalculation due to rounding
-  if (time > currentAlarm) time = currentAlarm;
+  if (time > alarmLength) time = alarmLength;
 
   timeDisplay.innerHTML = time;
-  clockPointer.style.setProperty("transform", `rotate(${-((360/currentAlarm)*time)}deg)`);
+  clockPointer.style.setProperty("transform", `rotate(${-((360/alarmLength)*time)}deg)`);
   return;
 }

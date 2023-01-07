@@ -1,12 +1,12 @@
-export {buttonToggle, menuToggle, inputChange};
+export {buttonToggle, menuToggle, inputChange, increaseLength};
 
-import { alarmExists, startTimer, clearTimers } from "./alarms.js";
+import { alarmExists, startTimer, clearTimers, createAlarm } from "./alarms.js";
 import { updateTime } from "./time.js";
 
 // Popup
-const createAlert = async (msg) => {
+const createAlert = async (msg, alarmMustExist) => {
   const existing = document.getElementsByClassName("helppopup")[0]
-  if (!await alarmExists()) return;
+  if (alarmMustExist && !await alarmExists()) return;
   if (existing) existing.remove();
 
   const dropDownButton = document.getElementsByClassName("dropdownbutton")[0];
@@ -86,7 +86,24 @@ const inputChange = (inputListItem) => {
   if (input.value > parseInt(input.max)) input.value = parseInt(input.max);
 
   chrome.storage.local.set({[input.id] : input.value})
-  createAlert("Changes will be applied to all future alarms");
+  createAlert("Changes will be applied to all future alarms", true);
   input.blur();
   return;
+}
+
+// Increase time for current timer
+const increaseLength = async () => {
+  const alarm = await alarmExists();
+  let time = (alarm.scheduledTime-Date.now());
+  const alarmLength = document.getElementsByClassName("secret")[0].innerHTML;
+  if (!alarm) return;
+
+  await chrome.alarms.clear(alarm.name);
+  
+  if ((time+60000) < (alarmLength*60000)) {
+    time += 60000
+  } else {
+    createAlert("Cannot adjust time past original alarm length", false);
+  }
+  createAlarm(alarm.name, Math.floor(time)/60000)
 }

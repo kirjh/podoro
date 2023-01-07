@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const button = document.getElementsByClassName("alarmbutton")[0];
   const dropDownButton = document.getElementsByClassName("dropdownbutton")[0];
   const inputList = document.getElementsByClassName("timeinput");
-  const increaseTime = document.getElementsByClassName("textcontainer")[0];
+  const increaseTime = document.getElementsByClassName("adjusttime")[0];
 
   const storage = await getStorageTime();
 

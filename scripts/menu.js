@@ -94,9 +94,9 @@ const inputChange = (inputListItem) => {
 // Increase time for current timer
 const increaseLength = async () => {
   const alarm = await alarmExists();
-  let time = (alarm.scheduledTime-Date.now());
   const alarmLength = document.getElementsByClassName("secret")[0].innerHTML;
   if (!alarm) return;
+  let time = (alarm.scheduledTime-Date.now());
 
   await chrome.alarms.clear(alarm.name);
   
@@ -106,4 +106,5 @@ const increaseLength = async () => {
     createAlert("Cannot adjust time past original alarm length", false);
   }
   createAlarm(alarm.name, Math.floor(time)/60000)
+  return;
 }

@@ -25,19 +25,6 @@ const createAlert = async (msg, alarmMustExist) => {
   return;
 }
 
-// Toggle disable on settings inputs
-const updateTimeInputs = (inputList, boolean) => {
-  for (const input of inputList) {
-    const element = document.getElementById(input.id);
-    
-    if (element.title) element.removeAttribute("title");
-    if (boolean) element.title="Cannot change time during an active session";
-
-    element.disabled = boolean;
-  }
-  return;
-}
-
 // Update play/pause icon in main button
 const updateButton = (button, id, icon, title) => {
   button.innerHTML = `<i class="material-icons">${icon}</i>`;
@@ -48,19 +35,16 @@ const updateButton = (button, id, icon, title) => {
 
 // Toggle play/pause button
 const buttonToggle = async (button) => {
-  //let inputList = document.getElementsByClassName("timeinput");
 
   if (button.id == "init" || button.id == "stop") {
     clearTimers();
     updateButton(button, "start", "play_arrow", "Start session");
-    // updateTimeInputs(inputList, false);
     updateTime();
     return;
   }
   if (button.id == "start") await startTimer();
 
   updateButton(button, "stop", "stop", "Stop session");
-  // updateTimeInputs(inputList, true);
   updateTime();
   return;
 }

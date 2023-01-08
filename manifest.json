@@ -1,6 +1,6 @@
 {
   "name": "Podoro Timer",
-  "version": "0.9",
+  "version": "0.9.1",
   "manifest_version": 3,
   "description":  "A simple pomodoro timer!",
   "icons": {

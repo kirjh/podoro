@@ -43,16 +43,7 @@ body {
 
 .textcontainer {
   position: absolute;
-
-  border-radius: 50%;
-  border: none;
   color: #fff;
-  background-color:#514d4d;
-  cursor: pointer;
-}
-
-.textcontainer:hover .time {
-  color: #ddd;
 }
 
 .time {

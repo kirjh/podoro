@@ -129,7 +129,7 @@ const increaseLength = async () => {
   const alarm = await alarmExists();
   const alarmLength = document.getElementsByClassName("secret")[0].innerHTML;
   if (!alarm || alarm.paused) {
-    createAlert("Alarm is not active", false);
+    createAlert("Cannot increase length of an inactive alarm", false);
     return;
   }
   let time = (alarm.scheduledTime-Date.now());

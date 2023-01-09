@@ -33,7 +33,7 @@ const alarmExists = async () => {
     if (activeAlarm) return activeAlarm;
   }
   const storage = await chrome.storage.local.get(["paused", "activeAlarm"]);
-  if (storage.paused && storage.paused == true) {
+  if (storage.paused) {
     // Alarms in storage must be reconverted to unix to ensure
     // compatibility with other functions
     storage.activeAlarm.scheduledTime += Date.now();

@@ -1,4 +1,4 @@
-export { createAlert, togglePrimaryButton, stopAlarms, toggleMenu, inputChange, increaseAlarmLength};
+export { createAlert, togglePrimaryButton, toggleStopButton, toggleMenu, inputChange, increaseAlarmLength, setCounter};
 
 import { alarmExists, startSession, clearAlarm, createAlarm, pauseSession, resumeSession } from "./alarms.js";
 import { updateTime } from "./time.js";
@@ -7,7 +7,7 @@ import { updateTime } from "./time.js";
 
 //  @msg:             (string)  message to pass onto the user
 //  @alarmMustExist:  (boolean) toggle whether an active alarm must exist     
-const createAlert = async (msg, alarmMustExist) => {
+const createAlert = async (msg, alarmMustExist=false) => {
   const existingAlert = document.getElementsByClassName("helppopup")[0]
   if (alarmMustExist && !await alarmExists()) return;
   if (existingAlert) existingAlert.remove();
@@ -89,8 +89,9 @@ const togglePrimaryButton = async (button) => {
 
 //  @button:      (DOM object) play/pause button
 //  @stopButton:  (DOM object) stop button
-const stopAlarms = async (button, stopButton) => {
+const toggleStopButton = async (button, stopButton) => {
   clearAlarm();
+  setCounter(0);
   chrome.storage.local.set({paused: false});
   button.classList.remove("alarmbuttonactive");
   stopButton.classList.remove("stopbuttonactive");
@@ -137,7 +138,7 @@ const increaseAlarmLength = async () => {
   const alarmLength = document.getElementsByClassName("secret")[0].innerHTML;
 
   if (!alarm || alarm.paused) {
-    createAlert("Could not find an active alarm to increase length of", false);
+    createAlert("Could not find an active alarm to increase length of");
     return;
   }
 
@@ -147,10 +148,21 @@ const increaseAlarmLength = async () => {
   if (time + 60000 < alarmLength * 60000) {
     time += 60000
   } else {
-    createAlert("Cannot adjust time past the original alarm's length", false);
+    createAlert("Cannot adjust time past the original alarm's length");
   }
   createAlarm(alarm.name, time/60000)
   return;
 }
 
 /*****************************************************************************/
+
+//  @pomodoro:  (number) number of pomodoros elapsed
+//  @alert:     (boolean) toggle creation of an alert
+const setCounter = (pomodoro, alert=false) => {
+  const pomoCounter = document.getElementsByClassName("pomocounter")[0];
+  pomoCounter.innerHTML = pomodoro;
+  chrome.storage.session.set({pomocount: pomodoro});
+  
+  if (alert) createAlert("Reset count of completed pomodoros");
+  return;
+}

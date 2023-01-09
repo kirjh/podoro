@@ -21,7 +21,7 @@ const notif = {
     message: " minute break starts now"
   },
   pomobreaklong: {
-    iconUrl: "../icons/work_zoe.png",
+    iconUrl: "../icons/long_break_zoe.png",
     title: "Long Break Time!",
     message: " minute break starts now"
   }
@@ -34,6 +34,27 @@ const createNotification = (msg) => {
   chrome.notifications.create("pomoalarm", msg, (notifId) => {
     setTimeout(() => {chrome.notifications.clear(notifId);}, 30000);
   });
+  return;
+}
+
+/*****************************************************************************/
+
+//  @alarm  (object) alarm
+//
+//  Returns: true if interval divides count cleanly, false otherwise
+const countSessions = async (alarm) => {
+  const storage = await chrome.storage.local.get("pomointerval");
+  const sessionStorage = await chrome.storage.session.get("pomocount");
+  
+  if (!sessionStorage.pomocount) sessionStorage.pomocount = 0;
+  sessionStorage.pomocount += 1;
+
+  chrome.storage.session.set({pomocount: sessionStorage.pomocount});
+  chrome.runtime.sendMessage({pomocount: sessionStorage.pomocount})
+    .catch((e) => {console.log(`[${e}] Likely popup is not active`)});
+
+  if (sessionStorage.pomocount % storage.pomointerval == 0) return true;
+  return false;
 }
 
 /*****************************************************************************/
@@ -47,7 +68,12 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
   // Toggle next alarm
   switch (alarm.name) {
     case "pomowork":
-      alarmName = "pomobreak";
+      const breakTime = await countSessions(alarm);
+      if (breakTime) {
+        alarmName = "pomobreaklong";
+      } else {
+        alarmName = "pomobreak";
+      }
       break;
     case "pomobreak":
       alarmName = "pomowork";

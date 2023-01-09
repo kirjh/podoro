@@ -1,6 +1,7 @@
 import { alarmExists } from "./alarms.js";
 import { setSecret, getTimeFromStorage, updateTime } from "./time.js";
-import { togglePrimaryButton, stopAlarms, toggleMenu, inputChange, increaseAlarmLength } from "./menu.js";
+import { togglePrimaryButton, toggleStopButton, toggleMenu, inputChange, increaseAlarmLength, setCounter } from "./menu.js";
+import JSON from '../manifest.json' assert {type: 'json'};
 
 /*****************************************************************************/
 
@@ -12,8 +13,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   const dropDownButton = document.getElementsByClassName("dropdownbutton")[0];
   const inputList = document.getElementsByClassName("timeinput");
   const increaseTime = document.getElementsByClassName("adjusttime")[0];
+  const pomoCounter = document.getElementsByClassName("pomocounter")[0];
+  const ver = document.getElementById("Version");
+
+  // Update version
+  ver.innerHTML = JSON.version;
 
   const storage = await getTimeFromStorage();
+  const sessionStorage = await chrome.storage.session.get("pomocount");
+  if (!sessionStorage.pomocount) sessionStorage.pomocount = 0;
+
   const alarm = await alarmExists();
   
   // Initialize active/inactive state
@@ -26,13 +35,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     chrome.storage.local.set({paused: false});
   }
   togglePrimaryButton(primaryButton);
-
+  setCounter(sessionStorage.pomocount);
   setInterval(updateTime, 1000);
 
   // Listeners
   primaryButton.addEventListener('click', () => {togglePrimaryButton(primaryButton);});
-  stopButton.addEventListener('click', () => {stopAlarms(primaryButton, stopButton);});
+  stopButton.addEventListener('click', () => {toggleStopButton(primaryButton, stopButton);});
   dropDownButton.addEventListener('click', () => {toggleMenu(dropDownButton);});
+  pomoCounter.addEventListener('click', () => {setCounter(0, true)});
 
   increaseTime.addEventListener('click', () => {increaseAlarmLength();});
 
@@ -45,6 +55,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.pomomsg) {
       setSecret(message.pomomsg);
+    }
+    if (message.pomocount) {
+      setCounter(message.pomocount);
     }
   });
 });

@@ -13,6 +13,7 @@ const setSecret = async (alarmTime) => {
 
 /*****************************************************************************/
 
+// Returns: Object containing alarm lengths
 const getTimeFromStorage = async () => {
   const keyArray = alarmList.timeInputs;
   let storage = await chrome.storage.local.get(keyArray);
@@ -48,7 +49,6 @@ const updateTime = async () => {
     return;
   }
 
-  console.log("time left:" + (alarm.scheduledTime-Date.now())/60000);          // debugging
   time = Math.ceil((alarm.scheduledTime-Date.now())/60000);
 
   alarmLength = parseInt(alarmLength)

@@ -69,7 +69,7 @@ const pauseSession = async() => {
   const alarm = await alarmExists();
   if (!alarm) return;
   
-  clearAlarms();
+  clearAlarm();
 
   // Convert unix time to time in milliseconds
   alarm.scheduledTime -= Date.now();

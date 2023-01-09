@@ -63,7 +63,7 @@ body {
   display: none;
 }
 
-.interval {
+.pomocounter {
   right: 1em;
   font-weight: 700;
 }
@@ -73,7 +73,7 @@ body {
   font-weight: 700;
 }
 
-.interval,
+.pomocounter,
 .adjusttime {
   position: absolute;
   top: 8.5em;
@@ -87,12 +87,12 @@ body {
   color: #fff;
   cursor: pointer;
 }
-.interval:hover,
+.pomocounter:hover,
 .adjusttime:hover {
   background-color: #514d4d;
 }
 
-.interval:active,
+.pomocounter:active,
 .adjusttime:active {
   background-color: #393636;
 }

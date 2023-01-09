@@ -29,7 +29,7 @@ However, you can freely adjust the formula to suit any need.
   * Keep track of pomodoro sessions completed
 
 ## <img src="./icons/pomo64.png" width="16px" /> License
-*in progress*
+[GNU GPLv3](https://github.com/kirjh/podoro/blob/main/LICENSE.txt)
 
 <p align="center">
   <img src="./icons/pomo128.png" width="64" /> <br /> 

@@ -1,44 +1,50 @@
 import { createAlarm } from "./alarms.js";
 
-const pomoNotif = {
+/*****************************************************************************/
+
+const notifTemplate = {
   type: "basic",
-  iconUrl: "../icons/zoe256x256.png",
+  iconUrl: "../icons/work_zoe.png",
   title:"default",
   message: "default"
 }
 
-const notifTitle = {
-  pomowork: "Focus Time!",
-  pomobreak: "Break Time!",
-  pomobreaklong: "Long Break Time!"
+const notif = {
+  pomowork: {
+    iconUrl: "../icons/work_zoe.png",
+    title: "Focus Time!",
+    message: " minute focus session starts now"
+  },
+  pomobreak: {
+    iconUrl: "../icons/break_zoe.png",
+    title: "Break Time!",
+    message: " minute break starts now"
+  },
+  pomobreaklong: {
+    iconUrl: "../icons/work_zoe.png",
+    title: "Long Break Time!",
+    message: " minute break starts now"
+  }
 }
 
-const notifMsg = {
-  pomowork: " minute focus session starts now",
-  pomobreak: " minute break starts now",
-  pomobreaklong: " minute break starts now"
-}
+/*****************************************************************************/
 
-const notifIcon = {
-  pomowork: "../icons/work_zoe.png",
-  pomobreak: "../icons/break_zoe.png",
-  pomobreaklong: "../icons/zoe256x256.png"
-}
-
+// @msg (string) notification message
 const createNotification = (msg) => {
   chrome.notifications.create("pomoalarm", msg, (notifId) => {
-    setTimeout(() => {chrome.notifications.clear(notifId);}, 20000);
+    setTimeout(() => {chrome.notifications.clear(notifId);}, 30000);
   });
 }
+
+/*****************************************************************************/
 
 chrome.alarms.onAlarm.addListener(async (alarm)=> {
   console.log(`${alarm.name} has triggered`);
 
   let time;
   let alarmName;
-  let tempMsg;
 
-  // Toggle to the next alarm
+  // Toggle next alarm
   switch (alarm.name) {
     case "pomowork":
       alarmName = "pomobreak";
@@ -57,26 +63,16 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
   time = await chrome.storage.local.get([alarmName]);
   time = time[alarmName];
 
-  // Update notification message template
-  tempMsg = notifMsg[alarmName];
-  notifMsg[alarmName] = time.toString().concat(notifMsg[alarmName]);
+  notifTemplate.iconUrl = notif[alarmName].iconUrl;
+  notifTemplate.title = notif[alarmName].title;
+  notifTemplate.message = time.toString().concat(notif[alarmName].message);
+  createNotification(notifTemplate);
 
-  pomoNotif.iconUrl = notifIcon[alarmName];
-  pomoNotif.title = notifTitle[alarmName];
-  pomoNotif.message = notifMsg[alarmName];
-
-  createNotification(pomoNotif);
-
-  // Reset notification message to avoid concatenation problems
-  notifMsg[alarmName] = tempMsg;
-
+  // Create alarm
   chrome.storage.local.set({["currentAlarm"] : time});
-
   chrome.runtime.sendMessage({pomomsg: time})
     .catch((e) => {console.log(`[${e}] Likely popup is not active`)});
   createAlarm(alarmName, parseInt(time));
 });
 
-chrome.storage.onChanged.addListener((changes, namespace) => {
-
-});
+/*****************************************************************************/

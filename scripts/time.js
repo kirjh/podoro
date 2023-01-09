@@ -1,17 +1,19 @@
-export { alarmExists, setSecret, getStorageTime, updateTime};
+export { setSecret, getTimeFromStorage, updateTime};
 
 import { alarmList, alarmExists } from "./alarms.js";
 
-// set the secret value
+/*****************************************************************************/
+
+//  @alarmTime:  (number) current alarm length
 const setSecret = async (alarmTime) => {
   const secret = document.getElementsByClassName("secret")[0];
   secret.innerHTML = alarmTime;
   return;
 }
 
-// Get time values from storage
-// If time value does not exist, initialize it with default value;
-const getStorageTime = async () => {
+/*****************************************************************************/
+
+const getTimeFromStorage = async () => {
   const keyArray = alarmList.timeInputs;
   let storage = await chrome.storage.local.get(keyArray);
 
@@ -26,33 +28,35 @@ const getStorageTime = async () => {
   return storage;
 }
 
-// Update the time displayed by pomopomo every interval
+/*****************************************************************************/
+
+// Chrome API returns the remaining time of an active alarm as unix 
+// epoch time, which is a specific time in the future. It must be 
+// converted into minutes remaining by subtracting Date.now()
 const updateTime = async () => {
   const timeDisplay = document.getElementById("timeDisplay");
   const clockPointer = document.getElementById("clockPointer");
   let alarmLength = document.getElementsByClassName("secret")[0].innerHTML;
   let time;
   const alarm = await alarmExists();
+
+  // If an active alarm does not exist, display current value of 
+  // the pomowork setting.
   if (!alarm) {
     timeDisplay.innerHTML = (!document.getElementById("pomowork").value) ? 0 : document.getElementById("pomowork").value;
     clockPointer.style.setProperty("transform", "rotate(0)");
     return;
   }
 
-  //const inputTime = document.getElementById(alarm.name);
-  if (alarm.paused) {
-    console.log("time left:" + (alarm.scheduledTime)/60000);
-    time = Math.ceil(alarm.scheduledTime/60000);
-  } else {
-    console.log("time left:" + (alarm.scheduledTime-Date.now())/60000);
-    time = Math.ceil((alarm.scheduledTime-Date.now())/60000);
-  }
+  console.log("time left:" + (alarm.scheduledTime-Date.now())/60000);          // debugging
+  time = Math.ceil((alarm.scheduledTime-Date.now())/60000);
 
   alarmLength = parseInt(alarmLength)
-  // Correct time overcalculation due to rounding
   if (time > alarmLength) time = alarmLength;
 
   timeDisplay.innerHTML = time;
   clockPointer.style.setProperty("transform", `rotate(${-((360/alarmLength)*time)}deg)`);
   return;
 }
+
+/*****************************************************************************/

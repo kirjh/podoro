@@ -1,53 +1,52 @@
 import { alarmExists } from "./alarms.js";
-import { setSecret, getStorageTime, updateTime } from "./time.js";
-import { buttonToggle, stopAlarms, menuToggle, inputChange, increaseLength } from "./menu.js";
+import { setSecret, getTimeFromStorage, updateTime } from "./time.js";
+import { togglePrimaryButton, stopAlarms, toggleMenu, inputChange, increaseAlarmLength } from "./menu.js";
 
+/*****************************************************************************/
+
+// Call when the extension is opened, and initializes everything the 
+// popup needs to work correctly.
 document.addEventListener('DOMContentLoaded', async () => {
-  const button = document.getElementsByClassName("alarmbutton")[0];
+  const primaryButton = document.getElementsByClassName("alarmbutton")[0];
   const stopButton = document.getElementsByClassName("stopbutton")[0];
   const dropDownButton = document.getElementsByClassName("dropdownbutton")[0];
   const inputList = document.getElementsByClassName("timeinput");
   const increaseTime = document.getElementsByClassName("adjusttime")[0];
 
-  const storage = await getStorageTime();
-
-  // Initialize play/pause button
-  // If alarm exists, retrieve it and set the hidden value to its length
+  const storage = await getTimeFromStorage();
   const alarm = await alarmExists();
   
+  // Initialize active/inactive state
   if (alarm) {
-    button.id = (alarm.paused) ? "paused" : "exist";
+    primaryButton.id = (alarm.paused) ? "paused" : "exist";
     let alarmTime = await chrome.storage.local.get("currentAlarm");
     if (alarmTime.currentAlarm) await setSecret(alarmTime.currentAlarm);
   } else {
     await setSecret(storage.pomowork);
     chrome.storage.local.set({paused: false});
   }
-  
-  buttonToggle(button);
+  togglePrimaryButton(primaryButton);
 
-  // Update displayed time
-  // Update every 10000ms (10s)
   setInterval(updateTime, 1000);
 
-  // Listener for menu buttons
-  button.addEventListener('click', () => {buttonToggle(button);});
-  stopButton.addEventListener('click', () => {stopAlarms(button, stopButton);});
-  dropDownButton.addEventListener('click', () => {menuToggle(dropDownButton);});
+  // Listeners
+  primaryButton.addEventListener('click', () => {togglePrimaryButton(primaryButton);});
+  stopButton.addEventListener('click', () => {stopAlarms(primaryButton, stopButton);});
+  dropDownButton.addEventListener('click', () => {toggleMenu(dropDownButton);});
 
-  // Listen for alarm increase request
-  increaseTime.addEventListener('click', () => {increaseLength();});
+  increaseTime.addEventListener('click', () => {increaseAlarmLength();});
 
-  // Listen for input field changes
   for (const input of inputList) {
     document.getElementById(input.id).value = storage[input.id];
     input.addEventListener('change', ()=> {inputChange(input);})
   }
 
-  // WIP
+  // Sync values between length of active alarm and local variable.
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.pomomsg) {
       setSecret(message.pomomsg);
     }
   });
 });
+
+/*****************************************************************************/

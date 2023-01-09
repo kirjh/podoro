@@ -1,13 +1,16 @@
-export {buttonToggle, stopAlarms, menuToggle, inputChange, increaseLength};
+export { createAlert, togglePrimaryButton, stopAlarms, toggleMenu, inputChange, increaseAlarmLength};
 
-import { alarmExists, startTimer, clearTimers, resumeTimer, createAlarm } from "./alarms.js";
+import { alarmExists, startSession, clearAlarm, createAlarm, pauseSession, resumeSession } from "./alarms.js";
 import { updateTime } from "./time.js";
 
-// Popup
+/*****************************************************************************/
+
+//  @msg:             (string)  message to pass onto the user
+//  @alarmMustExist:  (boolean) toggle whether an active alarm must exist     
 const createAlert = async (msg, alarmMustExist) => {
-  const existing = document.getElementsByClassName("helppopup")[0]
+  const existingAlert = document.getElementsByClassName("helppopup")[0]
   if (alarmMustExist && !await alarmExists()) return;
-  if (existing) existing.remove();
+  if (existingAlert) existingAlert.remove();
 
   const dropDownButton = document.getElementsByClassName("dropdownbutton")[0];
   dropDownButton.insertAdjacentHTML("afterend", 
@@ -25,7 +28,12 @@ const createAlert = async (msg, alarmMustExist) => {
   return;
 }
 
-// Update play/pause icon in main button
+/*****************************************************************************/
+
+//  @button:  (DOM object) button to apply changes to
+//  @id:      (string)     new id
+//  @icon:    (string)     new icon name
+//  @title:   (title)      new title
 const updateButton = (button, id, icon, title) => {
   button.innerHTML = `<i class="material-icons">${icon}</i>`;
   button.id = id;
@@ -34,34 +42,16 @@ const updateButton = (button, id, icon, title) => {
   return;
 }
 
-const pauseAlarm = async() => {
-  const secret = document.getElementsByClassName("secret")[0];
-  const alarm = await alarmExists();
-  if (!alarm) return;
-  clearTimers();
+/*****************************************************************************/
 
-  alarm.scheduledTime -= Date.now();
-  alarm.paused = true;
-
-  await chrome.storage.local.set({paused: true, activeAlarm: {alarm: alarm, length: secret}});
-  return;
-} 
-
-const resumeAlarm = async() => {
-  const storage = await chrome.storage.local.get(["activeAlarm"]);
-  console.log(storage);
-
-  await resumeTimer(storage.activeAlarm.alarm);
-  chrome.storage.local.set({paused: false});
-  return;
-}
-
-// Toggle play/pause button
-const buttonToggle = async (button) => {
+// @button:  (DOM object) button to apply changes to
+const togglePrimaryButton = async (button) => {
   const stopButton = document.getElementsByClassName("stopbutton")[0];
 
+  // init condition does not need to add classes to the two buttons
+  // so it is separated from the switch statement and returns early.
   if (button.id == "init") {
-    clearTimers();
+    clearAlarm();
     updateButton(button, "start", "play_arrow", "Start session");
     updateTime();
     return;
@@ -69,27 +59,38 @@ const buttonToggle = async (button) => {
 
   button.classList.add("alarmbuttonactive");
   stopButton.classList.add("stopbuttonactive");
-  if (button.id == "pause" || button.id == "paused") {
-    if (button.id == "pause") await pauseAlarm();
-    updateButton(button, "resume", "play_arrow", "Resume session");
-    updateTime();
-    return;
-  }
-  if (button.id == "resume") {
-    await resumeAlarm();
-    updateButton(button, "pause", "pause", "Pause session");
-    updateTime();
-    return;
-  }
-  if (button.id == "start") await startTimer();
 
-  updateButton(button, "pause", "pause", "Pause session");
+  switch (button.id) {
+    case "pause":
+      await pauseSession();
+      updateButton(button, "resume", "play_arrow", "Resume session");
+      break;
+    case "paused":
+      updateButton(button, "resume", "play_arrow", "Resume session");
+      break;
+    case "resume":
+      await resumeSession();
+      updateButton(button, "pause", "pause", "Pause session");
+      break;
+    case "start":
+      await startSession();
+      updateButton(button, "pause", "pause", "Pause session");
+      break;
+    default:
+      updateButton(button, "pause", "pause", "Pause session");
+      break;
+  }
+
   updateTime();
   return;
 }
 
+/*****************************************************************************/
+
+//  @button:      (DOM object) play/pause button
+//  @stopButton:  (DOM object) stop button
 const stopAlarms = async (button, stopButton) => {
-  clearTimers();
+  clearAlarm();
   chrome.storage.local.set({paused: false});
   button.classList.remove("alarmbuttonactive");
   stopButton.classList.remove("stopbuttonactive");
@@ -98,8 +99,10 @@ const stopAlarms = async (button, stopButton) => {
   return;
 }
 
-// Toggle between menus
-const menuToggle = (button) => {
+/*****************************************************************************/
+
+//  @button:  (DOM object) menu button
+const toggleMenu = (button) => {
   button.id = (button.id == "down") ? "up" : "down";
   button.innerHTML = (button.id == "up") ? "Less &#9206;&#xFE0E;" : "More &#9207;&#xFE0E;";
 
@@ -109,11 +112,12 @@ const menuToggle = (button) => {
   return;
 }
 
-// Updates input
-// First converts input.value to a valid number
-// Then reflects value change to alarms
+/*****************************************************************************/
+
+//  @inputListItem: (DOM object) input
 const inputChange = (inputListItem) => {
   let input = document.getElementById(inputListItem.id);
+
   input.value = (isNaN(parseFloat(input.value))) ? input.min : Math.round(parseFloat(input.value));
   if (input.value < parseInt(input.min)) input.value = parseInt(input.min);
   if (input.value > parseInt(input.max)) input.value = parseInt(input.max);
@@ -124,23 +128,29 @@ const inputChange = (inputListItem) => {
   return;
 }
 
-// Increase time for current timer
-const increaseLength = async () => {
+/*****************************************************************************/
+
+// Chrome API does not allow changes to be made to alarms, so
+// the original alarm must be deleted and replaced with a new alarm.
+const increaseAlarmLength = async () => {
   const alarm = await alarmExists();
   const alarmLength = document.getElementsByClassName("secret")[0].innerHTML;
+
   if (!alarm || alarm.paused) {
-    createAlert("Cannot increase length of an inactive alarm", false);
+    createAlert("Could not find an active alarm to increase length of", false);
     return;
   }
-  let time = (alarm.scheduledTime-Date.now());
 
+  let time = (alarm.scheduledTime-Date.now());
   await chrome.alarms.clear(alarm.name);
   
-  if ((time+60000) < (alarmLength*60000)) {
+  if (time + 60000 < alarmLength * 60000) {
     time += 60000
   } else {
     createAlert("Cannot adjust time past the original alarm's length", false);
   }
-  createAlarm(alarm.name, Math.floor(time)/60000)
+  createAlarm(alarm.name, time/60000)
   return;
 }
+
+/*****************************************************************************/

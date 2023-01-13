@@ -9,24 +9,42 @@
     <link rel="stylesheet" href="../css/popup.css">
     <link rel="stylesheet" href="../css/fonts.css">
     <link rel="stylesheet" href="../css/icons.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
   </head>
   <body>
-
-    <div class="container">
-      <div class="clock"></div>
-      <div class="textcontainer">
-        <p class="time" id="timeDisplay">00</p>
-        <p class="min">min</p>
+    <div class="tab">
+      <div class="tabhead">
+        <span class="tabtitle">PODORO</span>
       </div>
-      <div class="pointer" id="clockPointer"></div>
-      <button class="adjusttime" title="Increase remaining alarm time by 1 minute" type="button">&#43;&#xFE0E;</button>
-      <button class="pomocounter" title="Reset number of pomodoros completed" type="button">0</button>
-      <div class="secret">00</div>
+      <div class="clocktab">
+        <div class="clock"></div>
+        <div class="textcontainer">
+          <span class="time" id="timeDisplay">00</span>
+          <span class="min">min</span>
+        </div>
+        <div class="pointer" id="clockPointer"></div>
+        <div class="secret">00</div>
+      </div>
+
+      <div id="playpausecontainer">
+        <button class="alarmbutton" id="init" type="button"><i class="material-icons">play_arrow</i></button>
+        <button class="stopbutton" title="Stop session" type="button"><i class="material-icons">stop</i></button>
+      </div>
     </div>
 
-    <div id="playpausecontainer">
-      <button class="alarmbutton" id="init" type="button"><i class="material-icons">play_arrow</i></button>
-      <button class="stopbutton" title="Stop session" type="button"><i class="material-icons">stop</i></button>
+    <div class="tab">
+      <div class="tabhead">
+        <span class="tabtitle">TOOLS</span>
+      </div>
+      <div id="tools">
+        <button class="toolicon adjusttime" title="Increase remaining alarm time by 1 minute" type="button">&#43;&#xFE0E;</button>
+        <button class="toolicon pomocounter" title="Reset number of pomodoros completed" type="button">0</button>
+        <button class="toolicon pomocounter" title="Reset number of pomodoros completed" type="button">0</button>
+        <button class="toolicon pomocounter" title="Reset number of pomodoros completed" type="button">0</button>
+      </div>
     </div>
     
     <div class="menu">

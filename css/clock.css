@@ -1,0 +1,57 @@
+/* Clock */
+.clocktab {
+  width: 15em;
+  height: 14em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clock {
+  width: 12em;
+  height: 12em;
+  position: absolute;
+  border-radius: 50%;
+  border: solid;
+  border-color: #777574;
+  border-width: 1px;
+  background-color: #756a69;
+}
+
+.pointer {
+  top: -4.5em;
+  width: 1.5em;
+  height: 1.5em;
+  position: relative;
+
+  border-radius: 50%;
+  transition: 1s;
+  transform-origin: 0.75em 5.25em;
+
+  background-color: #e87f7f;
+}
+
+.textcontainer {
+  position: absolute;
+  color: #fff;
+}
+
+.time {
+  margin: 0;
+  font-size: 3.5em;
+  font-weight: 400;
+  display: block;
+}
+
+.min {
+  margin: 0;
+  font-size: 1.25em;
+  text-align: center;
+  font-weight: 400;
+  display: block;
+}
+
+.secret {
+  position: absolute;
+  display: none;
+}

@@ -1,0 +1,98 @@
+/* Dropdown menu */
+.dropdown {
+  display: block;
+  margin: 0.25em;
+}
+
+.innermenu {
+  display: none;
+  padding: 0.25em;
+}
+
+.innermenushow {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.menutext {
+  font-size: 1.1em;
+  text-align: center;
+  margin: 0em;
+  cursor: help;
+}
+
+.menuinput {
+  color: #514d4d;
+  background-color: #fff;
+  text-align: center;
+  font-size: 1.1em;
+  width: 90%;
+
+  border-radius: 1.5em;
+  border: solid;
+  border-color: #777574;
+  border-width: 1px;
+  transition: 0.25s;
+}
+
+.menuinput:disabled {
+  color: #8d8787;
+  background-color: #454141;
+}
+
+.menuinput:focus {
+  background-color: #767171;
+  outline:none;
+}
+
+.version {
+  text-align: right;
+}
+
+.ver {
+  text-align: left;
+}
+
+.subtext {
+  font-size: 1.1em;
+  margin: 0em 0.5em 0em 0.5em;
+  color: #8d8787;
+}
+
+a {
+  color: #8d8787;
+}
+
+a:visited {
+  color: #8d8787;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
+}
+
+.helppopup {
+  color: #8d8787;
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.helppopup p {
+  margin: 0em 0.5em 0em 0.5em;
+  text-align: left;
+}
+
+.helppopup button {
+  background-color: #d66868;
+  color: #fff;
+  border: none;
+  
+  cursor: pointer;
+  text-align: right;
+  font-size: 1.2em;
+}
+
+.helppopup button:hover {
+  background-color: #e87f7f;
+}

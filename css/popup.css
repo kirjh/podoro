@@ -23,14 +23,12 @@ body {
 }
 
 .tabhead {
-  border-bottom: solid;
+  border-bottom: dashed;
   border-color: #777574;
   border-width: 1px;
+  
   padding: 0.25rem;
-  /*
-  border-radius: 1em 1em 0 0;
-  background-color: #9e948d;
-  */
+  
 }
 
 .tabtitle {

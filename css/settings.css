@@ -1,17 +1,14 @@
 /* Dropdown menu */
-.dropdown {
+.setting {
   display: block;
   margin: 0.25em;
 }
 
-.innermenu {
-  display: none;
-  padding: 0.25em;
-}
-
-.innermenushow {
+#settingsmenu {
+  color: #514d4d;
   display: grid;
   grid-template-columns: auto auto;
+  margin: 0.5rem;
 }
 
 .menutext {
@@ -23,12 +20,12 @@
 
 .menuinput {
   color: #514d4d;
-  background-color: #fff;
+  background-color: #e2dbd7;
   text-align: center;
   font-size: 1.1em;
   width: 90%;
 
-  border-radius: 1.5em;
+  border-radius: 2em;
   border: solid;
   border-color: #777574;
   border-width: 1px;
@@ -41,30 +38,8 @@
 }
 
 .menuinput:focus {
-  background-color: #767171;
+  background-color: #fff;
   outline:none;
-}
-
-.version {
-  text-align: right;
-}
-
-.ver {
-  text-align: left;
-}
-
-.subtext {
-  font-size: 1.1em;
-  margin: 0em 0.5em 0em 0.5em;
-  color: #8d8787;
-}
-
-a {
-  color: #8d8787;
-}
-
-a:visited {
-  color: #8d8787;
 }
 
 input::-webkit-outer-spin-button,
@@ -95,4 +70,23 @@ input::-webkit-inner-spin-button {
 
 .helppopup button:hover {
   background-color: #e87f7f;
+}
+
+.dropdownbutton {
+  background-color: #393636;
+  color: #8d8787;
+  border: none;
+  
+  width: 100%;
+  padding: 0.25em;
+  cursor: pointer;
+  text-align: right;
+}
+
+.dropdownbutton:hover {
+  background-color: #514d4d;
+}
+
+button:focus {
+  outline:none;
 }

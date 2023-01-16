@@ -32,10 +32,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const inputList = document.getElementsByClassName("timeinput");
   const increaseTime = document.getElementsByClassName("adjusttime")[0];
   const pomoCounter = document.getElementsByClassName("pomocounter")[0];
-  const ver = document.getElementById("Version");
+  const versionLinks = document.getElementsByClassName("githublink");
 
   // Update version
-  ver.innerHTML = JSON.version;
+  for (const link of versionLinks) {
+    link.innerHTML = JSON.version;
+  }
 
   const storage = await getTimeFromStorage();
   const sessionStorage = await chrome.storage.session.get("pomocount");

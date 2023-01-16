@@ -1,5 +1,5 @@
 @import "./clock.css";
-@import "./menu.css";
+@import "./settings.css";
 @import "./tools.css";
 
 /* Body  */
@@ -10,9 +10,15 @@ html {
 body {
   font-family: Nunito, Roboto, Arial, Helvetica, sans-serif;
   margin: 0;
-  /* width: 20em; */
 }
 
+/* Tab container */
+#tabcontainer {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+/* Tabs */
 .tab {
   background-color:#fff; /* #bdb0a9 */
   margin: 0.5rem;
@@ -38,94 +44,40 @@ body {
   margin: 0.75rem;
 }
 
-/* Buttons */
-#playpausecontainer {
-  text-align: center;
-  font-size:0;
-  margin-top: 0.3rem;
-  margin-bottom: 0.7rem;
+#togglecontainer {
+  border-right: dashed;
+  border-color: #777574;
+  border-width: 1px;
 }
 
-.alarmbutton {
-  border: none;
-  border-radius: 2em;
-  width: 90%;
+.toggletab {
+  width: 12rem;
+  display: flex;
+  flex-direction: column;
 }
 
-.alarmbutton,
-.alarmbuttonactive,
-.stopbutton {
-  background-color: #d66868;
-  color: #fff;
-  cursor: pointer;
-  font-size: 1rem;
+/* Version */
+.vergrid {
+  display: grid;
+  grid-template-columns: auto auto;
+  margin: 0.5rem;
 }
 
-.alarmbuttonactive {
-  border-style: none solid none solid;
-  border-width: 0 1px 0 0.5em;
-  border-radius: 2em 0 0 2em;
-  border-color: #fff #fff #fff #d66868;
-  display: inline;
-  width: 65%;
-}
-
-.stopbutton {
-  display: none;
-}
-
-.stopbuttonactive {
-  border-style: none solid none solid;
-  border-width: 0 0.5em 0 1px;
-  border-radius: 0 2em 2em 0;
-  border-color: #fff #d66868 #fff #fff;
-  display: inline;
-  width: 25%;
-}
-
-.alarmbutton:hover {
-  background-color: #e87f7f;
-}
-
-.alarmbuttonactive:hover {
-  border-color: #fff #fff #fff #e87f7f;
-  background-color: #e87f7f;
-}
-.stopbutton:hover {
-  border-color: #fff #e87f7f #fff #fff;
-  background-color: #e87f7f;
-}
-
-.alarmbutton:active {
-  background-color: #d66868;
-}
-
-.alarmbuttonactive:active {
-  background-color: #d66868;
-  border-color: #fff #fff #fff #d66868;
-}
-
-.stopbuttonactive:active {
-  background-color: #d66868;
-  border-color: #fff #d66868 #fff #fff;
-}
-
-
-.dropdownbutton {
-  background-color: #393636;
+.subtext {
+  text-align: left;
+  font-size: 1.1em;
+  margin: 0em 0.5em 0em 0.5em;
   color: #8d8787;
-  border: none;
-  
-  width: 100%;
-  padding: 0.25em;
-  cursor: pointer;
+}
+
+.version {
   text-align: right;
 }
 
-.dropdownbutton:hover {
-  background-color: #514d4d;
+a.githublink {
+  color: #8d8787;
 }
 
-button:focus {
-  outline:none;
+a.githublink:visited {
+  color: #8d8787;
 }

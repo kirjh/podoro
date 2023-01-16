@@ -1,24 +1,48 @@
-/* Dropdown menu */
-.setting {
+/* Settings */
+.settingsactive {
   display: block;
-  margin: 0.25em;
 }
 
 #settingsmenu {
   color: #514d4d;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 50% 50%;
   margin: 0.5rem;
+}
+
+.lengthsetting {
+  display: block;
+  margin: 0.25em;
+}
+
+.inputdiv {
+  position: relative;
+  display: grid;
+}
+
+.inputicon {
+  position: absolute;
+  border-radius: 50% 0 0 50%;
+  height: 1.2em;
+  width: 1.2em;
+  background-color: #a3a3a3;
+  cursor: help;
+
+  top: 0;
+  bottom: 0;
+  margin: auto 0.35em;
 }
 
 .menutext {
   font-size: 1.1em;
+  display: block;
   text-align: center;
   margin: 0em;
   cursor: help;
 }
 
 .menuinput {
+  justify-self: center;
   color: #514d4d;
   background-color: #e2dbd7;
   text-align: center;
@@ -29,16 +53,11 @@
   border: solid;
   border-color: #777574;
   border-width: 1px;
-  transition: 0.25s;
-}
-
-.menuinput:disabled {
-  color: #8d8787;
-  background-color: #454141;
+  transition: 0.5s;
 }
 
 .menuinput:focus {
-  background-color: #fff;
+  background-color: transparent;
   outline:none;
 }
 
@@ -70,23 +89,4 @@ input::-webkit-inner-spin-button {
 
 .helppopup button:hover {
   background-color: #e87f7f;
-}
-
-.dropdownbutton {
-  background-color: #393636;
-  color: #8d8787;
-  border: none;
-  
-  width: 100%;
-  padding: 0.25em;
-  cursor: pointer;
-  text-align: right;
-}
-
-.dropdownbutton:hover {
-  background-color: #514d4d;
-}
-
-button:focus {
-  outline:none;
 }

@@ -54,7 +54,7 @@
 
           <div id="playpausecontainer">
             <button class="alarmbutton" id="init" type="button"><i class="material-icons">play_arrow</i></button>
-            <button class="stopbutton" title="Stop session" type="button"><i class="material-icons">stop</i></button>
+            <button class="stopbutton" type="button"><i class="material-icons">stop</i></button>
           </div>
         </div>
         <!-- End <Podoro> -->
@@ -65,14 +65,14 @@
             <span class="tabtitle">TOOLS</span>
           </div>
           <div id="tools">
-            <button class="toolicon adjusttime" title="Increase remaining alarm time by 1 minute" type="button">&#43;&#xFE0E;</button>
-            <button class="toolicon pomocounter" title="Reset number of pomodoros completed" type="button">0</button>
-            <button class="darkicon" title="Reset number of pomodoros completed" type="button">0</button>
-            <button class="darkicon" title="Reset number of pomodoros completed" type="button">Q</button>
-            <button class="toolicon adjusttime" title="Increase remaining alarm time by 1 minute" type="button">&#43;&#xFE0E;</button>
-            <button class="toolicon pomocounter" title="Reset number of pomodoros completed" type="button">0</button>
-            <button class="darkicon" title="Reset number of pomodoros completed" type="button">0</button>
-            <button class="darkicon" title="Reset number of pomodoros completed" type="button">Q</button>
+            <button class="toolicon" id="increment" title="Increase remaining alarm time by 1 minute" type="button">&#43;&#xFE0E;</button>
+            <button class="toolicon" id="reset" title="Reset number of pomodoros completed" type="button">0</button>
+            <button class="darkicon" id="help" title="User manual" type="button">?</button>
+            <button class="darkicon" id="settings" title="Podoro settings" type="button">S</button>
+            <button class="toolicon" id="theme" title="Increase remaining alarm time by 1 minute" type="button">D</button>
+            <button class="toolicon" id="block" title="Reset number of pomodoros completed" type="button">B</button>
+            <button class="darkicon" id="tasks" title="Tasks" type="button">T</button>
+            <button class="darkicon" id="analytics" title="Analytics" type="button">A</button>
           </div>
         </div>
         <!-- End <Tools> -->
@@ -82,26 +82,38 @@
       <!-- Toggle tabs -->
       <div id="togglecontainer">
         <!-- Settings -->
-        <div class="tab toggletab">
+        <div class="tab toggletab" id="settingstab">
           <div class="tabhead">
             <span class="tabtitle">SETTINGS</span>     
           </div>
           <div id="settingsmenu">
-            <div class="setting">
-              <p class="menutext" title="Change length of a work (pomodoro) session">Pomodoro</p>
-              <input type="number" class= "menuinput timeinput" id="pomowork" name="pomowork" value="25" min="1" max="60">
+            <div class="lengthsetting">
+              <label class="menutext" for="pomowork" title="Change length of a work session">Pomodoro</label>
+              <div class="inputdiv">
+                <span class="inputicon red"></span>
+                <input type="number" class= "menuinput timeinput" id="pomowork" name="pomowork" value="25" min="1" max="60">
+              </div>
             </div>
-            <div class="setting">
-              <p class="menutext" title="Change length of a short break session">Short Break</p>
-              <input type="number" class= "menuinput timeinput" id="pomobreak" name="pomobreak" value="5" min="1" max="60">
+            <div class="lengthsetting">
+              <label class="menutext" for="pomobreak" title="Change length of a short break">Short Break</label>
+              <div class="inputdiv">
+                <span class="inputicon green"></span>
+                <input type="number" class= "menuinput timeinput" id="pomobreak" name="pomobreak" value="5" min="1" max="60">
+              </div>
             </div>
-            <div class="setting">
-              <p class="menutext" title="Change number of pomodoros needed for a long break">Sessions</p>
-              <input type="number" class= "menuinput timeinput" id="pomointerval" name="pomointerval" value="4" min="1" max="60">
+            <div class="lengthsetting">
+              <label class="menutext" for="pomointerval" title="Change number of pomodoros to complete before a long break">Sessions</label>
+              <div class="inputdiv">
+                <span class="inputicon"></span>
+                <input type="number" class= "menuinput timeinput" id="pomointerval" name="pomointerval" value="4" min="1" max="60">
+              </div>
             </div>
-            <div class="setting">
-              <p class="menutext" title="Change length of a long break session">Long Break</p>
-              <input type="number" class= "menuinput timeinput" id="pomobreaklong" name="pomobreaklong" value="15" min="1" max="60">
+            <div class="lengthsetting">
+              <label class="menutext" for="pomobreaklong" title="Change length of a long break session">Long Break</label>
+              <div class="inputdiv">
+                <span class="inputicon blue"></span>
+                <input type="number" class= "menuinput timeinput" id="pomobreaklong" name="pomobreaklong" value="15" min="1" max="60">
+              </div>
             </div>
           </div>
 
@@ -111,6 +123,26 @@
           </div>
         </div>
         <!-- End <Settings> -->
+
+        <div class="tab toggletab" id="taskstab">
+          <div class="tabhead">
+            <span class="tabtitle">TASKS</span>     
+          </div>
+          <div class="vergrid">
+            <div class="subtext">Version</div>
+            <div class="subtext version"><a class="githublink" href="https://github.com/kirjh/podoro" title="Check out the Github repository!" target="_blank">0.0.0</a></div>
+          </div>
+        </div>
+
+        <div class="tab toggletab" id="analyticstab">
+          <div class="tabhead">
+            <span class="tabtitle">ANALYTICS</span>     
+          </div>
+          <div class="vergrid">
+            <div class="subtext">Version</div>
+            <div class="subtext version"><a class="githublink" href="https://github.com/kirjh/podoro" title="Check out the Github repository!" target="_blank">0.0.0</a></div>
+          </div>
+        </div>
       </div>
       <!-- End <Toggle tabs> -->
     </div>

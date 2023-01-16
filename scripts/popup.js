@@ -18,7 +18,7 @@
 
 import { alarmExists } from "./alarms.js";
 import { setSecret, getTimeFromStorage, updateTime } from "./time.js";
-import { togglePrimaryButton, toggleStopButton, toggleMenu, inputChange, increaseAlarmLength, setCounter } from "./menu.js";
+import { togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange } from "./menu.js";
 import JSON from '../manifest.json' assert {type: 'json'};
 
 /*****************************************************************************/
@@ -28,10 +28,9 @@ import JSON from '../manifest.json' assert {type: 'json'};
 document.addEventListener('DOMContentLoaded', async () => {
   const primaryButton = document.getElementsByClassName("alarmbutton")[0];
   const stopButton = document.getElementsByClassName("stopbutton")[0];
-  const dropDownButton = document.getElementsByClassName("dropdownbutton")[0];
   const inputList = document.getElementsByClassName("timeinput");
-  const increaseTime = document.getElementsByClassName("adjusttime")[0];
-  const pomoCounter = document.getElementsByClassName("pomocounter")[0];
+  const actionButtonList = document.getElementsByClassName("toolicon");
+  const toggleButtonList = document.getElementsByClassName("darkicon");
   const versionLinks = document.getElementsByClassName("githublink");
 
   // Update version
@@ -55,17 +54,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     chrome.storage.local.set({paused: false});
   }
   togglePrimaryButton(primaryButton);
-  setCounter(sessionStorage.pomocount);
+  // setCounter(sessionStorage.pomocount);
   setInterval(updateTime, 1000);
 
   // Listeners
   primaryButton.addEventListener('click', () => {togglePrimaryButton(primaryButton);});
   stopButton.addEventListener('click', () => {toggleStopButton(primaryButton, stopButton);});
-  dropDownButton.addEventListener('click', () => {toggleMenu(dropDownButton);});
-  pomoCounter.addEventListener('click', () => {setCounter(0, true)});
+  // pomoCounter.addEventListener('click', () => {setCounter(0, true)});
 
-  increaseTime.addEventListener('click', () => {increaseAlarmLength();});
+  // increaseTime.addEventListener('click', () => {increaseAlarmLength();});
 
+  for (const button of toggleButtonList) {
+    button.addEventListener('click', ()=> {menuHandler(button);})
+  }
+  for (const button of actionButtonList) {
+    button.addEventListener('click', ()=> {actionHandler(button);})
+  }
   for (const input of inputList) {
     document.getElementById(input.id).value = storage[input.id];
     input.addEventListener('change', ()=> {inputChange(input);})

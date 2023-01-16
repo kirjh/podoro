@@ -60,12 +60,10 @@
 #playpausecontainer {
   text-align: center;
   font-size:0;
-  margin-top: 0.3rem;
-  margin-bottom: 0.7rem;
+  margin: 0.3rem 0.25rem 0.7rem 0.25rem;
 }
 
 .alarmbutton {
-  border: none;
   border-radius: 2em;
   width: 90%;
 }
@@ -77,16 +75,17 @@
   color: #fff;
   cursor: pointer;
   font-size: 1rem;
-  transition: color 0.25s, border 0.25s, background-color 0.25s
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d66868;
+  transition: color 0.5s, background-color 0.5s;
 }
 
 .alarmbuttonactive {
-  border-style: none solid none solid;
-  border-width: 0 1px 0 0.5em;
   border-radius: 2em 0 0 2em;
-  border-color: #fff #fff #fff #d66868;
   display: inline;
   width: 65%;
+  padding-left: 1em;
 }
 
 .stopbutton {
@@ -94,37 +93,40 @@
 }
 
 .stopbuttonactive {
-  border-style: none solid none solid;
-  border-width: 0 0.5em 0 1px;
   border-radius: 0 2em 2em 0;
-  border-color: #fff #d66868 #fff #fff;
   display: inline;
   width: 25%;
+  padding-right: 1em;
 }
 
 .alarmbutton:hover {
-  background-color: #e87f7f;
+  color: #5b5a59;
+  background-color: transparent;
+  
+  border-style: solid;
+  border-color: #777574;
 }
 
 .alarmbuttonactive:hover {
-  border-color: #fff #fff #fff #e87f7f;
-  background-color: #e87f7f;
-}
-.stopbutton:hover {
-  border-color: #fff #e87f7f #fff #fff;
-  background-color: #e87f7f;
+  color: #5b5a59;
+  background-color: transparent;
+
+  border-style: solid none solid solid;
+  border-color: #777574;
 }
 
-.alarmbutton:active {
-  background-color: #d66868;
+.stopbuttonactive:hover {
+  color: #5b5a59;
+  background-color: transparent;
+  
+  border-style: solid solid solid none;
+  border-color: #777574;
 }
 
-.alarmbuttonactive:active {
+.alarmbutton:active,
+.alarmbuttonactive:active,
+.stopbuttonactive:active  {
   background-color: #d66868;
-  border-color: #fff #fff #fff #d66868;
-}
-
-.stopbuttonactive:active {
-  background-color: #d66868;
-  border-color: #fff #d66868 #fff #fff;
+  color: #fff;
+  border-color: #d66868;
 }

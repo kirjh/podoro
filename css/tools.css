@@ -19,11 +19,19 @@
   color: #5b5a59;
   cursor: pointer;
   
-  transition: background-color 0.25s;
+  transition: background-color 0.5s;
 }
 
-.toolicon:hover {
-  background-color: #fff;
+.darkicon {
+  background-color: #756a69;
+  color: #fff;
+}
+
+.toolicon:hover,
+.darkicon:hover,
+.activeicon {
+  background-color: transparent;
+  color: #5b5a59;
 
   border: solid;
   border-color: #777574;
@@ -32,20 +40,6 @@
 
 .toolicon:active {
   background-color: #e2dbd7;
-}
-
-.darkicon {
-  background-color: #756a69;
-  color: #fff;
-}
-
-.darkicon:hover {
-  background-color: #e2dbd7;
-  color: #5b5a59;
-
-  border: solid;
-  border-color: #777574;
-  border-width: 1px;
 }
 
 .darkicon:active {

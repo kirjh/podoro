@@ -18,6 +18,19 @@ body {
   flex-direction: row-reverse;
 }
 
+/* Colours */
+.red {
+  background-color: #d66868;
+}
+
+.green {
+  background-color: #82d684;
+}
+
+.blue {
+  background-color: #689dd6;
+}
+
 /* Tabs */
 .tab {
   background-color:#fff; /* #bdb0a9 */
@@ -45,14 +58,15 @@ body {
 }
 
 #togglecontainer {
+  display: none;
   border-right: dashed;
   border-color: #777574;
   border-width: 1px;
 }
 
 .toggletab {
+  display: none;
   width: 12rem;
-  display: flex;
   flex-direction: column;
 }
 
@@ -61,6 +75,7 @@ body {
   display: grid;
   grid-template-columns: auto auto;
   margin: 0.5rem;
+  margin-top: auto;
 }
 
 .subtext {

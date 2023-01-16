@@ -16,13 +16,14 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { createAlert, togglePrimaryButton, toggleStopButton, toggleMenu, inputChange, increaseAlarmLength, setCounter};
+export { togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, increaseAlarmLength };
 
 import { alarmExists, startSession, clearAlarm, createAlarm, pauseSession, resumeSession } from "./alarms.js";
 import { updateTime } from "./time.js";
 
 /*****************************************************************************/
 
+/*
 //  @msg:             (string)  message to pass onto the user
 //  @alarmMustExist:  (boolean) toggle whether an active alarm must exist     
 const createAlert = async (msg, alarmMustExist=false) => {
@@ -45,17 +46,16 @@ const createAlert = async (msg, alarmMustExist=false) => {
   });
   return;
 }
+*/
 
 /*****************************************************************************/
 
 //  @button:  (DOM object) button to apply changes to
 //  @id:      (string)     new id
 //  @icon:    (string)     new icon name
-//  @title:   (title)      new title
-const updateButton = (button, id, icon, title) => {
+const updateButton = (button, id, icon) => {
   button.innerHTML = `<i class="material-icons">${icon}</i>`;
   button.id = id;
-  button.title= title;
 
   return;
 }
@@ -81,21 +81,21 @@ const togglePrimaryButton = async (button) => {
   switch (button.id) {
     case "pause":
       await pauseSession();
-      updateButton(button, "resume", "play_arrow", "Resume session");
+      updateButton(button, "resume", "play_arrow");
       break;
     case "paused":
-      updateButton(button, "resume", "play_arrow", "Resume session");
+      updateButton(button, "resume", "play_arrow");
       break;
     case "resume":
       await resumeSession();
-      updateButton(button, "pause", "pause", "Pause session");
+      updateButton(button, "pause", "pause");
       break;
     case "start":
       await startSession();
-      updateButton(button, "pause", "pause", "Pause session");
+      updateButton(button, "pause", "pause");
       break;
     default:
-      updateButton(button, "pause", "pause", "Pause session");
+      updateButton(button, "pause", "pause");
       break;
   }
 
@@ -109,7 +109,7 @@ const togglePrimaryButton = async (button) => {
 //  @stopButton:  (DOM object) stop button
 const toggleStopButton = async (button, stopButton) => {
   clearAlarm();
-  setCounter(0);
+  // setCounter(0);
   chrome.storage.local.set({paused: false});
   button.classList.remove("alarmbuttonactive");
   stopButton.classList.remove("stopbuttonactive");
@@ -120,15 +120,60 @@ const toggleStopButton = async (button, stopButton) => {
 
 /*****************************************************************************/
 
+//  @element:    (DOM object) element
+//  @display:    (string)     display property
+//  @forceDisplay:  (boolean)    force display property 
+//
+//  Returns: true if tab was opened, false otherwise
+const toggleTab = (element, display, forceDisplay = false) => {
+  if (forceDisplay || !element.style.display || element.style.display == "none") {
+    element.style.display = display;
+    return true;
+  } else {
+    element.style.display = "none";
+    return false;
+  }
+}
+/*****************************************************************************/
+
 //  @button:  (DOM object) menu button
-const toggleMenu = (button) => {
-  button.id = (button.id == "down") ? "up" : "down";
-  button.innerHTML = (button.id == "up") ? "Less &#9206;&#xFE0E;" : "More &#9207;&#xFE0E;";
+const menuHandler = (button) => {
+  const container = document.getElementById("togglecontainer");
+  const tab = document.getElementById(button.id + "tab");
+  const togglebuttonList = document.getElementsByClassName("darkicon");
+  
+  if (button.id == "help") {
+    chrome.tabs.create({"url": "https://github.com/kirjh/podoro/wiki"});
+    return;
+  }
 
-  let div = document.getElementsByClassName("innermenu")[0];
+  const tabOpened = toggleTab(tab, "flex");
+  toggleTab(container, "flex", tabOpened);
+  
 
-  div.classList.toggle("innermenushow");
+  for (const togglebutton of togglebuttonList) {
+    if (togglebutton.classList.contains("activeicon")) {
+      const tab = document.getElementById(togglebutton.id + "tab");
+      toggleTab(tab, "none", true);
+    }
+    togglebutton.classList.remove("activeicon");
+  }
+  
+  if (tabOpened) button.classList.add("activeicon");
+
   return;
+}
+/*****************************************************************************/
+
+//  @button:  (DOM object) menu button
+const actionHandler = (button) => {
+  switch (button.id) {
+    case "theme":
+      // changeTheme();
+      break;
+    default:
+      break;
+  }
 }
 
 /*****************************************************************************/
@@ -174,6 +219,7 @@ const increaseAlarmLength = async () => {
 
 /*****************************************************************************/
 
+/*
 //  @pomodoro:  (number) number of pomodoros elapsed
 //  @alert:     (boolean) toggle creation of an alert
 const setCounter = (pomodoro, alert=false) => {
@@ -184,3 +230,4 @@ const setCounter = (pomodoro, alert=false) => {
   if (alert) createAlert("Reset count of completed pomodoros");
   return;
 }
+*/

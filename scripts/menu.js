@@ -165,10 +165,28 @@ const menuHandler = (button) => {
 }
 /*****************************************************************************/
 
-const changeTheme = (theme=null) => {
-  if (!theme) {
+//  @dark:  (boolean) force dark mode
+const changeTheme = (dark=false) => {
+  if (dark) return;
+  const tabs = document.getElementsByClassName("tab");
+  const accentElements = document.getElementsByClassName("lightaccent");
+  const fontElements = document.getElementsByClassName("lightfont");
+  const borderElements = document.getElementsByClassName("lightborder");
 
+  for (const tab of tabs) {
+    tab.classList.toggle("darktab");
   }
+  for (const element of accentElements) {
+    element.classList.toggle("darkaccent");
+  }
+  for (const element of fontElements) {
+    element.classList.toggle("darkfont");
+  }
+  for (const element of borderElements) {
+    element.classList.toggle("darkborder");
+  }
+
+  return;
 }
 
 /*****************************************************************************/

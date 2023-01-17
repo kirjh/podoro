@@ -3,10 +3,6 @@
 @import "./tools.css";
 
 /* Body  */
-html {
-  background-color: #e2dbd7;
-}
-
 body {
   font-family: Nunito, Roboto, Arial, Helvetica, sans-serif;
   margin: 0;
@@ -18,41 +14,24 @@ body {
   flex-direction: row-reverse;
 }
 
-/* Colours */
-.red {
-  background-color: #d66868;
-}
-
-.green {
-  background-color: #82d684;
-}
-
-.blue {
-  background-color: #689dd6;
-}
-
 /* Tabs */
 .tab {
-  background-color:#fff; /* #bdb0a9 */
+  background-color:#fff;
   margin: 0.5rem;
   border-radius: 0.7rem;
   border: solid;
-  border-color: #777574;
   border-width: 1px;
 }
 
 .tabhead {
   border-bottom: dashed;
-  border-color: #777574;
   border-width: 1px;
   
   padding: 0.25rem;
-  
 }
 
 .tabtitle {
   font-size: 1.2em;
-  color: #5b5a59;
   font-weight: 700;
   margin: 0.75rem;
 }
@@ -60,7 +39,6 @@ body {
 #togglecontainer {
   display: none;
   border-right: dashed;
-  border-color: #777574;
   border-width: 1px;
 }
 
@@ -95,4 +73,56 @@ a.githublink {
 
 a.githublink:visited {
   color: #8d8787;
+}
+
+/* Colours */
+.lightaccent {
+  background-color: #e2dbd7;
+}
+
+.lightfont {
+  color: #5b5a59;
+}
+
+.lightborder {
+  border-color: #777574;
+}
+
+.red {
+  background-color: #d66868;
+}
+
+.green {
+  background-color: #82d684;
+}
+
+.greenbutton {
+  background-color: #82d684;
+  border-color: #82d684;
+}
+
+.blue {
+  background-color: #689dd6;
+  border-color: #689dd6;
+}
+
+/* Dark theme */
+.darktab {
+  background-color:#3f3f3f;
+}
+
+.darkfont {
+  color: #fff;
+}
+
+.darkfont:hover {
+  color: #fff;
+}
+
+.darkaccent {
+  background-color: #2b2827;
+}
+
+.darkborder {
+  border-color: #99928f;
 }

@@ -4,7 +4,6 @@
 }
 
 #settingsmenu {
-  color: #514d4d;
   display: grid;
   grid-template-columns: 50% 50%;
   margin: 0.5rem;
@@ -43,15 +42,12 @@
 
 .menuinput {
   justify-self: center;
-  color: #514d4d;
-  background-color: #e2dbd7;
   text-align: center;
   font-size: 1.1em;
   width: 90%;
 
   border-radius: 2em;
   border: solid;
-  border-color: #777574;
   border-width: 1px;
   transition: 0.5s;
 }

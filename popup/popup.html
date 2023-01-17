@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
   </head>
-  <body>
+  <body class="lightaccent">
     <!-- 
       # HTML structure #
 
@@ -34,16 +34,16 @@
            ┕━ Tools
               ┕━ <...>
     -->
-    <div id="tabcontainer">     
+    <div id="tabcontainer" class="lightborder">     
       <!-- Main tabs -->
       <div>
         <!-- Podoro -->
-        <div class="tab">
-          <div class="tabhead">
-            <span class="tabtitle">PODORO</span>
+        <div class="tab lightborder">
+          <div class="tabhead lightborder">
+            <span class="tabtitle lightfont">PODORO</span>
           </div>
           <div class="clocktab">
-            <div class="clock"></div>
+            <div class="clock lightborder"></div>
             <div class="textcontainer">
               <span class="time" id="timeDisplay">00</span>
               <span class="min">min</span>
@@ -60,19 +60,19 @@
         <!-- End <Podoro> -->
 
         <!-- Tools -->
-        <div class="tab">
-          <div class="tabhead">
-            <span class="tabtitle">TOOLS</span>
+        <div class="tab lightborder">
+          <div class="tabhead lightborder">
+            <span class="tabtitle lightfont">TOOLS</span>
           </div>
           <div id="tools">
-            <button class="toolicon" id="increment" title="Increase remaining alarm time by 1 minute" type="button">&#43;&#xFE0E;</button>
-            <button class="toolicon" id="reset" title="Reset number of pomodoros completed" type="button">0</button>
-            <button class="darkicon" id="help" title="User manual" type="button">?</button>
-            <button class="darkicon" id="settings" title="Podoro settings" type="button">S</button>
-            <button class="toolicon" id="theme" title="Increase remaining alarm time by 1 minute" type="button">D</button>
-            <button class="toolicon" id="block" title="Reset number of pomodoros completed" type="button">B</button>
-            <button class="darkicon" id="tasks" title="Tasks" type="button">T</button>
-            <button class="darkicon" id="analytics" title="Analytics" type="button">A</button>
+            <button class="toolicon lightborder lightaccent lightfont" id="increment" title="Increase remaining alarm time by 1 minute" type="button">&#43;&#xFE0E;</button>
+            <button class="toolicon lightborder lightaccent lightfont" id="reset" title="Reset number of pomodoros completed" type="button">0</button>
+            <button class="darkicon lightborder" id="help" title="User manual" type="button">?</button>
+            <button class="darkicon lightborder" id="settings" title="Podoro settings" type="button">S</button>
+            <button class="toolicon lightborder lightaccent lightfont" id="theme" title="Increase remaining alarm time by 1 minute" type="button">D</button>
+            <button class="toolicon lightborder lightaccent lightfont" id="block" title="Reset number of pomodoros completed" type="button">B</button>
+            <button class="darkicon lightborder" id="tasks" title="Tasks" type="button">T</button>
+            <button class="darkicon lightborder" id="analytics" title="Analytics" type="button">A</button>
           </div>
         </div>
         <!-- End <Tools> -->
@@ -80,39 +80,39 @@
       <!-- End <Main tabs> -->
 
       <!-- Toggle tabs -->
-      <div id="togglecontainer">
+      <div id="togglecontainer" class="lightborder">
         <!-- Settings -->
-        <div class="tab toggletab" id="settingstab">
-          <div class="tabhead">
-            <span class="tabtitle">SETTINGS</span>     
+        <div class="tab toggletab lightborder" id="settingstab">
+          <div class="tabhead lightborder">
+            <span class="tabtitle lightfont">SETTINGS</span>     
           </div>
           <div id="settingsmenu">
             <div class="lengthsetting">
-              <label class="menutext" for="pomowork" title="Change length of a work session">Pomodoro</label>
+              <label class="menutext lightfont" for="pomowork" title="Change length of a work session">Pomodoro</label>
               <div class="inputdiv">
                 <span class="inputicon red"></span>
-                <input type="number" class= "menuinput timeinput" id="pomowork" name="pomowork" value="25" min="1" max="60">
+                <input type="number" class= "menuinput timeinput lightfont lightborder lightaccent" id="pomowork" name="pomowork" value="25" min="1" max="60">
               </div>
             </div>
             <div class="lengthsetting">
-              <label class="menutext" for="pomobreak" title="Change length of a short break">Short Break</label>
+              <label class="menutext lightfont" for="pomobreak" title="Change length of a short break">Short Break</label>
               <div class="inputdiv">
                 <span class="inputicon green"></span>
-                <input type="number" class= "menuinput timeinput" id="pomobreak" name="pomobreak" value="5" min="1" max="60">
+                <input type="number" class= "menuinput timeinput lightfont lightborder lightaccent" id="pomobreak" name="pomobreak" value="5" min="1" max="60">
               </div>
             </div>
             <div class="lengthsetting">
-              <label class="menutext" for="pomointerval" title="Change number of pomodoros to complete before a long break">Sessions</label>
+              <label class="menutext lightfont" for="pomointerval" title="Change number of pomodoros to complete before a long break">Sessions</label>
               <div class="inputdiv">
                 <span class="inputicon"></span>
-                <input type="number" class= "menuinput timeinput" id="pomointerval" name="pomointerval" value="4" min="1" max="60">
+                <input type="number" class= "menuinput timeinput lightfont lightborder lightaccent" id="pomointerval" name="pomointerval" value="4" min="1" max="60">
               </div>
             </div>
             <div class="lengthsetting">
-              <label class="menutext" for="pomobreaklong" title="Change length of a long break session">Long Break</label>
+              <label class="menutext lightfont" for="pomobreaklong" title="Change length of a long break session">Long Break</label>
               <div class="inputdiv">
                 <span class="inputicon blue"></span>
-                <input type="number" class= "menuinput timeinput" id="pomobreaklong" name="pomobreaklong" value="15" min="1" max="60">
+                <input type="number" class= "menuinput timeinput lightfont lightborder lightaccent" id="pomobreaklong" name="pomobreaklong" value="15" min="1" max="60">
               </div>
             </div>
           </div>
@@ -124,9 +124,9 @@
         </div>
         <!-- End <Settings> -->
 
-        <div class="tab toggletab" id="taskstab">
-          <div class="tabhead">
-            <span class="tabtitle">TASKS</span>     
+        <div class="tab toggletab lightborder" id="taskstab">
+          <div class="tabhead lightborder">
+            <span class="tabtitle lightfont">TASKS</span>     
           </div>
           <div class="vergrid">
             <div class="subtext">Version</div>
@@ -134,9 +134,9 @@
           </div>
         </div>
 
-        <div class="tab toggletab" id="analyticstab">
-          <div class="tabhead">
-            <span class="tabtitle">ANALYTICS</span>     
+        <div class="tab toggletab lightborder" id="analyticstab">
+          <div class="tabhead lightborder">
+            <span class="tabtitle lightfont">ANALYTICS</span>     
           </div>
           <div class="vergrid">
             <div class="subtext">Version</div>

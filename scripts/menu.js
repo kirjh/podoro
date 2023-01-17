@@ -165,11 +165,19 @@ const menuHandler = (button) => {
 }
 /*****************************************************************************/
 
+const changeTheme = (theme=null) => {
+  if (!theme) {
+
+  }
+}
+
+/*****************************************************************************/
+
 //  @button:  (DOM object) menu button
 const actionHandler = (button) => {
   switch (button.id) {
     case "theme":
-      // changeTheme();
+      changeTheme();
       break;
     default:
       break;

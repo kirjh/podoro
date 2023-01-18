@@ -31,7 +31,7 @@ const createAlert = async (msg, alarmMustExist=false) => {
   if (alarmMustExist && !await alarmExists()) return;
   if (existingAlert) existingAlert.remove();
 
-  const dropDownButton = document.getElementsByClassName("dropdownbutton")[0];
+  const dropDownButton = document.getElementsByClassName("tab")[0];
   dropDownButton.insertAdjacentHTML("afterend", 
     `
     <div class="helppopup">

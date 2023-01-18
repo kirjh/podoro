@@ -24,7 +24,7 @@
   position: relative;
 
   border-radius: 50%;
-  transition: 1s;
+  transition: transform 1s;
   transform-origin: 0.75em 5.25em;
 
   background-color: #e87f7f;

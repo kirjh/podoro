@@ -61,7 +61,6 @@ const createNotification = (msg) => {
 //
 //  Returns: true if interval divides count cleanly, false otherwise
 const countSessions = async (alarm) => {
-  return;  // REMOVE LATER
   const storage = await chrome.storage.local.get("pomointerval");
   const sessionStorage = await chrome.storage.session.get("pomocount");
   

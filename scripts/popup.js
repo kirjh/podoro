@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       setSecret(message.pomomsg, message.alarm);
     }
     if (message.pomocount) {
-      setCounter(message.pomocount);
+      // setCounter(message.pomocount);
     }
   });
 });

@@ -61,6 +61,7 @@ const createNotification = (msg) => {
 //
 //  Returns: true if interval divides count cleanly, false otherwise
 const countSessions = async (alarm) => {
+  return;  // REMOVE LATER
   const storage = await chrome.storage.local.get("pomointerval");
   const sessionStorage = await chrome.storage.session.get("pomocount");
   
@@ -114,7 +115,7 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
 
   // Create alarm
   chrome.storage.local.set({["currentAlarm"] : time});
-  chrome.runtime.sendMessage({pomomsg: time})
+  chrome.runtime.sendMessage({pomomsg: time, alarm: alarmName})
     .catch((e) => {console.log(`[${e}] Likely popup is not active`)});
   createAlarm(alarmName, parseInt(time));
 });

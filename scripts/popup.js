@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const actionButtonList = document.getElementsByClassName("toolicon");
   const toggleButtonList = document.getElementsByClassName("darkicon");
   const versionLinks = document.getElementsByClassName("githublink");
+  const borderElements = document.getElementsByClassName("lightborder");
 
   // Update version
   for (const link of versionLinks) {
@@ -49,15 +50,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (alarm) {
     primaryButton.id = (alarm.paused) ? "paused" : "exist";
     let alarmTime = await chrome.storage.local.get("currentAlarm");
-    if (alarmTime.currentAlarm) await setSecret(alarmTime.currentAlarm);
+    if (alarmTime.currentAlarm) await setSecret(alarmTime.currentAlarm, alarm.name);
   } else {
-    await setSecret(storedTime.pomowork);
+    await setSecret(storedTime.pomowork, "pomowork");
     chrome.storage.local.set({paused: false});
   }
   if (storage.theme && storage.theme == "dark") {
     const button = document.getElementById("theme");
-    actionHandler(button, true);
+    actionHandler(button);
   }
+  setTimeout(()=> {
+    for (const element of borderElements) {
+      element.classList.add("animatedbackground");
+    }
+    primaryButton.classList.add("animatedbackground");
+    stopButton.classList.add("animatedbackground");
+  },500);
 
   togglePrimaryButton(primaryButton);
   // setCounter(sessionStorage.pomocount);
@@ -84,7 +92,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Sync values between length of active alarm and local variable.
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.pomomsg) {
-      setSecret(message.pomomsg);
+      setSecret(message.pomomsg, message.alarm);
     }
     if (message.pomocount) {
       setCounter(message.pomocount);

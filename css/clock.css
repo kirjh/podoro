@@ -77,7 +77,16 @@
   border-width: 1px;
   border-style: solid;
   border-color: #d66868;
-  transition: color 0.5s, background-color 0.5s;
+}
+
+.greenalarm {
+  background-color: #66be68;
+  border-color: #66be68;
+}
+
+.bluealarm {
+  background-color: #689dd6;
+  border-color: #689dd6;
 }
 
 .alarmbuttonactive {

@@ -49,7 +49,7 @@ const startSession = async () => {
   const time = await chrome.storage.local.get(["pomowork"]);
   chrome.storage.local.set({["currentAlarm"] : time.pomowork});
 
-  setSecret(time.pomowork);
+  setSecret(time.pomowork, "pomowork");
   createAlarm("pomowork", parseInt(time.pomowork));
   return;
 }
@@ -59,6 +59,7 @@ const startSession = async () => {
 //  @alarm  (object) alarm
 const clearAlarm = async (alarm=null) => {
   console.log("clearing timers");
+  setSecret("00", "pomowork");
   if (alarm) {
     chrome.alarms.clear(alarm.name);
     return;

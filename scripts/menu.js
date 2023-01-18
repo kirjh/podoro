@@ -177,8 +177,6 @@ const changeTheme = (init = false) => {
   const subtextElements = document.getElementsByClassName("subtext");
   const linkElements = document.getElementsByClassName("githublink");
 
-  console.log(init);
-
   if (!playbutton.classList.contains("darkfont")) {
     chrome.storage.local.set({theme: "dark"});
   } else {
@@ -210,13 +208,6 @@ const changeTheme = (init = false) => {
   for (const element of borderElements) {
     element.classList.toggle("darkborder");
   }
-
-  if (!init) return;
-  setTimeout(()=> {
-    for (const element of borderElements) {
-      element.classList.toggle("animatedbackground");
-    }
-  },1000);
   
   return;
 }
@@ -228,7 +219,7 @@ const changeTheme = (init = false) => {
 const actionHandler = (button, args) => {
   switch (button.id) {
     case "theme":
-      changeTheme(args);
+      changeTheme();
       break;
     default:
       break;

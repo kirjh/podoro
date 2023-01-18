@@ -90,17 +90,11 @@ a.githublink:visited {
 }
 
 .green {
-  background-color: #82d684;
-}
-
-.greenbutton {
-  background-color: #82d684;
-  border-color: #82d684;
+  background-color: #66be68;
 }
 
 .blue {
   background-color: #689dd6;
-  border-color: #689dd6;
 }
 
 /* Dark theme */

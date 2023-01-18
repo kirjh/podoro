@@ -38,7 +38,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     link.innerHTML = JSON.version;
   }
 
-  const storage = await getTimeFromStorage();
+  const storedTime = await getTimeFromStorage();
+  const storage = await chrome.storage.local.get("theme");
   const sessionStorage = await chrome.storage.session.get("pomocount");
   if (!sessionStorage.pomocount) sessionStorage.pomocount = 0;
 
@@ -50,9 +51,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     let alarmTime = await chrome.storage.local.get("currentAlarm");
     if (alarmTime.currentAlarm) await setSecret(alarmTime.currentAlarm);
   } else {
-    await setSecret(storage.pomowork);
+    await setSecret(storedTime.pomowork);
     chrome.storage.local.set({paused: false});
   }
+  if (storage.theme && storage.theme == "dark") {
+    const button = document.getElementById("theme");
+    actionHandler(button, true);
+  }
+
   togglePrimaryButton(primaryButton);
   // setCounter(sessionStorage.pomocount);
   setInterval(updateTime, 1000);
@@ -71,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     button.addEventListener('click', ()=> {actionHandler(button);})
   }
   for (const input of inputList) {
-    document.getElementById(input.id).value = storage[input.id];
+    document.getElementById(input.id).value = storedTime[input.id];
     input.addEventListener('change', ()=> {inputChange(input);})
   }
 

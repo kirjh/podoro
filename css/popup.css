@@ -36,7 +36,7 @@ body {
   margin: 0.75rem;
 }
 
-#togglecontainer {
+.togglecontainer {
   display: none;
   border-right: dashed;
   border-width: 1px;
@@ -67,10 +67,7 @@ body {
   text-align: right;
 }
 
-a.githublink {
-  color: #8d8787;
-}
-
+a.githublink,
 a.githublink:visited {
   color: #8d8787;
 }
@@ -108,7 +105,7 @@ a.githublink:visited {
 
 /* Dark theme */
 .darktab {
-  background-color:#3f3f3f;
+  background-color:#454545;
 }
 
 .darkfont {
@@ -123,6 +120,24 @@ a.githublink:visited {
   background-color: #2b2827;
 }
 
+.darkaccent:active {
+  background-color: #2b2827;
+}
+
 .darkborder {
   border-color: #99928f;
+}
+
+.darksubtext {
+  color: #99928f;
+}
+
+.darklink,
+.darklink:visited {
+  color: #99928f;
+}
+
+/* Animated */
+.animatedbackground {
+  transition: background-color 0.25s;
 }

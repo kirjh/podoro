@@ -110,16 +110,18 @@
   color: #5b5a59;
   background-color: transparent;
 
-  border-style: solid none solid solid;
+  border-style: solid;
   border-color: #777574;
+  border-right-color: transparent;
 }
 
 .stopbuttonactive:hover {
   color: #5b5a59;
   background-color: transparent;
   
-  border-style: solid solid solid none;
+  border-style: solid;
   border-color: #777574;
+  border-left-color: transparent;
 }
 
 .alarmbutton:active,

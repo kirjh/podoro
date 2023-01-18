@@ -49,7 +49,6 @@
   border-radius: 2em;
   border: solid;
   border-width: 1px;
-  transition: 0.5s;
 }
 
 .menuinput:focus {

@@ -16,8 +16,6 @@
 
   border: none;
   cursor: pointer;
-  
-  transition: background-color 0.5s;
 }
 
 .darkicon {

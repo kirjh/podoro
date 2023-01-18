@@ -138,7 +138,7 @@ const toggleTab = (element, display, forceDisplay = false) => {
 
 //  @button:  (DOM object) menu button
 const menuHandler = (button) => {
-  const container = document.getElementById("togglecontainer");
+  const container = document.getElementsByClassName("togglecontainer")[0];
   const tab = document.getElementById(button.id + "tab");
   const togglebuttonList = document.getElementsByClassName("darkicon");
   
@@ -165,13 +165,25 @@ const menuHandler = (button) => {
 }
 /*****************************************************************************/
 
-//  @dark:  (boolean) force dark mode
-const changeTheme = (dark=false) => {
-  if (dark) return;
+//  @init:  (boolean) called on init
+const changeTheme = (init = false) => {
   const tabs = document.getElementsByClassName("tab");
   const accentElements = document.getElementsByClassName("lightaccent");
   const fontElements = document.getElementsByClassName("lightfont");
   const borderElements = document.getElementsByClassName("lightborder");
+  const iconElements = document.getElementsByClassName("darkicon");
+  const playbutton = document.getElementsByClassName("alarmbutton")[0];
+  const stopbutton = document.getElementsByClassName("stopbutton")[0];
+  const subtextElements = document.getElementsByClassName("subtext");
+  const linkElements = document.getElementsByClassName("githublink");
+
+  console.log(init);
+
+  if (!playbutton.classList.contains("darkfont")) {
+    chrome.storage.local.set({theme: "dark"});
+  } else {
+    chrome.storage.local.set({theme: "light"});
+  }
 
   for (const tab of tabs) {
     tab.classList.toggle("darktab");
@@ -179,23 +191,44 @@ const changeTheme = (dark=false) => {
   for (const element of accentElements) {
     element.classList.toggle("darkaccent");
   }
+  playbutton.classList.toggle("darkfont");
+  playbutton.classList.toggle("darkborder");
+  stopbutton.classList.toggle("darkfont");
+  playbutton.classList.toggle("darkborder");
   for (const element of fontElements) {
     element.classList.toggle("darkfont");
+  }
+  for (const element of iconElements) {
+    element.classList.toggle("darkfont");
+  }
+  for (const element of subtextElements) {
+    element.classList.toggle("darksubtext");
+  }
+  for (const element of linkElements) {
+    element.classList.toggle("darklink");
   }
   for (const element of borderElements) {
     element.classList.toggle("darkborder");
   }
 
+  if (!init) return;
+  setTimeout(()=> {
+    for (const element of borderElements) {
+      element.classList.toggle("animatedbackground");
+    }
+  },1000);
+  
   return;
 }
 
 /*****************************************************************************/
 
 //  @button:  (DOM object) menu button
-const actionHandler = (button) => {
+//  @args:    (array)      arguments
+const actionHandler = (button, args) => {
   switch (button.id) {
     case "theme":
-      changeTheme();
+      changeTheme(args);
       break;
     default:
       break;

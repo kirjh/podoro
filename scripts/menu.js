@@ -16,7 +16,7 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, increaseAlarmLength };
+export { changeButtonColour, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, increaseAlarmLength, setCounter };
 
 import { alarmExists, startSession, clearAlarm, createAlarm, pauseSession, resumeSession } from "./alarms.js";
 import { updateTime } from "./time.js";
@@ -45,6 +45,35 @@ const createAlert = async (msg, alarmMustExist=false) => {
     document.getElementById("helppopup").remove();
   });
   return;
+}
+
+/*****************************************************************************/
+
+//  @alarmName:  (number) name of alarm
+const changeButtonColour = (alarmName) => {
+  const clockElements = [document.getElementsByClassName("alarmbutton")[0]];
+  clockElements.push(document.getElementsByClassName("stopbutton")[0]);
+  clockElements.push(document.getElementsByClassName("pointer")[0]);
+
+  for (const element of clockElements) {
+    switch (alarmName) {
+      case "pomobreak":
+        chrome.action.setIcon({path: "../icons/green_pomo64.png"});
+        element.classList.add("greenalarm");
+        element.classList.remove("bluealarm");
+        break;
+      case "pomobreaklong":
+        chrome.action.setIcon({path: "../icons/blue_pomo64.png"});
+        element.classList.add("bluealarm");
+        element.classList.remove("greenalarm");
+        break;
+      default:
+        chrome.action.setIcon({path: "../icons/pomo64.png"});
+        element.classList.remove("greenalarm");
+        element.classList.remove("bluealarm");
+        break;
+    }
+  }
 }
 
 /*****************************************************************************/
@@ -108,7 +137,8 @@ const togglePrimaryButton = async (button) => {
 //  @stopButton:  (DOM object) stop button
 const toggleStopButton = async (button, stopButton) => {
   clearAlarm();
-  // setCounter(0);
+  changeButtonColour("pomowork");
+  setCounter(0);
   chrome.storage.local.set({paused: false});
   button.classList.remove("alarmbuttonactive");
   stopButton.classList.remove("stopbuttonactive");
@@ -213,20 +243,6 @@ const changeTheme = (init = false) => {
 
 /*****************************************************************************/
 
-//  @button:  (DOM object) menu button
-//  @args:    (array)      arguments
-const actionHandler = (button, args) => {
-  switch (button.id) {
-    case "theme":
-      changeTheme();
-      break;
-    default:
-      break;
-  }
-}
-
-/*****************************************************************************/
-
 //  @inputListItem: (DOM object) input
 const inputChange = (inputListItem) => {
   let input = document.getElementById(inputListItem.id);
@@ -262,23 +278,45 @@ const increaseAlarmLength = async () => {
   if (time + 60000 < alarmLength * 60000) {
     time += 60000
   } else {
-    createAlert("Cannot adjust time past the original session's length");
+    createAlert("Cannot adjust time past the session's original length");
   }
+  if (time < 60000) time = 60000;
+
   createAlarm(alarm.name, time/60000)
   return;
 }
 
 /*****************************************************************************/
 
-/*
 //  @pomodoro:  (number) number of pomodoros elapsed
 //  @alert:     (boolean) toggle creation of an alert
 const setCounter = (pomodoro, alert=false) => {
-  const pomoCounter = document.getElementsByClassName("pomocounter")[0];
+  const pomoCounter = document.getElementById("reset");
   pomoCounter.innerHTML = pomodoro;
   chrome.storage.session.set({pomocount: pomodoro});
   
-  if (alert) createAlert("Reset count of completed pomodoros");
+  if (alert) createAlert("Reset number of pomodoros completed");
   return;
 }
-*/
+
+/*****************************************************************************/
+
+//  @button:  (DOM object) menu button
+//  @args:    (array)      arguments
+const actionHandler = (button, args) => {
+  switch (button.id) {
+    case "theme":
+      changeTheme();
+      break;
+    case "reset":
+      setCounter(0, true);
+      break;
+    case "increment":
+      increaseAlarmLength();
+      break;
+    default:
+      break;
+  }
+}
+
+/*****************************************************************************/

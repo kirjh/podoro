@@ -112,7 +112,7 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
 
   // Create alarm
   chrome.storage.local.set({["currentAlarm"] : time});
-  chrome.runtime.sendMessage({pomomsg: time, alarm: alarmName})
+  chrome.runtime.sendMessage({pomomsg: time, pomocolour: alarmName})
     .catch((e) => {console.log(`[${e}] Likely popup is not active`)});
   createAlarm(alarmName, parseInt(time));
 });

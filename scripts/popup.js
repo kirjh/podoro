@@ -18,7 +18,7 @@
 
 import { alarmExists } from "./alarms.js";
 import { setSecret, getTimeFromStorage, updateTime } from "./time.js";
-import { togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange } from "./menu.js";
+import { togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, setCounter, changeButtonColour } from "./menu.js";
 import JSON from '../manifest.json' assert {type: 'json'};
 
 /*****************************************************************************/
@@ -50,9 +50,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (alarm) {
     primaryButton.id = (alarm.paused) ? "paused" : "exist";
     let alarmTime = await chrome.storage.local.get("currentAlarm");
-    if (alarmTime.currentAlarm) await setSecret(alarmTime.currentAlarm, alarm.name);
+    if (alarmTime.currentAlarm) {
+      changeButtonColour(alarm.name);
+      setSecret(alarmTime.currentAlarm);
+    }
   } else {
-    await setSecret(storedTime.pomowork, "pomowork");
+    changeButtonColour("pomowork");
+    setSecret(storedTime.pomowork);
     chrome.storage.local.set({paused: false});
   }
   if (storage.theme && storage.theme == "dark") {
@@ -68,15 +72,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   },500);
 
   togglePrimaryButton(primaryButton);
-  // setCounter(sessionStorage.pomocount);
+  setCounter(sessionStorage.pomocount);
   setInterval(updateTime, 1000);
 
   // Listeners
   primaryButton.addEventListener('click', () => {togglePrimaryButton(primaryButton);});
   stopButton.addEventListener('click', () => {toggleStopButton(primaryButton, stopButton);});
-  // pomoCounter.addEventListener('click', () => {setCounter(0, true)});
-
-  // increaseTime.addEventListener('click', () => {increaseAlarmLength();});
 
   for (const button of toggleButtonList) {
     button.addEventListener('click', ()=> {menuHandler(button);})
@@ -91,11 +92,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Sync values between length of active alarm and local variable.
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    console.log(message);
     if (message.pomomsg) {
-      setSecret(message.pomomsg, message.alarm);
+      setSecret(message.pomomsg);
+    }
+    if (message.pomocolour) {
+      changeButtonColour(message.pomocolour);
     }
     if (message.pomocount) {
-      // setCounter(message.pomocount);
+      setCounter(message.pomocount);
     }
   });
 });

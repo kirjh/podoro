@@ -59,7 +59,6 @@ const startSession = async () => {
 //  @alarm  (object) alarm
 const clearAlarm = async (alarm=null) => {
   console.log("clearing timers");
-  setSecret("00", "pomowork");
   if (alarm) {
     chrome.alarms.clear(alarm.name);
     return;
@@ -103,7 +102,8 @@ const pauseSession = async() => {
 const resumeSession = async() => {
   const storage = await chrome.storage.local.get(["activeAlarm"]);
 
-  console.log("resuming timer");
+  if (storage.activeAlarm.scheduledTime < 60000) storage.activeAlarm.scheduledTime = 60000;
+
   createAlarm(storage.activeAlarm.name, storage.activeAlarm.scheduledTime/60000);
 
   chrome.storage.local.set({paused: false});

@@ -1,7 +1,11 @@
-## What's New: 0.9.2 (09/01/2023)
-* [Implemented long breaks and break rotation](https://github.com/kirjh/podoro/commit/6b094ddcc9cea6f0d4fd6cd218dc181161afa432)
-  * Implemented button for resetting pomodoro count
-  * Added a new icon for long break notification
+## What's New: 0.9.3 (09/01/2023)
+* [Overhaul of user interface](https://github.com/kirjh/podoro/commit/f4a31c4e0c91044825275d3b33a723512d8b6574)
+  * New light and dark themes
+  * Separate UI elements into organized tabs
+  * Extension icon updates to the colour of the current session
+  * Buttons update to the colour of the current session
+* Refactor code
+  * Overhaul of css styling method to allow for changing UI theme
 
 # Podoro Timer
 A pomodoro timer, built into your browser
@@ -24,9 +28,15 @@ However, you can freely adjust the formula to suit any need.
   * 15 minute long breaks
 * __User customization__
   * Freely adjust each timer and session to fit any study schedule
+  * Toggle between light and dark mode
 * __Additional features__
   * Need more time? Add a little more time to the current timer
   * Keep track of pomodoro sessions completed
+  * ~~Block social media sites while in working~~*
+  * ~~Keep track of tasks~~*
+  * ~~Track pomodoros completed daily~~*
+
+\*Not yet implemented
 
 ## <img src="./icons/pomo64.png" width="16px" /> License
 [GNU GPLv3](https://github.com/kirjh/podoro/blob/main/LICENSE.txt)

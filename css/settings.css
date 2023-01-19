@@ -1,0 +1,96 @@
+/* Settings */
+.settingsactive {
+  display: block;
+}
+
+#settingsmenu {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  margin: 0.5rem;
+}
+
+.lengthsetting {
+  display: block;
+  margin: 0.25em;
+}
+
+.inputdiv {
+  position: relative;
+  display: grid;
+}
+
+.inputicon {
+  position: absolute;
+  border-radius: 50% 0 0 50%;
+  height: 1.2em;
+  width: 1.2em;
+  background-color: #a3a3a3;
+
+  top: 0;
+  bottom: 0;
+  margin: auto 0.35em;
+}
+
+.menutext {
+  font-size: 1.1em;
+  display: block;
+  text-align: center;
+  margin: 0em;
+  cursor: help;
+}
+
+.menuinput {
+  justify-self: center;
+  text-align: center;
+  font-size: 1.1em;
+  width: 90%;
+
+  border-radius: 2em;
+  border: solid;
+  border-width: 1px;
+}
+
+.menuinput:focus {
+  background-color: transparent;
+  outline:none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
+}
+
+#helppopup {
+  margin: 0.5rem;
+  position: absolute;
+  top: 0;
+  width: auto;
+  border-radius: 0.7rem;
+  
+  color: #fff;
+  background-color: rgba(0,0,0,0.8);
+
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+#helppopup span {
+  margin: 0.5rem;
+  text-align: left;
+}
+
+#helppopup button {
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  border-radius: 0.7rem;
+  
+  cursor: pointer;
+  text-align: right;
+  font-size: 1.2em;
+  transition: background-color 0.5s;
+}
+
+#helppopup button:hover {
+  background-color: #d66868;
+}

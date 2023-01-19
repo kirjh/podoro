@@ -1,0 +1,44 @@
+#tools {
+  margin: 0.5rem;
+  text-align: center;
+}
+
+.toolicon,
+.darkicon {
+  display: inline;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  margin-bottom: 0.25em;
+  height: 2.3rem;
+  width: 2.3rem;
+  font-size: 1.2em;
+  font-weight: 600;
+
+  border: none;
+  cursor: pointer;
+}
+
+.darkicon {
+  background-color: #756a69;
+  color: #fff;
+}
+
+.toolicon:hover,
+.darkicon:hover,
+.activeicon {
+  background-color: transparent;
+  color: #5b5a59;
+
+  border: solid;
+  border-color: #777574;
+  border-width: 1px;
+}
+
+.toolicon:active {
+  background-color: #e2dbd7;
+}
+
+.darkicon:active {
+  background-color: #756a69;
+  color: #fff;
+}

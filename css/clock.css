@@ -1,0 +1,142 @@
+/* Clock */
+.clocktab {
+  width: 15em;
+  height: 14em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clock {
+  width: 12em;
+  height: 12em;
+  position: absolute;
+  border-radius: 50%;
+  border: solid;
+  border-width: 1px;
+  background-color: #756a69;
+}
+
+.pointer {
+  top: -4.5em;
+  width: 1.5em;
+  height: 1.5em;
+  position: relative;
+
+  border-radius: 50%;
+  transition: transform 1s;
+  transform-origin: 0.75em 5.25em;
+
+  background-color: #e87f7f;
+}
+
+.textcontainer {
+  position: absolute;
+  color: #fff;
+}
+
+.time {
+  margin: 0;
+  font-size: 3.5em;
+  font-weight: 400;
+  display: block;
+}
+
+.min {
+  margin: 0;
+  font-size: 1.25em;
+  text-align: center;
+  font-weight: 400;
+  display: block;
+}
+
+.secret {
+  position: absolute;
+  display: none;
+}
+
+/* Buttons */
+#playpausecontainer {
+  text-align: center;
+  font-size:0;
+  margin: 0.3rem 0.25rem 0.7rem 0.25rem;
+}
+
+.alarmbutton {
+  border-radius: 2em;
+  width: 90%;
+}
+
+.alarmbutton,
+.alarmbuttonactive,
+.stopbutton {
+  background-color: #d66868;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d66868;
+}
+
+.greenalarm {
+  background-color: #66be68;
+  border-color: #66be68;
+}
+
+.bluealarm {
+  background-color: #689dd6;
+  border-color: #689dd6;
+}
+
+.alarmbuttonactive {
+  border-radius: 2em 0 0 2em;
+  display: inline;
+  width: 65%;
+  padding-left: 1em;
+}
+
+.stopbutton {
+  display: none;
+}
+
+.stopbuttonactive {
+  border-radius: 0 2em 2em 0;
+  display: inline;
+  width: 25%;
+  padding-right: 1em;
+}
+
+.alarmbutton:hover {
+  color: #5b5a59;
+  background-color: transparent;
+  
+  border-style: solid;
+  border-color: #777574;
+}
+
+.alarmbuttonactive:hover {
+  color: #5b5a59;
+  background-color: transparent;
+
+  border-style: solid;
+  border-color: #777574;
+  border-right-color: transparent;
+}
+
+.stopbuttonactive:hover {
+  color: #5b5a59;
+  background-color: transparent;
+  
+  border-style: solid;
+  border-color: #777574;
+  border-left-color: transparent;
+}
+
+.alarmbutton:active,
+.alarmbuttonactive:active,
+.stopbuttonactive:active  {
+  background-color: #d66868;
+  color: #fff;
+  border-color: #d66868;
+}

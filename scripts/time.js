@@ -23,9 +23,34 @@ import { alarmList, alarmExists } from "./alarms.js";
 /*****************************************************************************/
 
 //  @alarmTime:  (number) current alarm length
-const setSecret = async (alarmTime) => {
+//  @alarmName:  (number) name of alarm
+const setSecret = async (alarmTime, alarmName) => {
   const secret = document.getElementsByClassName("secret")[0];
+  const clockElements = [document.getElementsByClassName("alarmbutton")[0]];
+  clockElements.push(document.getElementsByClassName("stopbutton")[0]);
+  clockElements.push(document.getElementsByClassName("pointer")[0]);
+
   secret.innerHTML = alarmTime;
+
+  for (const element of clockElements) {
+    switch (alarmName) {
+      case "pomobreak":
+        chrome.action.setIcon({path: "../icons/green_pomo64.png"});
+        element.classList.add("greenalarm");
+        element.classList.remove("bluealarm");
+        break;
+      case "pomobreaklong":
+        chrome.action.setIcon({path: "../icons/blue_pomo64.png"});
+        element.classList.add("bluealarm");
+        element.classList.remove("greenalarm");
+        break;
+      default:
+        chrome.action.setIcon({path: "../icons/pomo64.png"});
+        element.classList.remove("greenalarm");
+        element.classList.remove("bluealarm");
+        break;
+    }
+  }
   return;
 }
 

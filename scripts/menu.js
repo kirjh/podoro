@@ -16,7 +16,7 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { createAlert, togglePrimaryButton, toggleStopButton, toggleMenu, inputChange, increaseAlarmLength, setCounter};
+export { togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, increaseAlarmLength };
 
 import { alarmExists, startSession, clearAlarm, createAlarm, pauseSession, resumeSession } from "./alarms.js";
 import { updateTime } from "./time.js";
@@ -26,22 +26,23 @@ import { updateTime } from "./time.js";
 //  @msg:             (string)  message to pass onto the user
 //  @alarmMustExist:  (boolean) toggle whether an active alarm must exist     
 const createAlert = async (msg, alarmMustExist=false) => {
-  const existingAlert = document.getElementsByClassName("helppopup")[0]
-  if (alarmMustExist && !await alarmExists()) return;
+  const existingAlert = document.getElementById("helppopup");
+  const alarm = await alarmExists();
+  if (alarmMustExist && !alarm) return;
   if (existingAlert) existingAlert.remove();
 
-  const dropDownButton = document.getElementsByClassName("dropdownbutton")[0];
-  dropDownButton.insertAdjacentHTML("afterend", 
+  const dropDownButton = document.getElementById("maincontainer");
+  dropDownButton.insertAdjacentHTML("beforeend", 
     `
-    <div class="helppopup">
-      <p>${msg}</p>
+    <div id="helppopup">
+      <span>${msg}</span>
       <button id="closealert" type="button">&#215;&#xFE0E;</button>
     </div>
     `
   );
   const alertButton = document.getElementById("closealert");
   alertButton.addEventListener("click", () => {
-    document.getElementsByClassName("helppopup")[0].remove();
+    document.getElementById("helppopup").remove();
   });
   return;
 }
@@ -51,11 +52,9 @@ const createAlert = async (msg, alarmMustExist=false) => {
 //  @button:  (DOM object) button to apply changes to
 //  @id:      (string)     new id
 //  @icon:    (string)     new icon name
-//  @title:   (title)      new title
-const updateButton = (button, id, icon, title) => {
+const updateButton = (button, id, icon) => {
   button.innerHTML = `<i class="material-icons">${icon}</i>`;
   button.id = id;
-  button.title= title;
 
   return;
 }
@@ -81,21 +80,21 @@ const togglePrimaryButton = async (button) => {
   switch (button.id) {
     case "pause":
       await pauseSession();
-      updateButton(button, "resume", "play_arrow", "Resume session");
+      updateButton(button, "resume", "play_arrow");
       break;
     case "paused":
-      updateButton(button, "resume", "play_arrow", "Resume session");
+      updateButton(button, "resume", "play_arrow");
       break;
     case "resume":
       await resumeSession();
-      updateButton(button, "pause", "pause", "Pause session");
+      updateButton(button, "pause", "pause");
       break;
     case "start":
       await startSession();
-      updateButton(button, "pause", "pause", "Pause session");
+      updateButton(button, "pause", "pause");
       break;
     default:
-      updateButton(button, "pause", "pause", "Pause session");
+      updateButton(button, "pause", "pause");
       break;
   }
 
@@ -109,7 +108,7 @@ const togglePrimaryButton = async (button) => {
 //  @stopButton:  (DOM object) stop button
 const toggleStopButton = async (button, stopButton) => {
   clearAlarm();
-  setCounter(0);
+  // setCounter(0);
   chrome.storage.local.set({paused: false});
   button.classList.remove("alarmbuttonactive");
   stopButton.classList.remove("stopbuttonactive");
@@ -120,15 +119,110 @@ const toggleStopButton = async (button, stopButton) => {
 
 /*****************************************************************************/
 
+//  @element:    (DOM object) element
+//  @display:    (string)     display property
+//  @forceDisplay:  (boolean)    force display property 
+//
+//  Returns: true if tab was opened, false otherwise
+const toggleTab = (element, display, forceDisplay = false) => {
+  if (forceDisplay || !element.style.display || element.style.display == "none") {
+    element.style.display = display;
+    return true;
+  } else {
+    element.style.display = "none";
+    return false;
+  }
+}
+/*****************************************************************************/
+
 //  @button:  (DOM object) menu button
-const toggleMenu = (button) => {
-  button.id = (button.id == "down") ? "up" : "down";
-  button.innerHTML = (button.id == "up") ? "Less &#9206;&#xFE0E;" : "More &#9207;&#xFE0E;";
+const menuHandler = (button) => {
+  const container = document.getElementsByClassName("togglecontainer")[0];
+  const tab = document.getElementById(button.id + "tab");
+  const togglebuttonList = document.getElementsByClassName("darkicon");
+  
+  if (button.id == "help") {
+    chrome.tabs.create({"url": "https://github.com/kirjh/podoro/wiki"});
+    return;
+  }
 
-  let div = document.getElementsByClassName("innermenu")[0];
+  const tabOpened = toggleTab(tab, "flex");
+  toggleTab(container, "flex", tabOpened);
+  
 
-  div.classList.toggle("innermenushow");
+  for (const togglebutton of togglebuttonList) {
+    if (togglebutton.classList.contains("activeicon")) {
+      const tab = document.getElementById(togglebutton.id + "tab");
+      toggleTab(tab, "none", true);
+    }
+    togglebutton.classList.remove("activeicon");
+  }
+  
+  if (tabOpened) button.classList.add("activeicon");
+
   return;
+}
+/*****************************************************************************/
+
+//  @init:  (boolean) called on init
+const changeTheme = (init = false) => {
+  const tabs = document.getElementsByClassName("tab");
+  const accentElements = document.getElementsByClassName("lightaccent");
+  const fontElements = document.getElementsByClassName("lightfont");
+  const borderElements = document.getElementsByClassName("lightborder");
+  const iconElements = document.getElementsByClassName("darkicon");
+  const playbutton = document.getElementsByClassName("alarmbutton")[0];
+  const stopbutton = document.getElementsByClassName("stopbutton")[0];
+  const subtextElements = document.getElementsByClassName("subtext");
+  const linkElements = document.getElementsByClassName("githublink");
+
+  if (!playbutton.classList.contains("darkfont")) {
+    chrome.storage.local.set({theme: "dark"});
+  } else {
+    chrome.storage.local.set({theme: "light"});
+  }
+
+  for (const tab of tabs) {
+    tab.classList.toggle("darktab");
+  }
+  for (const element of accentElements) {
+    element.classList.toggle("darkaccent");
+  }
+  playbutton.classList.toggle("darkfont");
+  playbutton.classList.toggle("darkborder");
+  stopbutton.classList.toggle("darkfont");
+  playbutton.classList.toggle("darkborder");
+  for (const element of fontElements) {
+    element.classList.toggle("darkfont");
+  }
+  for (const element of iconElements) {
+    element.classList.toggle("darkfont");
+  }
+  for (const element of subtextElements) {
+    element.classList.toggle("darksubtext");
+  }
+  for (const element of linkElements) {
+    element.classList.toggle("darklink");
+  }
+  for (const element of borderElements) {
+    element.classList.toggle("darkborder");
+  }
+  
+  return;
+}
+
+/*****************************************************************************/
+
+//  @button:  (DOM object) menu button
+//  @args:    (array)      arguments
+const actionHandler = (button, args) => {
+  switch (button.id) {
+    case "theme":
+      changeTheme();
+      break;
+    default:
+      break;
+  }
 }
 
 /*****************************************************************************/
@@ -142,7 +236,9 @@ const inputChange = (inputListItem) => {
   if (input.value > parseInt(input.max)) input.value = parseInt(input.max);
 
   chrome.storage.local.set({[input.id] : input.value})
-  createAlert("Changes will be applied to all future alarms", true);
+  if (input.id != "pomointerval") {
+    createAlert("Changes will be applied to your next session", true);
+  }
   input.blur();
   return;
 }
@@ -156,7 +252,7 @@ const increaseAlarmLength = async () => {
   const alarmLength = document.getElementsByClassName("secret")[0].innerHTML;
 
   if (!alarm || alarm.paused) {
-    createAlert("Could not find an active alarm to increase length of");
+    createAlert("Cannot adjust time when there are no active sessions");
     return;
   }
 
@@ -166,7 +262,7 @@ const increaseAlarmLength = async () => {
   if (time + 60000 < alarmLength * 60000) {
     time += 60000
   } else {
-    createAlert("Cannot adjust time past the original alarm's length");
+    createAlert("Cannot adjust time past the original session's length");
   }
   createAlarm(alarm.name, time/60000)
   return;
@@ -174,6 +270,7 @@ const increaseAlarmLength = async () => {
 
 /*****************************************************************************/
 
+/*
 //  @pomodoro:  (number) number of pomodoros elapsed
 //  @alert:     (boolean) toggle creation of an alert
 const setCounter = (pomodoro, alert=false) => {
@@ -184,3 +281,4 @@ const setCounter = (pomodoro, alert=false) => {
   if (alert) createAlert("Reset count of completed pomodoros");
   return;
 }
+*/

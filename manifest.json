@@ -1,16 +1,11 @@
 {
   "name": "Podoro Timer",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "manifest_version": 3,
   "description":  "A pomodoro timer, built into your browser!",
   "icons": {
     "64":"icons/pomo64.png",
     "128":"icons/pomo128.png"
-  },
-  "action": {
-    "default_icon": {
-      "64":"icons/pomo64.png"
-    }
   },
   "permissions": [
     "notifications",
@@ -18,7 +13,10 @@
     "storage"
   ],
   "action": {
-    "default_popup": "/popup/popup.html"
+    "default_popup": "/popup/popup.html",
+    "default_icon": {
+      "64":"icons/pomo64.png"
+    }
   },
   "background": {
     "service_worker": "/scripts/background.js",

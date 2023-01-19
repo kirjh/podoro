@@ -7,6 +7,11 @@
     "64":"icons/pomo64.png",
     "128":"icons/pomo128.png"
   },
+  "action": {
+    "default_icon": {
+      "64":"icons/pomo64.png"
+    }
+  },
   "permissions": [
     "notifications",
     "alarms",

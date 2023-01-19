@@ -35,14 +35,17 @@ const setSecret = async (alarmTime, alarmName) => {
   for (const element of clockElements) {
     switch (alarmName) {
       case "pomobreak":
+        chrome.action.setIcon({path: "../icons/green_pomo64.png"});
         element.classList.add("greenalarm");
         element.classList.remove("bluealarm");
         break;
       case "pomobreaklong":
+        chrome.action.setIcon({path: "../icons/blue_pomo64.png"});
         element.classList.add("bluealarm");
         element.classList.remove("greenalarm");
         break;
       default:
+        chrome.action.setIcon({path: "../icons/pomo64.png"});
         element.classList.remove("greenalarm");
         element.classList.remove("bluealarm");
         break;

@@ -89,18 +89,16 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
       const breakTime = await countSessions(alarm);
       if (breakTime) {
         alarmName = "pomobreaklong";
+        chrome.action.setIcon({path: "../icons/blue_pomo64.png"});
       } else {
         alarmName = "pomobreak";
+        chrome.action.setIcon({path: "../icons/green_pomo64.png"});
       }
       break;
-    case "pomobreak":
-      alarmName = "pomowork";
-      break;
-    case "pomobreaklong":
-      alarmName = "pomowork";
-      break;
     default:
-      return;
+      alarmName = "pomowork";  
+      chrome.action.setIcon({path: "../icons/pomo64.png"});
+      break;
   }
 
   // Update time 

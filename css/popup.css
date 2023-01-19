@@ -60,7 +60,7 @@ body {
   text-align: left;
   font-size: 1.1em;
   margin: 0em 0.5em 0em 0.5em;
-  color: #8d8787;
+  color: #777574;
 }
 
 .version {
@@ -69,7 +69,7 @@ body {
 
 a.githublink,
 a.githublink:visited {
-  color: #8d8787;
+  color: #777574;
 }
 
 /* Colours */
@@ -127,6 +127,7 @@ a.githublink:visited {
 }
 
 .darklink,
+.darklink:active,
 .darklink:visited {
   color: #99928f;
 }

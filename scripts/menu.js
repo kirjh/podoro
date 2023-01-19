@@ -23,30 +23,29 @@ import { updateTime } from "./time.js";
 
 /*****************************************************************************/
 
-/*
 //  @msg:             (string)  message to pass onto the user
 //  @alarmMustExist:  (boolean) toggle whether an active alarm must exist     
 const createAlert = async (msg, alarmMustExist=false) => {
-  const existingAlert = document.getElementsByClassName("helppopup")[0]
-  if (alarmMustExist && !await alarmExists()) return;
+  const existingAlert = document.getElementById("helppopup");
+  const alarm = await alarmExists();
+  if (alarmMustExist && !alarm) return;
   if (existingAlert) existingAlert.remove();
 
-  const dropDownButton = document.getElementsByClassName("tab")[0];
-  dropDownButton.insertAdjacentHTML("afterend", 
+  const dropDownButton = document.getElementById("maincontainer");
+  dropDownButton.insertAdjacentHTML("beforeend", 
     `
-    <div class="helppopup">
-      <p>${msg}</p>
+    <div id="helppopup">
+      <span>${msg}</span>
       <button id="closealert" type="button">&#215;&#xFE0E;</button>
     </div>
     `
   );
   const alertButton = document.getElementById("closealert");
   alertButton.addEventListener("click", () => {
-    document.getElementsByClassName("helppopup")[0].remove();
+    document.getElementById("helppopup").remove();
   });
   return;
 }
-*/
 
 /*****************************************************************************/
 
@@ -237,7 +236,9 @@ const inputChange = (inputListItem) => {
   if (input.value > parseInt(input.max)) input.value = parseInt(input.max);
 
   chrome.storage.local.set({[input.id] : input.value})
-  createAlert("Changes will be applied to all future alarms", true);
+  if (input.id != "pomointerval") {
+    createAlert("Changes will be applied to your next session", true);
+  }
   input.blur();
   return;
 }
@@ -251,7 +252,7 @@ const increaseAlarmLength = async () => {
   const alarmLength = document.getElementsByClassName("secret")[0].innerHTML;
 
   if (!alarm || alarm.paused) {
-    createAlert("Could not find an active alarm to increase length of");
+    createAlert("Cannot adjust time when there are no active sessions");
     return;
   }
 
@@ -261,7 +262,7 @@ const increaseAlarmLength = async () => {
   if (time + 60000 < alarmLength * 60000) {
     time += 60000
   } else {
-    createAlert("Cannot adjust time past the original alarm's length");
+    createAlert("Cannot adjust time past the original session's length");
   }
   createAlarm(alarm.name, time/60000)
   return;

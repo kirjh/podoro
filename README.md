@@ -1,4 +1,4 @@
-## What's New: 0.9.3 (09/01/2023)
+## What's New: 0.9.3 (18/01/2023)
 * [Overhaul of user interface](https://github.com/kirjh/podoro/commit/f4a31c4e0c91044825275d3b33a723512d8b6574)
   * New light and dark themes
   * Separate UI elements into organized tabs

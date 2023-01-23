@@ -72,6 +72,17 @@ a.githublink:visited {
   color: #777574;
 }
 
+/* SVG */
+.svgicon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.svgbutton {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
 /* Colours */
 .lightaccent {
   background-color: #e2dbd7;
@@ -79,6 +90,7 @@ a.githublink:visited {
 
 .lightfont {
   color: #5b5a59;
+  fill: #5b5a59;
 }
 
 .lightborder {
@@ -104,10 +116,12 @@ a.githublink:visited {
 
 .darkfont {
   color: #fff;
+  fill: #fff;
 }
 
 .darkfont:hover {
   color: #fff;
+  fill: #fff;
 }
 
 .darkaccent {

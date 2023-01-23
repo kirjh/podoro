@@ -18,9 +18,14 @@
   cursor: pointer;
 }
 
+.iconspan {
+  margin: auto;
+}
+
 .darkicon {
   background-color: #756a69;
   color: #fff;
+  fill: #fff;
 }
 
 .toolicon:hover,
@@ -28,6 +33,7 @@
 .activeicon {
   background-color: transparent;
   color: #5b5a59;
+  fill: #5b5a59;
 
   border: solid;
   border-color: #777574;

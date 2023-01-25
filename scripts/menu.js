@@ -300,7 +300,7 @@ const increaseAlarmLength = async () => {
 const setCounter = (pomodoro, alert=false) => {
   chrome.storage.session.set({pomocount: pomodoro});
   
-  if (alert) createAlert("Reset number of pomodoros completed");
+  if (alert) createAlert("Reset session progress");
   return;
 }
 

@@ -28,12 +28,14 @@ body {
   border-width: 1px;
   
   padding: 0.25rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 .tabtitle {
   font-size: 1.2em;
   font-weight: 700;
-  margin: 0.75rem;
+  margin-left: 0.75rem;
 }
 
 .togglecontainer {

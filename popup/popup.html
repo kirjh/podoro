@@ -15,25 +15,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
   </head>
   <body class="lightaccent">
-    <!-- 
-      # HTML structure #
-
-      Tab container
-      ┝━━━ Toggle tabs
-      |    ┝━ Settings
-      |    |  ┕━ <...>
-      |    ┝━ Help
-      |    |  ┕━ <...>
-      |    ┝━ Tasks
-      |    |  ┕━ <...>
-      |    ┕━ Analytics
-      |       ┕━ <...>
-      ┕━━━ Main tabs
-           ┝━ Podoro
-           |  ┕━ <...>
-           ┕━ Tools
-              ┕━ <...>
-    -->
     <div id="tabcontainer">     
       <!-- Main tabs -->
       <div id="maincontainer" style="position: relative;">
@@ -43,13 +24,20 @@
             <span class="tabtitle lightfont">PODORO</span>
           </div>
           <div class="clocktab">
-            <div class="clock lightborder"></div>
+            <div id="counter">00</div>
+            <div class="clock lightborder">
+              <div class="pointer" id="clockPointer"></div>
+            </div>
+            <div class="clock2 lightborder"></div>
             <div class="textcontainer">
               <span class="time" id="timeDisplay">00</span>
               <span class="min">min</span>
             </div>
-            <div class="pointer" id="clockPointer"></div>
             <div class="secret">00</div>
+          </div>
+
+          <div id="pomodorocontainer">
+            <span id="progressbar" class="lightaccent"></span>
           </div>
 
           <div id="playpausecontainer">

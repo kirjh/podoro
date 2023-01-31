@@ -16,7 +16,7 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { changeButtonColour, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, increaseAlarmLength, setCounter };
+export { changeButtonColour, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, increaseAlarmLength, setCounter, updateProgress };
 
 import { alarmExists, startSession, clearAlarm, createAlarm, pauseSession, resumeSession } from "./alarms.js";
 import { updateTime } from "./time.js";
@@ -331,6 +331,23 @@ const actionHandler = (button, args) => {
     default:
       break;
   }
+  return;
+}
+
+/*****************************************************************************/
+
+//  @intervalLength:  (number) long break interval
+const updateProgress = async (intervalLength = null) => {
+  if (!intervalLength) {
+    const storage = await chrome.storage.local.get("pomointerval");
+    intervalLength = storage.pomointerval;
+  }
+  const progressBar = document.getElementById("currentprogress");
+  const sessionStorage = await chrome.storage.session.get("pomocount");
+
+  const progress = ((sessionStorage.pomocount % intervalLength) / intervalLength) * 100;
+  progressBar.style.width = `${progress}%`;
+
   return;
 }
 

@@ -25,7 +25,7 @@
   position: absolute;
 
   border-radius: 50%;
-  transition: transform 10s;
+  transition: transform 1s;
   transform-origin: 0.75em 5.25em;
 
   background-color: #e87f7f;
@@ -60,6 +60,7 @@
   margin-left: 1rem;
   margin-right: 1rem;
   margin-bottom: 0.5rem;
+  position: relative;
 }
 
 #progressbar {
@@ -67,6 +68,17 @@
   border-radius: 4em;
   width: 100%;
   height: 0.5em;
+}
+
+#currentprogress {
+  position: absolute;
+  background-color: #d66868;
+  border-radius: 4em;
+  top: 0;
+  left: 0;
+  height: 0.5em;
+  width:0%;
+  transition: 1s;
 }
 
 /* Buttons */

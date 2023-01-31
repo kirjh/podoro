@@ -69,7 +69,7 @@ const countSessions = async (alarm) => {
 
   chrome.storage.session.set({pomocount: sessionStorage.pomocount});
   chrome.runtime.sendMessage({pomocount: sessionStorage.pomocount})
-    .catch((e) => {console.log(`[${e}] Likely popup is not active`)});
+    .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
 
   if (sessionStorage.pomocount % storage.pomointerval == 0) return true;
   return false;
@@ -113,8 +113,20 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
   // Create alarm
   chrome.storage.local.set({["currentAlarm"] : time});
   chrome.runtime.sendMessage({pomomsg: time, pomocolour: alarmName})
-    .catch((e) => {console.log(`[${e}] Likely popup is not active`)});
+    .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
   createAlarm(alarmName, parseInt(time));
+});
+
+/*****************************************************************************/
+
+chrome.storage.onChanged.addListener((changes) => {
+  for (const [key, {newValue}] of Object.entries(changes)) {
+    if (newValue) {
+      console.log(newValue);
+      chrome.runtime.sendMessage({storageChange: {[key]: newValue} })
+        .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
+    }
+  }
 });
 
 /*****************************************************************************/

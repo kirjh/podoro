@@ -18,7 +18,7 @@
 
 import { alarmExists } from "./alarms.js";
 import { setSecret, getTimeFromStorage, updateTime } from "./time.js";
-import { togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, setCounter, changeButtonColour } from "./menu.js";
+import { togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, setCounter, changeButtonColour, updateProgress } from "./menu.js";
 import JSON from '../manifest.json' assert {type: 'json'};
 
 /*****************************************************************************/
@@ -91,8 +91,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Sync values between length of active alarm and local variable.
-  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    console.log(message);
+  chrome.runtime.onMessage.addListener((message) => {
     if (message.pomomsg) {
       setSecret(message.pomomsg);
     }
@@ -101,6 +100,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     if (message.pomocount) {
       setCounter(message.pomocount);
+      updateProgress();
+    }
+    if (message.storageChange.pomointerval) {
+      updateProgress(message.storageChange.pomointerval);
     }
   });
 });

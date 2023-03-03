@@ -74,6 +74,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   togglePrimaryButton(primaryButton);
   setCounter(sessionStorage.pomocount);
   setInterval(updateTime, 1000);
+  updateProgress();
 
   // Listeners
   primaryButton.addEventListener('click', () => {togglePrimaryButton(primaryButton);});
@@ -92,6 +93,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Sync values between length of active alarm and local variable.
   chrome.runtime.onMessage.addListener((message) => {
+    if (message.frontendRequest) {
+      console.log(message.frontendRequest);
+    }
     if (message.pomomsg) {
       setSecret(message.pomomsg);
     }
@@ -102,6 +106,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       setCounter(message.pomocount);
       updateProgress();
     }
+    if (!message.storageChange) return;
     if (message.storageChange.pomointerval) {
       updateProgress(message.storageChange.pomointerval);
     }

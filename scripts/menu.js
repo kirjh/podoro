@@ -44,7 +44,6 @@ const createAlert = async (msg, alarmMustExist=false) => {
   alertButton.addEventListener("click", () => {
     document.getElementById("helppopup").remove();
   });
-  return;
 }
 
 /*****************************************************************************/
@@ -89,8 +88,6 @@ const updateButton = (button, id, icon) => {
   }
   
   button.id = id;
-
-  return;
 }
 
 /*****************************************************************************/
@@ -111,29 +108,25 @@ const togglePrimaryButton = async (button) => {
   button.classList.add("alarmbuttonactive");
   stopButton.classList.add("stopbuttonactive");
 
-  switch (button.id) {
-    case "pause":
-      await pauseSession();
-      updateButton(button, "resume", "play_arrow");
-      break;
-    case "paused":
-      updateButton(button, "resume", "play_arrow");
-      break;
-    case "resume":
-      await resumeSession();
-      updateButton(button, "pause", "pause");
-      break;
-    case "start":
-      await startSession();
-      updateButton(button, "pause", "pause");
-      break;
-    default:
-      updateButton(button, "pause", "pause");
-      break;
+  if (button.id == "pause" || button.id == "paused") {
+    if (button.id == "pause") await pauseSession();
+    updateButton(button, "resume", "play_arrow");
+
+    chrome.runtime.sendMessage({backendRequest: "pauseTimer"}) //pause
+      .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
+
+    updateTime();
+    return;
   }
+  if (button.id == "resume") await resumeSession();
+  if (button.id == "start") await startSession();
+
+  updateButton(button, "pause", "pause");
+
+  chrome.runtime.sendMessage({backendRequest: "startTimer"}) //resume
+    .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
 
   updateTime();
-  return;
 }
 
 /*****************************************************************************/
@@ -147,9 +140,12 @@ const toggleStopButton = async (button, stopButton) => {
   chrome.storage.local.set({paused: false});
   button.classList.remove("alarmbuttonactive");
   stopButton.classList.remove("stopbuttonactive");
+
+  chrome.runtime.sendMessage({backendRequest: "stopTimer"}) //stop
+    .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
+
   updateButton(button, "start", "play_arrow");
   updateTime();
-  return;
 }
 
 /*****************************************************************************/
@@ -194,8 +190,6 @@ const menuHandler = (button) => {
   }
   
   if (tabOpened) button.classList.add("activeicon");
-
-  return;
 }
 /*****************************************************************************/
 
@@ -263,7 +257,6 @@ const inputChange = (inputListItem) => {
     createAlert("Changes will be applied to your next session", true);
   }
   input.blur();
-  return;
 }
 
 /*****************************************************************************/
@@ -290,7 +283,6 @@ const increaseAlarmLength = async () => {
   if (time < 60000) time = 60000;
 
   createAlarm(alarm.name, time/60000)
-  return;
 }
 
 /*****************************************************************************/
@@ -300,15 +292,13 @@ const increaseAlarmLength = async () => {
 const setCounter = (pomodoro, alert=false) => {
   chrome.storage.session.set({pomocount: pomodoro});
   
-  if (alert) createAlert("Reset session progress");
-  return;
+  if (alert) createAlert("Reset number of pomodoros completed");
 }
 
 /*****************************************************************************/
 
 const toggleBlock = () => {
   createAlert("Error: function not implemented");
-  return;
 }
 
 /*****************************************************************************/
@@ -331,7 +321,6 @@ const actionHandler = (button, args) => {
     default:
       break;
   }
-  return;
 }
 
 /*****************************************************************************/
@@ -344,11 +333,12 @@ const updateProgress = async (intervalLength = null) => {
   }
   const progressBar = document.getElementById("currentprogress");
   const sessionStorage = await chrome.storage.session.get("pomocount");
-
+  if (!await alarmExists()) {
+    progressBar.style.width = "0%";
+    return;
+  }
   const progress = ((sessionStorage.pomocount % intervalLength) / intervalLength) * 100;
   progressBar.style.width = `${progress}%`;
-
-  return;
 }
 
 /*****************************************************************************/

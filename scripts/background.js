@@ -130,3 +130,26 @@ chrome.storage.onChanged.addListener((changes) => {
 });
 
 /*****************************************************************************/
+
+//  @msg  message containing parameters
+const runBackend = {
+  startTimer: () => {console.log("[PODOROTIMER] send message: " + msg);},
+  stopTimer: () => {},
+  pauseTimer: () => {},
+}
+
+chrome.runtime.onMessage.addListener((message) => {
+  if (!message.backendRequest) return;
+
+  runBackend[message.backendRequest](message.backendRequest);
+
+  chrome.runtime.sendMessage({frontendRequest: message.backendRequest})
+      .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
+  // Start timer
+  // Stop timer
+  // Pause timer
+  // Dark mode
+  // Reset progress
+  // Tasks
+  // Update settings?
+});

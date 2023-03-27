@@ -16,10 +16,18 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { changeButtonColour, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, increaseAlarmLength, setCounter, updateProgress };
+export { sendMessage, changeButtonColour, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, increaseAlarmLength, setCounter, updateProgress };
 
 import { alarmExists, startSession, clearAlarm, createAlarm, pauseSession, resumeSession } from "./alarms.js";
 import { updateTime } from "./time.js";
+
+/*****************************************************************************/
+
+//  @param:  (string) parameter of the request
+const sendMessage = (param) => {
+  chrome.runtime.sendMessage({backendRequest: param})
+    .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
+}
 
 /*****************************************************************************/
 
@@ -92,59 +100,59 @@ const updateButton = (button, id, icon) => {
 
 /*****************************************************************************/
 
-// @button:  (DOM object) button to apply changes to
-const togglePrimaryButton = async (button) => {
-  const stopButton = document.getElementsByClassName("stopbutton")[0];
-
-  // init condition does not need to add classes to the two buttons
-  // so it is separated from the switch statement and returns early.
-  if (button.id == "init") {
-    clearAlarm();
-    updateButton(button, "start", "play_arrow");
-    updateTime();
+const setPrimaryButton = (button, id=false) => {
+  // id provided
+  if (id) {
+    updateButton(button, id, (id == "pause" || id == "paused") ? "pause" : "play_arrow");
     return;
   }
-
+  // init condition
+  if (button.id == "init") {
+    updateButton(button, "start", "play_arrow");
+    return;
+  }
   button.classList.add("alarmbuttonactive");
   stopButton.classList.add("stopbuttonactive");
 
+  updateButton(button, "resume", "play_arrow");
   if (button.id == "pause" || button.id == "paused") {
-    if (button.id == "pause") await pauseSession();
-    updateButton(button, "resume", "play_arrow");
-
-    chrome.runtime.sendMessage({backendRequest: "pauseTimer"}) //pause
-      .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
-
-    updateTime();
-    return;
+    updateButton(button, "pause", "pause");
   }
-  if (button.id == "resume") await resumeSession();
-  if (button.id == "start") await startSession();
-
-  updateButton(button, "pause", "pause");
-
-  chrome.runtime.sendMessage({backendRequest: "startTimer"}) //resume
-    .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
-
-  updateTime();
 }
 
 /*****************************************************************************/
 
-//  @button:      (DOM object) play/pause button
-//  @stopButton:  (DOM object) stop button
-const toggleStopButton = async (button, stopButton) => {
-  clearAlarm();
-  changeButtonColour("pomowork");
-  setCounter(0);
-  chrome.storage.local.set({paused: false});
-  button.classList.remove("alarmbuttonactive");
+// @state  (string) state to update button to 
+const togglePrimaryButton = (state) => {
+  const primaryButton = document.getElementsByClassName("alarmbutton")[0];
+  const stopButton = document.getElementsByClassName("stopbutton")[0];
+
+  if (state == "init") {
+    updateButton(primaryButton, "start", "play_arrow");
+    return;
+  }
+
+  primaryButton.classList.add("alarmbuttonactive");
+  stopButton.classList.add("stopbuttonactive");
+  
+  if (state == "pause") {
+    updateButton(primaryButton, "resume", "play_arrow");
+  } else {
+    updateButton(primaryButton, "pause", "pause");
+  }
+
+  updateTime(); //TODO: evaluate necessity
+}
+
+/*****************************************************************************/
+
+const toggleStopButton = async () => {
+  const primaryButton = document.getElementsByClassName("alarmbutton")[0];
+  const stopButton = document.getElementsByClassName("stopbutton")[0];
+
+  primaryButton.classList.remove("alarmbuttonactive");
   stopButton.classList.remove("stopbuttonactive");
-
-  chrome.runtime.sendMessage({backendRequest: "stopTimer"}) //stop
-    .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
-
-  updateButton(button, "start", "play_arrow");
+  updateButton(primaryButton, "start", "play_arrow");
   updateTime();
 }
 

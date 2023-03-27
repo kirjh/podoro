@@ -18,8 +18,25 @@
 
 import { alarmExists } from "./alarms.js";
 import { setSecret, getTimeFromStorage, updateTime } from "./time.js";
-import { togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, setCounter, changeButtonColour, updateProgress } from "./menu.js";
+import { sendMessage, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, setCounter, changeButtonColour, updateProgress } from "./menu.js";
 import JSON from '../manifest.json' assert {type: 'json'};
+
+/*****************************************************************************/
+
+const runFrontend = {
+  startTimer: (param) => {togglePrimaryButton("start");},
+  resumeTimer: (param) => {togglePrimaryButton("resume");},
+  pauseTimer: (param) => {togglePrimaryButton("pause");},
+  
+  stopTimer: (param) => {toggleStopButton();},
+
+  setSecret: (param) => {setSecret(param);},
+  changeButtonColour: (param) => {changeButtonColour(param);},
+  setCounter: (param) => {setCounter(param); 
+                          updateProgress();},
+  updateProgress: (param) => updateProgress(param)     
+
+}
 
 /*****************************************************************************/
 
@@ -39,16 +56,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     link.innerHTML = JSON.version;
   }
 
+  // Retrive data from storage
   const storedTime = await getTimeFromStorage();
   const storage = await chrome.storage.local.get("theme");
-  const sessionStorage = await chrome.storage.session.get("pomocount");
-  if (!sessionStorage.pomocount) sessionStorage.pomocount = 0;
+  //const sessionStorage = await chrome.storage.session.get("pomocount");
+  //if (!sessionStorage.pomocount) sessionStorage.pomocount = 0;
 
   const alarm = await alarmExists();
   
   // Initialize active/inactive state
   if (alarm) {
-    primaryButton.id = (alarm.paused) ? "paused" : "exist";
+    primaryButton.id = (alarm.paused) ? "pause" : "start";
     let alarmTime = await chrome.storage.local.get("currentAlarm");
     if (alarmTime.currentAlarm) {
       changeButtonColour(alarm.name);
@@ -57,11 +75,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   } else {
     changeButtonColour("pomowork");
     setSecret(storedTime.pomowork);
-    chrome.storage.local.set({paused: false});
+    // chrome.storage.local.set({paused: false});
   }
   if (storage.theme && storage.theme == "dark") {
-    const button = document.getElementById("theme");
-    actionHandler(button);
+    actionHandler(document.getElementById("theme"));
   }
   setTimeout(()=> {
     for (const element of borderElements) {
@@ -71,14 +88,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     stopButton.classList.add("animatedbackground");
   },500);
 
-  togglePrimaryButton(primaryButton);
-  setCounter(sessionStorage.pomocount);
+  togglePrimaryButton(primaryButton.id);
+  //setCounter(sessionStorage.pomocount);
+  updateTime();
   setInterval(updateTime, 1000);
   updateProgress();
 
   // Listeners
-  primaryButton.addEventListener('click', () => {togglePrimaryButton(primaryButton);});
-  stopButton.addEventListener('click', () => {toggleStopButton(primaryButton, stopButton);});
+  primaryButton.addEventListener('click', () => {sendMessage(`${primaryButton.id}Timer`)});
+  stopButton.addEventListener('click', () => {sendMessage(`stopTimer`)});
 
   for (const button of toggleButtonList) {
     button.addEventListener('click', ()=> {menuHandler(button);})
@@ -91,24 +109,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     input.addEventListener('change', ()=> {inputChange(input);})
   }
 
-  // Sync values between length of active alarm and local variable.
+  // Message handler passes message onto the relevant function
+  // Use to sync background updates to instance of itself
   chrome.runtime.onMessage.addListener((message) => {
     if (message.frontendRequest) {
-      console.log(message.frontendRequest);
-    }
-    if (message.pomomsg) {
-      setSecret(message.pomomsg);
-    }
-    if (message.pomocolour) {
-      changeButtonColour(message.pomocolour);
-    }
-    if (message.pomocount) {
-      setCounter(message.pomocount);
-      updateProgress();
-    }
-    if (!message.storageChange) return;
-    if (message.storageChange.pomointerval) {
-      updateProgress(message.storageChange.pomointerval);
+      runFrontend[message.frontendRequest](message.param);
     }
   });
 });

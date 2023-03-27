@@ -16,7 +16,7 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-import { createAlarm } from "./alarms.js";
+import { createAlarm, startSession, pauseSession, resumeSession, clearAlarm } from "./alarms.js";
 
 /*****************************************************************************/
 
@@ -47,6 +47,15 @@ const notif = {
 
 /*****************************************************************************/
 
+//  @func   (string) function name
+//  @param  (object) parameters
+const sendMessage = (func, param) => {
+  chrome.runtime.sendMessage({frontendRequest: func, param: param})
+      .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
+}
+
+/*****************************************************************************/
+
 // @msg (string) notification message
 const createNotification = (msg) => {
   chrome.notifications.create("pomoalarm", msg, (notifId) => {
@@ -68,8 +77,7 @@ const countSessions = async (alarm) => {
   sessionStorage.pomocount += 1;
 
   chrome.storage.session.set({pomocount: sessionStorage.pomocount});
-  chrome.runtime.sendMessage({pomocount: sessionStorage.pomocount})
-    .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
+  sendMessage("setCounter", sessionStorage.pomocount);
 
   if (sessionStorage.pomocount % storage.pomointerval == 0) return true;
   return false;
@@ -112,8 +120,8 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
 
   // Create alarm
   chrome.storage.local.set({["currentAlarm"] : time});
-  chrome.runtime.sendMessage({pomomsg: time, pomocolour: alarmName})
-    .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
+  sendMessage("setSecret", time);
+  sendMessage("changeButtonColour", alarmName);
   createAlarm(alarmName, parseInt(time));
 });
 
@@ -123,33 +131,37 @@ chrome.storage.onChanged.addListener((changes) => {
   for (const [key, {newValue}] of Object.entries(changes)) {
     if (newValue) {
       console.log(newValue);
-      chrome.runtime.sendMessage({storageChange: {[key]: newValue} })
-        .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
+
+      if (key == "pomointerval") sendMessage("updateProgress", newValue);
     }
   }
 });
 
 /*****************************************************************************/
 
-//  @msg  message containing parameters
+//  Returns: return value of called function
 const runBackend = {
-  startTimer: () => {console.log("[PODOROTIMER] send message: " + msg);},
-  stopTimer: () => {},
-  pauseTimer: () => {},
+  startTimer: async () => {return await startSession();},
+  resumeTimer: async () => {return await resumeSession();},
+  pauseTimer: async () => {return await pauseSession();},
+  
+  stopTimer: async () => {return await clearAlarm();},
 }
+// Start timer
+// Stop timer
+// Pause timer
+// Dark mode
+// Reset progress
+// Tasks
+// Update settings?
 
-chrome.runtime.onMessage.addListener((message) => {
+chrome.runtime.onMessage.addListener(async (message) => {
   if (!message.backendRequest) return;
 
-  runBackend[message.backendRequest](message.backendRequest);
+  const param = await runBackend[message.backendRequest]();
+  console.log(message.backendRequest);
+  message.backendRequest;
 
-  chrome.runtime.sendMessage({frontendRequest: message.backendRequest})
-      .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
-  // Start timer
-  // Stop timer
-  // Pause timer
-  // Dark mode
-  // Reset progress
-  // Tasks
-  // Update settings?
+  sendMessage(message.backendRequest, param);
+  
 });

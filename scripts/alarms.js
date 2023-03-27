@@ -47,11 +47,11 @@ const alarmExists = async () => {
 const startSession = async () => {
   console.log("creating timer");
   const time = await chrome.storage.local.get(["pomowork"]);
-  chrome.storage.local.set({["currentAlarm"] : time.pomowork});
+  chrome.storage.local.set({currentAlarm : time.pomowork, paused: false});
 
-  setSecret(time.pomowork, "pomowork");
+  // setSecret(time.pomowork, "pomowork");
   createAlarm("pomowork", parseInt(time.pomowork));
-  return;
+  return time.pomowork;
 }
 
 /*****************************************************************************/
@@ -67,7 +67,6 @@ const clearAlarm = async (alarm=null) => {
   await chrome.alarms.clear("pomowork");
   await chrome.alarms.clear("pomobreak");
   await chrome.alarms.clear("pomobreaklong");
-  return;
 }
 
 /*****************************************************************************/
@@ -78,12 +77,12 @@ const clearAlarm = async (alarm=null) => {
 const createAlarm = (name, time) => {
   chrome.alarms.create(name, {delayInMinutes: time});
   console.log(`created alarm "${name}" with a delay of (${time}) minutes`);
-  return;
 }
 
 /*****************************************************************************/
 
 const pauseSession = async() => {
+  console.log("pausing alarms");
   const alarm = await alarmExists();
   if (!alarm) return;
   
@@ -94,12 +93,13 @@ const pauseSession = async() => {
   alarm.paused = true;
 
   await chrome.storage.local.set({paused: true, activeAlarm: alarm});
-  return;
+  return null;
 } 
 
 /*****************************************************************************/
 
 const resumeSession = async() => {
+  console.log("resuming alarms");
   const storage = await chrome.storage.local.get(["activeAlarm"]);
 
   if (storage.activeAlarm.scheduledTime < 60000) storage.activeAlarm.scheduledTime = 60000;
@@ -107,7 +107,7 @@ const resumeSession = async() => {
   createAlarm(storage.activeAlarm.name, storage.activeAlarm.scheduledTime/60000);
 
   chrome.storage.local.set({paused: false});
-  return;
+  return null;
 }
 
 /*****************************************************************************/

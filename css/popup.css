@@ -69,8 +69,8 @@ body {
   text-align: right;
 }
 
-a.githublink,
-a.githublink:visited {
+.githublink,
+.githublink:visited {
   color: #777574;
 }
 

@@ -16,7 +16,8 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-import { createAlarm, startSession, pauseSession, resumeSession, clearAlarm } from "./alarms.js";
+import { alarmList, createAlarm, startSession, pauseSession, resumeSession, clearAlarm } from "./alarms.js";
+import { setCounter } from "./menu.js";
 
 /*****************************************************************************/
 
@@ -142,11 +143,13 @@ const setTheme = async () => {
 /*****************************************************************************/
 
 chrome.storage.onChanged.addListener((changes) => {
+  const list = alarmList.timeInputs;
   for (const [key, {newValue}] of Object.entries(changes)) {
     if (newValue) {
-      console.log(newValue);
+      console.log(key + " :: " + newValue);
 
       if (key == "pomointerval") sendMessage("updateProgress", newValue);
+      if (list.includes(key)) sendMessage(`updateInput`, {key: key, value: newValue});
     }
   }
 });
@@ -161,7 +164,8 @@ const runBackend = {
   
   stopTimer: async () => {return await clearAlarm();},
 
-  theme: async () => {return await setTheme();}
+  theme: async () => {return await setTheme();},
+  setCounter: async () => {return setCounter(0)}
 }
 // Start timer
 // Stop timer

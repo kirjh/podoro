@@ -16,7 +16,7 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { sendMessage, changeTheme, changeButtonColour, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, increaseAlarmLength, setCounter, updateProgress };
+export { sendMessage, updateInput, changeTheme, changeButtonColour, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, increaseAlarmLength, setCounter, updateProgress };
 
 import { alarmExists, createAlarm } from "./alarms.js";
 import { updateTime } from "./time.js";
@@ -251,9 +251,9 @@ const changeTheme = (theme) => {
 
 /*****************************************************************************/
 
-//  @inputListItem: (DOM object) input
+//  @inputListItem:  (DOM object) input
 const inputChange = (inputListItem) => {
-  let input = document.getElementById(inputListItem.id);
+  const input = document.getElementById(inputListItem.id);
 
   input.value = (isNaN(parseFloat(input.value))) ? input.min : Math.round(parseFloat(input.value));
   if (input.value < parseInt(input.min)) input.value = parseInt(input.min);
@@ -264,6 +264,15 @@ const inputChange = (inputListItem) => {
     createAlert("Changes will be applied to your next session", true);
   }
   input.blur();
+}
+
+/*****************************************************************************/
+
+//  @key    (string) input 
+//  @value  (string) new value of input
+const updateInput = (key, value) => {
+  const input = document.getElementById(key);
+  input.value = value;
 }
 
 /*****************************************************************************/
@@ -296,10 +305,8 @@ const increaseAlarmLength = async () => {
 
 //  @pomodoro:  (number) number of pomodoros elapsed
 //  @alert:     (boolean) toggle creation of an alert
-const setCounter = (pomodoro, alert=false) => {
+const setCounter = (pomodoro) => {
   chrome.storage.session.set({pomocount: pomodoro});
-  
-  if (alert) createAlert("Reset number of pomodoros completed");
 }
 
 /*****************************************************************************/
@@ -318,7 +325,8 @@ const actionHandler = (button, args) => {
       sendMessage("theme");
       break;
     case "reset":
-      setCounter(0, true);
+      sendMessage("setCounter")
+      createAlert("Reseting number of pomodoros completed");
       break;
     case "increment":
       increaseAlarmLength();

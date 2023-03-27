@@ -18,7 +18,7 @@
 
 import { alarmExists } from "./alarms.js";
 import { setSecret, getTimeFromStorage, updateTime } from "./time.js";
-import { sendMessage, changeTheme, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, setCounter, changeButtonColour, updateProgress } from "./menu.js";
+import { sendMessage, updateInput, changeTheme, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, setCounter, changeButtonColour, updateProgress } from "./menu.js";
 import JSON from '../manifest.json' assert {type: 'json'};
 
 /*****************************************************************************/
@@ -35,6 +35,7 @@ const runFrontend = {
   setCounter: (param) => {setCounter(param); 
                           updateProgress();},
   updateProgress: (param) => {updateProgress(param);},
+  updateInput: (param) => {updateInput(param.key, param.value);},
   theme: (param) => {changeTheme(param);}
 
 }

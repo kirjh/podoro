@@ -127,6 +127,20 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
 
 /*****************************************************************************/
 
+const setTheme = async () => {
+  const storage = await chrome.storage.local.get("theme");
+
+  if (storage.theme == "dark") {
+    chrome.storage.local.set({theme: "light"});
+    return true;
+  } else {
+    chrome.storage.local.set({theme: "dark"});
+    return false;
+  }
+}
+
+/*****************************************************************************/
+
 chrome.storage.onChanged.addListener((changes) => {
   for (const [key, {newValue}] of Object.entries(changes)) {
     if (newValue) {
@@ -146,6 +160,8 @@ const runBackend = {
   pauseTimer: async () => {return await pauseSession();},
   
   stopTimer: async () => {return await clearAlarm();},
+
+  theme: async () => {return await setTheme();}
 }
 // Start timer
 // Stop timer

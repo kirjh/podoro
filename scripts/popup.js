@@ -18,7 +18,7 @@
 
 import { alarmExists } from "./alarms.js";
 import { setSecret, getTimeFromStorage, updateTime } from "./time.js";
-import { sendMessage, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, setCounter, changeButtonColour, updateProgress } from "./menu.js";
+import { sendMessage, changeTheme, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, setCounter, changeButtonColour, updateProgress } from "./menu.js";
 import JSON from '../manifest.json' assert {type: 'json'};
 
 /*****************************************************************************/
@@ -34,7 +34,8 @@ const runFrontend = {
   changeButtonColour: (param) => {changeButtonColour(param);},
   setCounter: (param) => {setCounter(param); 
                           updateProgress();},
-  updateProgress: (param) => updateProgress(param)     
+  updateProgress: (param) => {updateProgress(param);},
+  theme: (param) => {changeTheme(param);}
 
 }
 
@@ -78,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // chrome.storage.local.set({paused: false});
   }
   if (storage.theme && storage.theme == "dark") {
-    actionHandler(document.getElementById("theme"));
+    changeTheme(false);
   }
   setTimeout(()=> {
     for (const element of borderElements) {

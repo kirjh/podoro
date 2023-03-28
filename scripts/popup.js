@@ -18,7 +18,7 @@
 
 import { alarmExists } from "./alarms.js";
 import { setSecret, getTimeFromStorage, updateTime } from "./time.js";
-import { sendMessage, updateInput, changeTheme, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, setCounter, changeButtonColour, updateProgress } from "./menu.js";
+import { sendMessage, updateInput, changeTheme, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, changeButtonColour, updateProgress } from "./menu.js";
 import JSON from '../manifest.json' assert {type: 'json'};
 
 /*****************************************************************************/
@@ -32,8 +32,7 @@ const runFrontend = {
 
   setSecret: (param) => {setSecret(param);},
   changeButtonColour: (param) => {changeButtonColour(param);},
-  setCounter: (param) => {setCounter(param); 
-                          updateProgress();},
+  setCounter: (param) => {updateProgress()},
   updateProgress: (param) => {updateProgress(param);},
   updateInput: (param) => {updateInput(param.key, param.value);},
   theme: (param) => {changeTheme(param);}
@@ -91,7 +90,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   },500);
 
   togglePrimaryButton(primaryButton.id);
-  //setCounter(sessionStorage.pomocount);
   updateTime();
   setInterval(updateTime, 1000);
   updateProgress();

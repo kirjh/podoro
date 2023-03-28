@@ -17,7 +17,6 @@
 ******************************************************************************/
 
 import { alarmList, createAlarm, startSession, pauseSession, resumeSession, clearAlarm } from "./alarms.js";
-import { setCounter } from "./menu.js";
 
 /*****************************************************************************/
 
@@ -77,8 +76,7 @@ const countSessions = async (alarm) => {
   if (!sessionStorage.pomocount) sessionStorage.pomocount = 0;
   sessionStorage.pomocount += 1;
 
-  chrome.storage.session.set({pomocount: sessionStorage.pomocount});
-  sendMessage("setCounter", sessionStorage.pomocount);
+  await setCounter(sessionStorage.pomocount);
 
   if (sessionStorage.pomocount % storage.pomointerval == 0) return true;
   return false;
@@ -105,7 +103,7 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
       }
       break;
     default:
-      alarmName = "pomowork";  
+      alarmName = "pomowork";
       chrome.action.setIcon({path: "../icons/pomo64.png"});
       break;
   }
@@ -121,9 +119,11 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
 
   // Create alarm
   chrome.storage.local.set({["currentAlarm"] : time});
+  await createAlarm(alarmName, parseInt(time));
+
   sendMessage("setSecret", time);
   sendMessage("changeButtonColour", alarmName);
-  createAlarm(alarmName, parseInt(time));
+  sendMessage("setCounter", null);
 });
 
 /*****************************************************************************/
@@ -142,11 +142,18 @@ const setTheme = async () => {
 
 /*****************************************************************************/
 
+//  @pomodoro:  (number) number of pomodoros elapsed
+const setCounter = async (pomodoro) => {
+  await chrome.storage.session.set({pomocount: pomodoro});
+  return null;
+}
+
+/*****************************************************************************/
+
 chrome.storage.onChanged.addListener((changes) => {
   const list = alarmList.timeInputs;
   for (const [key, {newValue}] of Object.entries(changes)) {
     if (newValue) {
-      console.log(key + " :: " + newValue);
 
       if (key == "pomointerval") sendMessage("updateProgress", newValue);
       if (list.includes(key)) sendMessage(`updateInput`, {key: key, value: newValue});
@@ -162,10 +169,12 @@ const runBackend = {
   resumeTimer: async () => {return await resumeSession();},
   pauseTimer: async () => {return await pauseSession();},
   
-  stopTimer: async () => {return await clearAlarm();},
+  stopTimer: async () => {setCounter(0); 
+                          sendMessage("setCounter", null);
+                          return await clearAlarm();},
 
   theme: async () => {return await setTheme();},
-  setCounter: async () => {return setCounter(0)}
+  setCounter: async () => {return setCounter(0);}
 }
 // Start timer
 // Stop timer

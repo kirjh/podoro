@@ -74,8 +74,8 @@ const clearAlarm = async (alarm=null) => {
 //  @name  (string) name of alarm. Must be either of: 
 //                    ["pomowork", "pomobreak", "pomobreaklong"]
 //  @time  (number) length of alarm
-const createAlarm = (name, time) => {
-  chrome.alarms.create(name, {delayInMinutes: time});
+const createAlarm = async (name, time) => {
+  await chrome.alarms.create(name, {delayInMinutes: time});
   console.log(`created alarm "${name}" with a delay of (${time}) minutes`);
 }
 

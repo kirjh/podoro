@@ -16,7 +16,7 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { sendMessage, updateInput, changeTheme, changeButtonColour, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, increaseAlarmLength, setCounter, updateProgress };
+export { sendMessage, updateInput, changeTheme, changeButtonColour, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, increaseAlarmLength, updateProgress };
 
 import { alarmExists, createAlarm } from "./alarms.js";
 import { updateTime } from "./time.js";
@@ -149,9 +149,10 @@ const togglePrimaryButton = (state) => {
 const toggleStopButton = async () => {
   const primaryButton = document.getElementsByClassName("alarmbutton")[0];
   const stopButton = document.getElementsByClassName("stopbutton")[0];
-
+  
   primaryButton.classList.remove("alarmbuttonactive");
   stopButton.classList.remove("stopbuttonactive");
+  changeButtonColour("pomowork");
   updateButton(primaryButton, "start", "play_arrow");
   updateTime();
 }
@@ -303,14 +304,6 @@ const increaseAlarmLength = async () => {
 
 /*****************************************************************************/
 
-//  @pomodoro:  (number) number of pomodoros elapsed
-//  @alert:     (boolean) toggle creation of an alert
-const setCounter = (pomodoro) => {
-  chrome.storage.session.set({pomocount: pomodoro});
-}
-
-/*****************************************************************************/
-
 const toggleBlock = () => {
   createAlert("Error: function not implemented");
 }
@@ -342,14 +335,21 @@ const actionHandler = (button, args) => {
 
 //  @intervalLength:  (number) long break interval
 const updateProgress = async (intervalLength = null) => {
+  console.log("updating...");
+
   if (!intervalLength) {
     const storage = await chrome.storage.local.get("pomointerval");
     intervalLength = storage.pomointerval;
   }
   const progressBar = document.getElementById("currentprogress");
   const sessionStorage = await chrome.storage.session.get("pomocount");
-  if (!await alarmExists()) {
+  const alarm = await alarmExists();
+  if (!alarm) {
     progressBar.style.width = "0%";
+    return;
+  }
+  if (alarm.name == "pomobreaklong") {
+    progressBar.style.width = "100%";
     return;
   }
   const progress = ((sessionStorage.pomocount % intervalLength) / intervalLength) * 100;

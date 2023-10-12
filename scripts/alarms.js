@@ -18,8 +18,6 @@
 
 export { alarmList, alarmExists, clearAlarm, createAlarm, startSession, pauseSession, resumeSession};
 
-import { setSecret } from "./time.js";
-
 const alarmList = {
   timeInputs: ["pomowork", "pomobreak", "pomobreaklong", "pomointerval"]
 }

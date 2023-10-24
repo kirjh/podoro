@@ -16,20 +16,9 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { setSecret, getTimeFromStorage, updateTime};
+export { getTimeFromStorage, updateTime};
 
 import { alarmList, alarmExists } from "./alarms.js";
-
-/*****************************************************************************/
-
-//  @alarmTime:  (number) current alarm length
-//  @alarmName:  (number) name of alarm
-const setSecret = async (alarmTime) => {
-  const secret = document.getElementsByClassName("secret")[0];
-
-  secret.innerHTML = alarmTime;
-  return;
-}
 
 /*****************************************************************************/
 
@@ -57,13 +46,14 @@ const getTimeFromStorage = async () => {
 const updateTime = async () => {
   const timeDisplay = document.getElementById("timeDisplay");
   const clockPointer = document.getElementById("clockPointer");
-  let alarmLength = document.getElementsByClassName("secret")[0].innerHTML;
+  let alarmLength = await chrome.storage.local.get("currentAlarm").then((r) => {return r.currentAlarm});
   let time;
   const alarm = await alarmExists();
-
+  
   // If an active alarm does not exist, display current value of 
   // the pomowork setting.
   if (!alarm) {
+    console.log("NA"); // REMOVE
     timeDisplay.innerHTML = (!document.getElementById("pomowork").value) ? 0 : document.getElementById("pomowork").value;
     clockPointer.style.setProperty("transform", "rotate(0)");
     return;
@@ -76,6 +66,7 @@ const updateTime = async () => {
 
   timeDisplay.innerHTML = time;
   clockPointer.style.setProperty("transform", `rotate(${-((360/alarmLength)*time)}deg)`);
+  //console.log(`-((360/${alarmLength})*${time} = ${-((360/alarmLength)*time)}`)
   return;
 }
 

@@ -6,6 +6,8 @@
 body {
   font-family: Nunito, Roboto, Arial, Helvetica, sans-serif;
   margin: 0;
+
+  background-color: var(--background);
 }
 
 /* Tab container */
@@ -16,11 +18,13 @@ body {
 
 /* Tabs */
 .tab {
-  background-color:#fff;
+  background-color: var(--tabBG);
   margin: 0.5rem;
   border-radius: 0.7rem;
   border: solid;
   border-width: 1px;
+
+  border-color: var(--border);
 }
 
 .tabhead {
@@ -30,12 +34,17 @@ body {
   padding: 0.25rem;
   display: flex;
   justify-content: space-between;
+
+  border-color: var(--border);
 }
 
 .tabtitle {
   font-size: 1.2em;
   font-weight: 700;
   margin-left: 0.75rem;
+
+  color: var(--fontText);
+  fill: var(--fontText);
 }
 
 .togglecontainer {
@@ -62,7 +71,7 @@ body {
   text-align: left;
   font-size: 1.1em;
   margin: 0em 0.5em 0em 0.5em;
-  color: #777574;
+  color: var(--fontSubtext);
 }
 
 .version {
@@ -70,8 +79,9 @@ body {
 }
 
 .githublink,
+.githublink:active,
 .githublink:visited {
-  color: #777574;
+  color: var(--fontSubtext);
 }
 
 /* SVG */
@@ -86,18 +96,6 @@ body {
 }
 
 /* Colours */
-.lightaccent {
-  background-color: #e2dbd7;
-}
-
-.lightfont {
-  color: #5b5a59;
-  fill: #5b5a59;
-}
-
-.lightborder {
-  border-color: #777574;
-}
 
 .red {
   background-color: #d66868;
@@ -111,44 +109,7 @@ body {
   background-color: #689dd6;
 }
 
-/* Dark theme */
-.darktab {
-  background-color:#454545;
-}
-
-.darkfont {
-  color: #fff;
-  fill: #fff;
-}
-
-.darkfont:hover {
-  color: #fff;
-  fill: #fff;
-}
-
-.darkaccent {
-  background-color: #2b2827;
-}
-
-.darkaccent:active {
-  background-color: #2b2827;
-}
-
-.darkborder {
-  border-color: #99928f;
-}
-
-.darksubtext {
-  color: #99928f;
-}
-
-.darklink,
-.darklink:active,
-.darklink:visited {
-  color: #99928f;
-}
-
-/* Animated */
+/* Animation */
 .animatedbackground {
   transition: background-color 0.25s;
 }

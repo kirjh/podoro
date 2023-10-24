@@ -4,7 +4,7 @@
 }
 
 .toolicon,
-.darkicon {
+.darktoolicon {
   display: inline;
   font-weight: 700;
   border-radius: 0.5rem;
@@ -18,33 +18,30 @@
   cursor: pointer;
 }
 
-.iconspan {
-  margin: auto;
+.toolicon {
+  background-color: var(--background);
+  color: var(--fontText);
+  fill: var(--fontText);
 }
 
-.darkicon {
+.darktoolicon {
   background-color: #756a69;
   color: #fff;
   fill: #fff;
 }
 
+.iconspan {
+  margin: auto;
+}
+
 .toolicon:hover,
-.darkicon:hover,
+.darktoolicon:hover,
 .activeicon {
   background-color: transparent;
-  color: #5b5a59;
-  fill: #5b5a59;
+  color: var(--fontText);
+  fill: var(--fontText);
 
   border: solid;
-  border-color: #777574;
+  border-color: var(--border);
   border-width: 1px;
-}
-
-.toolicon:active {
-  background-color: #e2dbd7;
-}
-
-.darkicon:active {
-  background-color: #756a69;
-  color: #fff;
 }

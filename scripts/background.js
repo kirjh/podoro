@@ -121,7 +121,6 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
   chrome.storage.local.set({["currentAlarm"] : time});
   await createAlarm(alarmName, parseInt(time));
 
-  sendMessage("setSecret", time);
   sendMessage("changeButtonColour", alarmName);
   sendMessage("setCounter", null);
 });
@@ -171,6 +170,7 @@ const runBackend = {
   
   stopTimer: async () => {setCounter(0); 
                           sendMessage("setCounter", null);
+                          await chrome.storage.local.set({activeAlarm: null});
                           return await clearAlarm();},
 
   theme: async () => {return await setTheme();},

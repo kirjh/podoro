@@ -37,6 +37,9 @@
   text-align: center;
   margin: 0em;
   cursor: help;
+
+  color: var(--fontText);
+  fill: var(--fontText);
 }
 
 .menuinput {
@@ -48,6 +51,11 @@
   border-radius: 2em;
   border: solid;
   border-width: 1px;
+
+  color: var(--fontText);
+  fill: var(--fontText);
+  background-color: var(--background);
+  border-color: var(--border);
 }
 
 .menuinput:focus {
@@ -69,7 +77,7 @@ input::-webkit-inner-spin-button {
   
   color: #fff;
   background-color: rgba(0,0,0,0.8);
-
+  
   display: grid;
   grid-template-columns: auto auto;
 }
@@ -88,9 +96,4 @@ input::-webkit-inner-spin-button {
   cursor: pointer;
   text-align: right;
   font-size: 1.2em;
-  transition: background-color 0.5s;
-}
-
-#helppopup button:hover {
-  background-color: #d66868;
 }

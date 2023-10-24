@@ -1,0 +1,13 @@
+:root {
+    /* Background */
+    --background: #e2dbd7;
+    --tabBG: #fff;
+    --border: #777574;
+
+    /* Fonts */
+    --fontText: #5b5a59;
+    --fontSubtext: #777574;
+
+    /* Accent */
+    --accent: #d66868;
+}

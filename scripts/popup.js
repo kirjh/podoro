@@ -17,7 +17,7 @@
 ******************************************************************************/
 
 import { alarmExists } from "./alarms.js";
-import { setSecret, getTimeFromStorage, updateTime } from "./time.js";
+import { getTimeFromStorage, updateTime } from "./time.js";
 import { sendMessage, updateInput, changeTheme, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, changeButtonColour, updateProgress } from "./menu.js";
 import JSON from '../manifest.json' assert {type: 'json'};
 
@@ -30,7 +30,6 @@ const runFrontend = {
   
   stopTimer: (param) => {toggleStopButton();},
 
-  setSecret: (param) => {setSecret(param);},
   changeButtonColour: (param) => {changeButtonColour(param);},
   setCounter: (param) => {updateProgress()},
   updateProgress: (param) => {updateProgress(param);},
@@ -48,9 +47,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const stopButton = document.getElementsByClassName("stopbutton")[0];
   const inputList = document.getElementsByClassName("timeinput");
   const actionButtonList = document.getElementsByClassName("toolicon");
-  const toggleButtonList = document.getElementsByClassName("darkicon");
+  const toggleButtonList = document.getElementsByClassName("darktoolicon");
   const versionLinks = document.getElementsByClassName("githublink");
-  const borderElements = document.getElementsByClassName("lightborder");
+  //const borderElements = document.getElementsByClassName("lightborder");
 
   // Update version
   for (const link of versionLinks) {
@@ -71,16 +70,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     let alarmTime = await chrome.storage.local.get("currentAlarm");
     if (alarmTime.currentAlarm) {
       changeButtonColour(alarm.name);
-      setSecret(alarmTime.currentAlarm);
     }
   } else {
     changeButtonColour("pomowork");
-    setSecret(storedTime.pomowork);
     // chrome.storage.local.set({paused: false});
   }
   if (storage.theme && storage.theme == "dark") {
     changeTheme(false);
   }
+
+  /*
   setTimeout(()=> {
     for (const element of borderElements) {
       element.classList.add("animatedbackground");
@@ -88,6 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     primaryButton.classList.add("animatedbackground");
     stopButton.classList.add("animatedbackground");
   },500);
+  */
 
   togglePrimaryButton(primaryButton.id);
   updateTime();

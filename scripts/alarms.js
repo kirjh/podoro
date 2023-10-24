@@ -31,7 +31,7 @@ const alarmExists = async () => {
     if (activeAlarm) return activeAlarm;
   }
   const storage = await chrome.storage.local.get(["paused", "activeAlarm"]);
-  if (storage.paused) {
+  if (storage.paused && storage.activeAlarm) {
     // Alarms in storage must be reconverted to unix to ensure
     // compatibility with other functions
     storage.activeAlarm.scheduledTime += Date.now();
@@ -45,9 +45,8 @@ const alarmExists = async () => {
 const startSession = async () => {
   console.log("creating timer");
   const time = await chrome.storage.local.get(["pomowork"]);
-  chrome.storage.local.set({currentAlarm : time.pomowork, paused: false});
+  chrome.storage.local.set({currentAlarm: time.pomowork, paused: false});
 
-  // setSecret(time.pomowork, "pomowork");
   createAlarm("pomowork", parseInt(time.pomowork));
   return time.pomowork;
 }

@@ -1,4 +1,6 @@
 :root {
+    font-size: 16px;
+    
     /* Background */
     --background: #e2dbd7;
     --tabBG: #fff;

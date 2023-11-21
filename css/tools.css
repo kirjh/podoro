@@ -1,6 +1,24 @@
-#tools {
+.tabheadtools {
+  padding: 0.25rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tools {
   margin: 0.5rem;
   text-align: center;
+  display: none;
+  user-select: none;
+}
+
+.hideborder {
+  border-bottom: dashed;
+  border-width: 1px;
+  border-color: var(--border);
+}
+
+.show {
+  display: block;
 }
 
 .toolicon,
@@ -44,4 +62,60 @@
   border: solid;
   border-color: var(--border);
   border-width: 1px;
+}
+
+/* Checkmark */
+.collapsible {
+  width: 1.7em;
+  height: 1.7em;
+  cursor: pointer;
+  position: relative;
+  margin-right: 0.1rem;
+}
+
+.collapsible input {
+  opacity: 0;
+  height: 0;
+  width: 0;
+}
+
+.custommark {
+  
+
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /*
+  border: solid;
+  border-width: 1px;
+  border-radius: 1.2em;
+
+  background-color: var(--background);
+  border-color: var(--border);*/
+}
+
+.custommark:before {
+  position: absolute;
+  content: "";
+  left: 0.15rem;
+  top: 0.2rem;
+  height: 0.7em;
+  width: 0.7em;
+  border: solid var(--fontText);
+  border-width: 0 0.2em 0.2em 0;
+
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+
+input:checked + .custommark:before {
+  top: 0.5rem;
+  -webkit-transform: rotate(225deg);
+  -ms-transform: rotate(225deg);
+  transform: rotate(225deg);
 }

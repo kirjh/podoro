@@ -20,15 +20,18 @@
 }
 
 .pointer {
-  left: 5.25em;
-  top: 0.775em;
+  position: absolute; 
+  left: 5em;
+  top: 0.5em;
   width: 1.5em;
   height: 1.5em;
-  position: absolute;
 
+  border: solid;
+  border-width: 0.25em;
+  border-color: var(--tabBG);
   border-radius: 50%;
   transition: transform 1s;
-  transform-origin: 0.75em 5.25em;
+  transform-origin: 0.95em 5.5em;
 
   background-color: var(--accent);
 }

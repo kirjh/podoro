@@ -1,0 +1,49 @@
+#sessiontrack {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  margin: 0.5rem;
+  text-align: center;
+}
+
+.progresstext {
+  font-size: 1.1em;
+  text-align: center;
+  margin: 0em;
+
+  color: var(--fontText);
+  fill: var(--fontText);
+}
+
+.progressdiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progressbubble {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-weight: 700;
+  border-radius: 0.5rem;
+  margin-bottom: 0.25em;
+  height: 4em;
+  width: 4em;
+  font-size: 1.2em;
+  font-weight: 600;
+
+  border: none;
+
+  background-color: var(--background);
+  color: var(--fontText);
+  fill: var(--fontText);
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: auto;
+  margin: auto;
+}

@@ -1,8 +1,10 @@
 @import "./clock.css";
 @import "./settings.css";
 @import "./tools.css";
+@import "./theme.css";
+@import "./progress.css";
 
-/* Body  */
+/* Body */
 body {
   font-family: Nunito, Roboto, Arial, Helvetica, sans-serif;
   margin: 0;
@@ -51,6 +53,7 @@ body {
   display: none;
   border-right: dashed;
   border-width: 1px;
+  border-color: var(--border);
 }
 
 .toggletab {

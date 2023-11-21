@@ -97,6 +97,7 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
       if (breakTime) {
         alarmName = "pomobreaklong";
         chrome.action.setIcon({path: "../icons/blue_pomo64.png"});
+        setCounter(0);
       } else {
         alarmName = "pomobreak";
         chrome.action.setIcon({path: "../icons/green_pomo64.png"});

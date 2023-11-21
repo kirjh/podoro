@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../css/popup.css">
     <link rel="stylesheet" href="../css/fonts.css">
     <link rel="stylesheet" href="../css/icons.css">
-    <link rel="stylesheet" href="../css/theme.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,10 +49,14 @@
 
         <!-- Tools -->
         <div class="tab">
-          <div class="tabhead">
+          <div class="tabheadtools">
             <span class="tabtitle">TOOLS</span>
+            <label class="collapsible">
+              <input type="checkbox" id="toolbutton">
+              <span class="custommark"></span>
+            </label>
           </div>
-          <div id="tools">
+          <div class="tools">
             <button class="toolicon" id="increment" title="Increase remaining alarm time by 1 minute" type="button">
               <span class="iconspan">
                 <svg xmlns="http://www.w3.org/2000/svg" class="svgicon" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/></svg>
@@ -107,7 +110,9 @@
           <div class="tabhead">
             <span class="tabtitle">SETTINGS</span>     
           </div>
-          <div id="settingsmenu">
+        <div class="mika"> <!--delete-->
+
+          <div id="inputmenu">
             <div class="lengthsetting">
               <label class="menutext" for="pomowork" title="Change length of a work session">Pomodoro</label>
               <div class="inputdiv">
@@ -138,6 +143,34 @@
             </div>
           </div>
 
+          <div id="togglemenu">
+            <div class="divider">
+              <span class="switchtext">Auto-Start Session</span>
+              <label class="switch">
+                <input type="checkbox" class="togglesettings" id="togglesize">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="divider">
+              <span class="switchtext">Dark Mode</span>
+              <label class="switch">
+                <input type="checkbox" class="togglesettings" id="toggletheme">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="divider">
+              <span class="switchtext">Large Font</span>
+              <label class="switch">
+                <input type="checkbox" class="togglesettings" id="togglesize">
+                <span class="slider"></span>
+              </label>
+            </div>  
+          </div>
+
+          </div> <!--delete-->
+
           <div class="vergrid">
             <div class="subtext">Version</div>
             <div class="subtext version"><a class="githublink" href="https://github.com/kirjh/podoro" title="Check out the Github repository!" target="_blank">0.0.0</a></div>
@@ -154,16 +187,46 @@
             <div class="subtext version"><a class="githublink" href="https://github.com/kirjh/podoro" title="Check out the Github repository!" target="_blank">0.0.0</a></div>
           </div>
         </div>
+        <!-- End <Tasks> -->
 
         <div class="tab toggletab" id="analyticstab">
           <div class="tabhead">
-            <span class="tabtitle">ANALYTICS</span>     
+            <span class="tabtitle">PROGRESS</span>     
+          </div>
+          <div>
+            <span class="tabtitle">Streak</span>
+
+
+            <div id="sessiontrack">
+              <span class="progresstext">Today</span>
+              <span class="progresstext">Yesterday</span>
+              
+              <div class="progressdiv">
+                
+                <div class = "progressbubble">
+                  <div class="progresstext" id="todaycount">0</div>
+                  <span class="progresstext">min</span>
+                </div>
+              </div>
+              
+              <div class="progressdiv">
+                
+                <div class = "progressbubble">
+                  <div class="progresstext" id="yesterdaycount">0</div>
+                  <span class="progresstext">min</span>
+                </div>
+              </div>
+              
+            </div>
+            
+            
           </div>
           <div class="vergrid">
             <div class="subtext">Version</div>
             <div class="subtext version"><a class="githublink" href="https://github.com/kirjh/podoro" title="Check out the Github repository!" target="_blank">0.0.0</a></div>
           </div>
         </div>
+        <!-- End <Progress> -->
       </div>
       <!-- End <Toggle tabs> -->
     </div>

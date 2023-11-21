@@ -18,7 +18,8 @@
 
 import { alarmExists } from "./alarms.js";
 import { getTimeFromStorage, updateTime } from "./time.js";
-import { sendMessage, updateInput, changeTheme, togglePrimaryButton, toggleStopButton, menuHandler, actionHandler, inputChange, changeButtonColour, updateProgress } from "./menu.js";
+import { toggleHandler, toggleTools, sendMessage, updateInput, changeTheme, menuHandler, actionHandler, inputChange, updateProgress } from "./popup_handler.js";
+import {changeButtonColour, togglePrimaryButton, toggleStopButton} from "./popup_button.js";
 import JSON from '../manifest.json' assert {type: 'json'};
 
 /*****************************************************************************/
@@ -48,7 +49,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   const inputList = document.getElementsByClassName("timeinput");
   const actionButtonList = document.getElementsByClassName("toolicon");
   const toggleButtonList = document.getElementsByClassName("darktoolicon");
+  const toggleSettingList = document.getElementsByClassName("togglesettings");
   const versionLinks = document.getElementsByClassName("githublink");
+  const header = document.getElementById("toolbutton");
+
   //const borderElements = document.getElementsByClassName("lightborder");
 
   // Update version
@@ -95,18 +99,23 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateProgress();
 
   // Listeners
+  header.addEventListener('click', ()=> {toggleTools();});
+
   primaryButton.addEventListener('click', () => {sendMessage(`${primaryButton.id}Timer`)});
   stopButton.addEventListener('click', () => {sendMessage(`stopTimer`)});
 
   for (const button of toggleButtonList) {
-    button.addEventListener('click', ()=> {menuHandler(button);})
+    button.addEventListener('click', ()=> {menuHandler(button);});
   }
   for (const button of actionButtonList) {
-    button.addEventListener('click', ()=> {actionHandler(button);})
+    button.addEventListener('click', ()=> {actionHandler(button);});
+  }
+  for (const button of toggleSettingList) {
+    button.addEventListener('click', ()=> {toggleHandler(button)});
   }
   for (const input of inputList) {
     document.getElementById(input.id).value = storedTime[input.id];
-    input.addEventListener('change', ()=> {inputChange(input);})
+    input.addEventListener('change', ()=> {inputChange(input);});
   }
 
   // Message handler passes message onto the relevant function

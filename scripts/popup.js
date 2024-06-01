@@ -18,9 +18,10 @@
 
 import { alarmExists } from "./alarms.js";
 import { getTimeFromStorage, updateTime } from "./time.js";
-import { toggleHandler, toggleTools, sendMessage, updateInput, changeTheme, menuHandler, actionHandler, inputChange, updateProgress } from "./popup_handler.js";
+import { toggleHandler, toggleTools, sendMessage, updateInput, menuHandler, actionHandler, inputChange, updateProgress } from "./popup_handler.js";
+import { changeTheme } from "./popup_settings.js";
 import {changeButtonColour, togglePrimaryButton, toggleStopButton} from "./popup_button.js";
-import JSON from '../manifest.json' assert {type: 'json'};
+import JSON from '../manifest.json' with {type: 'json'};
 
 /*****************************************************************************/
 

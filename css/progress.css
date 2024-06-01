@@ -26,11 +26,11 @@
   align-items: center;
 
   font-weight: 700;
-  border-radius: 0.5rem;
+  border-radius: 50%;
   margin-bottom: 0.25em;
-  height: 4em;
-  width: 4em;
-  font-size: 1.2em;
+  height: 6em;
+  width: 6em;
+  font-size: 1.1em;
   font-weight: 600;
 
   border: none;

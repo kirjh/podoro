@@ -19,7 +19,7 @@
 import { alarmExists } from "./alarms.js";
 import { getTimeFromStorage, updateTime } from "./time.js";
 import { toggleHandler, toggleTools, sendMessage, updateInput, menuHandler, actionHandler, inputChange, updateProgress } from "./popup_handler.js";
-import { changeTheme } from "./popup_settings.js";
+import { changeTheme, toggleAuto } from "./popup_settings.js";
 import {changeButtonColour, togglePrimaryButton, toggleStopButton} from "./popup_button.js";
 import JSON from '../manifest.json' with {type: 'json'};
 
@@ -36,7 +36,8 @@ const runFrontend = {
   setCounter: (param) => {updateProgress()},
   updateProgress: (param) => {updateProgress(param);},
   updateInput: (param) => {updateInput(param.key, param.value);},
-  theme: (param) => {changeTheme(param);}
+  theme: (param) => {changeTheme(param);},
+  toggleauto: (param) => {toggleAuto(param);}
 
 }
 
@@ -63,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Retrive data from storage
   const storedTime = await getTimeFromStorage();
-  const storage = await chrome.storage.local.get("theme");
+  const storage = await chrome.storage.local.get(["theme", "toggleauto"]);
   //const sessionStorage = await chrome.storage.session.get("pomocount");
   //if (!sessionStorage.pomocount) sessionStorage.pomocount = 0;
 
@@ -80,9 +81,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     changeButtonColour("pomowork");
     // chrome.storage.local.set({paused: false});
   }
-  if (storage.theme && storage.theme == "dark") {
+  if (storage.theme && storage.theme == "dark")
     changeTheme(false);
-  }
+  if (storage.toggleauto)
+    toggleAuto(true);
+
 
   /*
   setTimeout(()=> {

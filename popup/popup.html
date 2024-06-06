@@ -32,7 +32,7 @@
             </div>
           </div>
 
-          <div id="pomodorocontainer" title="Progress until long break">
+          <div id="pomodorocontainer">
             <span id="progressbar" class="lightaccent">
               <span id="currentprogress"></span>
             </span>
@@ -57,6 +57,11 @@
             </label>
           </div>
           <div class="tools">
+            <button class="darktoolicon" id="help" title="User manual" type="button">
+              <span class="iconspan">
+                <svg xmlns="http://www.w3.org/2000/svg" class="svgicon" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM169.8 165.3c7.9-22.3 29.1-37.3 52.8-37.3h58.3c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24V250.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1H222.6c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM288 352c0 17.7-14.3 32-32 32s-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32z"/></svg>
+              </span>
+            </button>
             <button class="darktoolicon" id="tasks" title="Tasks" type="button">
               <span class="iconspan">
                 <svg xmlns="http://www.w3.org/2000/svg" class="svgicon" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H288V368c0-26.5 21.5-48 48-48H448V96c0-35.3-28.7-64-64-64H64zM448 352H402.7 336c-8.8 0-16 7.2-16 16v66.7V480l32-32 64-64 32-32z"/></svg>
@@ -65,11 +70,6 @@
             <button class="darktoolicon" id="analytics" title="Analytics" type="button">
               </span class="iconspan">
               <svg xmlns="http://www.w3.org/2000/svg" class="svgicon" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M160 80c0-26.5 21.5-48 48-48h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H208c-26.5 0-48-21.5-48-48V80zM0 272c0-26.5 21.5-48 48-48H80c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V272zM368 96h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H368c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48z"/></svg>
-              </span>
-            </button>
-            <button class="darktoolicon" id="help" title="User manual" type="button">
-              <span class="iconspan">
-                <svg xmlns="http://www.w3.org/2000/svg" class="svgicon" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM169.8 165.3c7.9-22.3 29.1-37.3 52.8-37.3h58.3c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24V250.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1H222.6c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM288 352c0 17.7-14.3 32-32 32s-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32z"/></svg>
               </span>
             </button>
             <button class="darktoolicon" id="settings" title="Podoro settings" type="button">
@@ -129,7 +129,7 @@
             <div class="divider">
               <span class="switchtext">Auto-Start Session</span>
               <label class="switch">
-                <input type="checkbox" class="togglesettings" id="togglesize">
+                <input type="checkbox" class="togglesettings" id="toggleauto">
                 <span class="slider"></span>
               </label>
             </div>
@@ -167,32 +167,52 @@
           <div class="tabhead">
             <span class="tabtitle">PROGRESS</span>     
           </div>
-          <div>
-            <span class="tabtitle">Streak</span>
-
+          <div id="pbody">
+            <span class="ptext" id="dailytext">Today's Progress</span>
+            <div id="dailycontainer">
+              <span id="dailyprogressbar" class="lightaccent">
+                <span id="dailyprogress"></span>
+              </span>
+            </div>
 
             <div id="sessiontrack">
-              <span class="progresstext">Today</span>
-              <span class="progresstext">Yesterday</span>
-              
+              <span class="progresstext">Streak</span> 
+              <span class="progresstext">Sessions</span> 
               <div class="progressdiv">
-                
-                <div class = "progressbubble">
-                  <div class="progresstext" id="todaycount">0000000</div>
-                  <span class="progresstext">min</span>
-                </div>
-              </div>
-              
-              <div class="progressdiv">
-                
                 <div class = "progressbubble">
                   <div class="progresstext" id="yesterdaycount">0</div>
-                  <span class="progresstext">min</span>
                 </div>
               </div>
-              
+              <div class="progressdiv">
+                <div class = "progressbubble">
+                  <div class="progresstext" id="todaycount">0</div>
+                </div>
+              </div>
+              <span class="progresstext">Days</span> 
+              <span class="progresstext">Completed</span> 
             </div>
-            
+            <div class="dailywrap">
+              <span class="ptext">Daily Stats</span><br/>
+              <span class="ptext psub">Next break in 0 sessions</span>
+            </div>
+            <div class="statwrap">
+              <span class="psub">Short breaks</span>
+              <span class="pstat">0</span>
+            </div>
+            <div class="statwrap">
+              <span class="psub">Long breaks</span>
+              <span class="pstat">0</span>
+            </div>
+            <div class="statwrap">
+              <span class="psub">Tasks completed</span>
+              <span class="pstat">0</span>
+            </div>
+            <!--
+            <div id="pgoal">
+              <span class="ptext">Goal:</span>
+              <input type="number" class= "progressinput" id="es" name="es" value="1" min="1" max="60">
+              <span class="ptext" id="sessiontext">sessions</span>
+            </div>-->
             
           </div>
           <div class="vergrid">

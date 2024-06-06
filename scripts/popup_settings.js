@@ -16,7 +16,7 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { changeTheme };
+export { changeTheme, toggleAuto };
 
 /*****************************************************************************/
 
@@ -32,7 +32,7 @@ const changeTheme = (theme) => {
     colour.style.setProperty("--background", "#e2dbd7");
     colour.style.setProperty("--tabBG", "#fff");
     colour.style.setProperty("--border", "#777574");
-    colour.style.setProperty("--fontText", "#5b5a59");
+    colour.style.setProperty("--fontText", "#302f2e");
     colour.style.setProperty("--fontSubtext", "#777574");
 
   } else {
@@ -45,5 +45,12 @@ const changeTheme = (theme) => {
     colour.style.setProperty("--fontSubtext", "#99928f");
   }
   
+  return;
+}
+
+/*****************************************************************************/
+const toggleAuto = (value) => {
+  const toggle = document.getElementById("toggleauto");
+  toggle.checked = value;
   return;
 }

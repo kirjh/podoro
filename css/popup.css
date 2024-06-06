@@ -30,13 +30,12 @@ body {
 }
 
 .tabhead {
-  border-bottom: dashed;
-  border-width: 1px;
-  
   padding: 0.25rem;
   display: flex;
   justify-content: space-between;
 
+  border-bottom: dashed;
+  border-width: 1px;
   border-color: var(--border);
 }
 

@@ -17,6 +17,7 @@
 ******************************************************************************/
 
 import { alarmList, createAlarm, startSession, pauseSession, resumeSession, clearAlarm } from "./alarms.js";
+import { setTheme, setCounter, toggleAuto } from "./background_functions.js";
 
 /*****************************************************************************/
 
@@ -89,6 +90,7 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
 
   let time;
   let alarmName;
+  const storage = await chrome.storage.local.get(["toggleauto"]);
 
   // Toggle next alarm
   switch (alarm.name) {
@@ -124,29 +126,13 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
 
   sendMessage("changeButtonColour", alarmName);
   sendMessage("setCounter", null);
-});
 
-/*****************************************************************************/
-
-const setTheme = async () => {
-  const storage = await chrome.storage.local.get("theme");
-
-  if (storage.theme == "dark") {
-    chrome.storage.local.set({theme: "light"});
-    return true;
-  } else {
-    chrome.storage.local.set({theme: "dark"});
-    return false;
+  if (!storage.toggleauto) {
+    await pauseSession();
+    sendMessage("pauseTimer");
   }
-}
-
-/*****************************************************************************/
-
-//  @pomodoro:  (number) number of pomodoros elapsed
-const setCounter = async (pomodoro) => {
-  await chrome.storage.session.set({pomocount: pomodoro});
-  return null;
-}
+    
+});
 
 /*****************************************************************************/
 
@@ -175,6 +161,7 @@ const runBackend = {
                           return await clearAlarm();},
 
   theme: async () => {return await setTheme();},
+  toggleauto: async () => {return await toggleAuto();},
   setCounter: async () => {return setCounter(0);}
 }
 // Start timer

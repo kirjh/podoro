@@ -16,37 +16,16 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { setTheme, setCounter, toggleAuto };
+export { updateBreakText }
 
 /*****************************************************************************/
 
-const setTheme = async () => {
-    const storage = await chrome.storage.local.get("theme");
-  
-    if (storage.theme == "dark") {
-      chrome.storage.local.set({theme: "light"});
-      return true;
-    } else {
-      chrome.storage.local.set({theme: "dark"});
-      return false;
+//  @num:  (integer) sessions remaining until long break; can be null value
+const updateBreakText = (num) => {
+    const text = document.getElementById("nexttextbox");
+    if (!num) {
+        text.innerText = "Enjoy the break!";
+        return;
     }
-  }
-  
-/*****************************************************************************/
-  
-//  @pomodoro:  (number) number of pomodoros elapsed
-const setCounter = async (pomodoro) => {
-  await chrome.storage.session.set({pomocount: pomodoro});
-  return null;
+    text.innerText = "Long break in " + (num > 1 ? `${num} sessions` : "1 session");
 }
-
-/*****************************************************************************/
-
-const toggleAuto = async () => {
-  const storage = await chrome.storage.local.get(["toggleauto"]);
-  let updatedValue = storage.toggleauto ? false : true;
-  chrome.storage.local.set({toggleauto: updatedValue});
-  return updatedValue;
-}
-
-  

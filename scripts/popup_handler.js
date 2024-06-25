@@ -19,6 +19,7 @@
 export { toggleHandler, toggleTools, sendMessage, updateInput, menuHandler, actionHandler, inputChange, increaseAlarmLength, updateProgress };
 
 import { alarmExists, createAlarm } from "./alarms.js";
+import { updateBreakText } from "./popup_progress.js"
 
 /*****************************************************************************/
 
@@ -218,14 +219,17 @@ const updateProgress = async (intervalLength = null) => {
   const alarm = await alarmExists();
   if (!alarm) {
     progressBar.style.width = "0%";
+    updateBreakText(intervalLength);
     return;
   }
   if (alarm.name == "pomobreaklong") {
     progressBar.style.width = "100%";
+    updateBreakText();
     return;
   }
   const progress = ((sessionStorage.pomocount % intervalLength) / intervalLength) * 100;
   progressBar.style.width = `${progress}%`;
+  updateBreakText(intervalLength - (sessionStorage.pomocount % intervalLength));
 }
 
 /*****************************************************************************/

@@ -17,7 +17,7 @@
 ******************************************************************************/
 
 import { alarmList, createAlarm, startSession, pauseSession, resumeSession, clearAlarm } from "./alarms.js";
-import { setTheme, setCounter, toggleAuto } from "./background_functions.js";
+import { setTheme, setCounter, toggleAuto, checkDate } from "./background_functions.js";
 
 /*****************************************************************************/
 
@@ -162,8 +162,19 @@ const runBackend = {
 
   theme: async () => {return await setTheme();},
   toggleauto: async () => {return await toggleAuto();},
-  setCounter: async () => {return setCounter(0);}
+  setCounter: async () => {return setCounter(0);},
+  checkDate: async () => {return await checkDate();}
 }
+
+/*****************************************************************************/
+
+const processBackendRequest = (async (message) => {
+  const param = await runBackend[message.backendRequest]();
+  console.log(message.backendRequest);
+
+  sendMessage(message.backendRequest, param);
+});
+
 // Start timer
 // Stop timer
 // Pause timer
@@ -174,11 +185,6 @@ const runBackend = {
 
 chrome.runtime.onMessage.addListener(async (message) => {
   if (!message.backendRequest) return;
-
-  const param = await runBackend[message.backendRequest]();
-  console.log(message.backendRequest);
-  message.backendRequest;
-
-  sendMessage(message.backendRequest, param);
   
+  processBackendRequest(message);
 });

@@ -16,7 +16,8 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { setTheme, setCounter, toggleAuto };
+import { getDate, setDate } from "./time.js";
+export { setTheme, setCounter, toggleAuto, checkDate };
 
 /*****************************************************************************/
 
@@ -49,4 +50,14 @@ const toggleAuto = async () => {
   return updatedValue;
 }
 
+/*****************************************************************************/
+const checkDate = async () => {
+  const storage = await chrome.storage.local.get("lastsaveddate");
+  const date = getDate();
+  await setDate(date);
+
+  if (date == storage.lastsaveddate) return false;
+  
+  return true;
+}
   

@@ -19,7 +19,7 @@
 export { alarmList, alarmExists, clearAlarm, createAlarm, startSession, pauseSession, resumeSession};
 
 const alarmList = {
-  timeInputs: ["pomowork", "pomobreak", "pomobreaklong", "pomointerval"]
+  timeInputs: ["pomowork", "pomobreak", "pomobreaklong", "pomointerval", "goal"]
 }
 
 /*****************************************************************************/

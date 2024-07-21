@@ -16,7 +16,7 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { getTimeFromStorage, updateTime};
+export { getTimeFromStorage, updateTime, getDate, setDate };
 
 import { alarmList, alarmExists } from "./alarms.js";
 
@@ -46,28 +46,43 @@ const getTimeFromStorage = async () => {
 const updateTime = async () => {
   const timeDisplay = document.getElementById("timeDisplay");
   const clockPointer = document.getElementById("clockPointer");
-  let alarmLength = await chrome.storage.local.get("currentAlarm").then((r) => {return r.currentAlarm});
-  let time;
+  const storage = await chrome.storage.local.get("currentAlarm");
   const alarm = await alarmExists();
+  
+  let time;
+
+  // Determine if daily refresh has passed
   
   // If an active alarm does not exist, display current value of 
   // the pomowork setting.
   if (!alarm) {
-    console.log("NA"); // REMOVE
     timeDisplay.innerHTML = (!document.getElementById("pomowork").value) ? 0 : document.getElementById("pomowork").value;
     clockPointer.style.setProperty("transform", "rotate(0)");
     return;
   }
 
-  time = Math.ceil((alarm.scheduledTime-Date.now())/60000);
+  time = (alarm.scheduledTime-Date.now())/60000; //Math.ceil((alarm.scheduledTime-Date.now())/60000);
 
-  alarmLength = parseInt(alarmLength)
-  if (time > alarmLength) time = alarmLength;
+  storage.currentAlarm = parseInt(storage.currentAlarm)
+  if (time > storage.currentAlarm) time = storage.currentAlarm;
 
-  timeDisplay.innerHTML = time;
-  clockPointer.style.setProperty("transform", `rotate(${-((360/alarmLength)*time)}deg)`);
-  //console.log(`-((360/${alarmLength})*${time} = ${-((360/alarmLength)*time)}`)
+  timeDisplay.innerHTML = Math.ceil(time);
+  clockPointer.style.setProperty("transform", `rotate(${-((360/storage.currentAlarm)*time)}deg)`);
+  //console.log(`-((360/${storage.currentAlarm})*${time} = ${-((360/storage.currentAlarm)*time)}`)
   return;
 }
 
 /*****************************************************************************/
+
+//  Returns: time expressed as DDMMYYYY
+const getDate = () => {
+  let date = new Date();
+  return date.getDate().toString() + ((date.getMonth()+1) < 10 ? "0" : "") + (date.getMonth()+1).toString() + date.getFullYear().toString();
+}
+
+/*****************************************************************************/
+
+//  @date: (string) time expressed as DDMMYYYY
+const setDate = async (date) => {
+  chrome.storage.local.set({lastsaveddate: date});
+}

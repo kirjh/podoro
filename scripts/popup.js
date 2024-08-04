@@ -22,7 +22,7 @@ import { toggleHandler, toggleTools, sendMessage, updateInput, menuHandler, acti
 import { changeTheme, toggleAuto } from "./popup_settings.js";
 import {changeButtonColour, togglePrimaryButton, toggleStopButton} from "./popup_button.js";
 import JSON from '../manifest.json' with {type: 'json'};
-import { updateDailyProgress, resetDay } from "./popup_progress.js";
+import { updateDailyProgress } from "./popup_progress.js";
 
 /*****************************************************************************/
 
@@ -39,7 +39,7 @@ const runFrontend = {
   updateInput: (param) => {updateInput(param.key, param.value);},
   theme: (param) => {changeTheme(param);},
   toggleauto: (param) => {toggleAuto(param);},
-  checkDate: (param) => {resetDay(param)}
+  checkDate: (param) => {updateDailyProgress()},
 }
 
 /*****************************************************************************/

@@ -30,7 +30,7 @@ const getTimeFromStorage = async () => {
   for (const key of keyArray) {
     if (!storage[key]) {
       const value = document.getElementById(key).value;
-      chrome.storage.local.set({[key] : value});
+      chrome.storage.local.set({[key] : +value});
       storage[key] = value;
     }
   }
@@ -74,15 +74,18 @@ const updateTime = async () => {
 
 /*****************************************************************************/
 
-//  Returns: time expressed as DDMMYYYY
+//  Returns: integer time expressed as YYYYMMDD
 const getDate = () => {
   let date = new Date();
-  return date.getDate().toString() + ((date.getMonth()+1) < 10 ? "0" : "") + (date.getMonth()+1).toString() + date.getFullYear().toString();
+  let formatteddate = date.getFullYear().toString() + 
+                      ((date.getMonth()+1) < 10 ? "0" : "") + (date.getMonth()+1).toString() +
+                      (date.getDate() < 10 ? "0" : "") + date.getDate().toString();
+  return +formatteddate;
 }
 
 /*****************************************************************************/
 
-//  @date: (string) time expressed as DDMMYYYY
+//  @date: (integer) time expressed as YYYYMMDD
 const setDate = async (date) => {
   chrome.storage.local.set({lastsaveddate: date});
 }

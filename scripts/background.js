@@ -17,7 +17,7 @@
 ******************************************************************************/
 
 import { alarmList, createAlarm, startSession, pauseSession, resumeSession, clearAlarm } from "./alarms.js";
-import { setTheme, setCounter, toggleAuto, checkDate } from "./background_functions.js";
+import { sendMessage, setTheme, setCounter, toggleAuto, checkDate, increaseDailyProgress, updateStats } from "./background_functions.js";
 
 /*****************************************************************************/
 
@@ -44,15 +44,6 @@ const notif = {
     title: "Long Break Time!",
     message: " minute break starts now"
   }
-}
-
-/*****************************************************************************/
-
-//  @func   (string) function name
-//  @param  (object) parameters
-const sendMessage = (func, param) => {
-  chrome.runtime.sendMessage({frontendRequest: func, param: param})
-      .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
 }
 
 /*****************************************************************************/
@@ -91,11 +82,14 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
   let time;
   let alarmName;
   const storage = await chrome.storage.local.get(["toggleauto"]);
+  await processBackendRequest("checkDate");
+  await updateStats(alarm.name);
 
   // Toggle next alarm
   switch (alarm.name) {
     case "pomowork":
       const breakTime = await countSessions(alarm);
+      await increaseDailyProgress();
       if (breakTime) {
         alarmName = "pomobreaklong";
         chrome.action.setIcon({path: "../icons/blue_pomo64.png"});
@@ -168,11 +162,11 @@ const runBackend = {
 
 /*****************************************************************************/
 
-const processBackendRequest = (async (message) => {
-  const param = await runBackend[message.backendRequest]();
-  console.log(message.backendRequest);
+const processBackendRequest = (async (request) => {
+  const param = await runBackend[request]();
+  console.log(request);
 
-  sendMessage(message.backendRequest, param);
+  sendMessage(request, param);
 });
 
 // Start timer
@@ -186,5 +180,5 @@ const processBackendRequest = (async (message) => {
 chrome.runtime.onMessage.addListener(async (message) => {
   if (!message.backendRequest) return;
   
-  processBackendRequest(message);
+  processBackendRequest(message.backendRequest);
 });

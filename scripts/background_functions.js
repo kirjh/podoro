@@ -17,7 +17,16 @@
 ******************************************************************************/
 
 import { getDate, setDate } from "./time.js";
-export { setTheme, setCounter, toggleAuto, checkDate };
+export { sendMessage, setTheme, setCounter, toggleAuto, checkDate, increaseDailyProgress, updateStats };
+
+/*****************************************************************************/
+
+//  @func   (string) function name
+//  @param  (object) parameters
+const sendMessage = (func, param) => {
+  chrome.runtime.sendMessage({frontendRequest: func, param: param})
+      .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
+}
 
 /*****************************************************************************/
 
@@ -51,13 +60,67 @@ const toggleAuto = async () => {
 }
 
 /*****************************************************************************/
+
 const checkDate = async () => {
-  const storage = await chrome.storage.local.get("lastsaveddate");
+  const storage = await chrome.storage.local.get(["lastsaveddate", "lastdailystreak"]);
   const date = getDate();
   await setDate(date);
+  if (!storage.lastdailystreak) storage.lastdailystreak = 0;
 
   if (date == storage.lastsaveddate) return false;
-  
+  if (date - storage.lastdailystreak > 1) await chrome.storage.local.set({dailystreak : 0});
+
+  await chrome.storage.local.set({dailyprogress : 0, dailysessions : 0, dailyshortbreaks : 0, dailylongbreaks : 0, dailytasks : 0});
   return true;
+}
+
+/*****************************************************************************/
+
+const increaseDailyProgress = async () => {
+  const storage = await chrome.storage.local.get(["lastdailystreak", "dailyprogress", "goal", "dailystreak"]);
+  const date = getDate();
+  if (!storage.lastdailystreak)
+    storage.lastdailystreak = date-1;
+  console.log("DATE" + (date - 1));
+  if (!storage.dailyprogress)
+    storage.dailyprogress = 0;
+  if (!storage.dailystreak)
+    storage.dailystreak = 0;
+  
+  storage.dailyprogress++;
+  await chrome.storage.local.set({dailyprogress : storage.dailyprogress});
+
+  storage.dailystreak++;
+
+  if (storage.dailyprogress >= storage.goal && date - storage.lastdailystreak == 1) {
+    console.log("yeehaw" + (storage.dailystreak) + "/" + date)
+    await chrome.storage.local.set({dailystreak : storage.dailystreak, lastdailystreak : date});
+  }
+
+  sendMessage("checkDate");
+}
+
+/*****************************************************************************/
+
+//  @alarm:  (string) name of alarm
+const updateStats = async (alarm) => {
+  let stat;
+  switch (alarm) {
+    case "pomobreak":
+      stat = "dailyshortbreaks";
+      break;
+    case "pomobreaklong":
+      stat = "dailylongbreaks";
+      break;
+    default:
+      stat = "dailysessions";
+      break;
+  }
+  const storage = await chrome.storage.local.get([stat]);
+  if (!storage[stat]) storage[stat] = 0;
+  storage[stat]++;
+
+  await chrome.storage.local.set({[stat] : storage[stat]})
+  sendMessage("checkDate");
 }
   

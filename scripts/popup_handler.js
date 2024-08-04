@@ -158,7 +158,7 @@ const inputChange = (inputListItem) => {
   if (input.value < parseInt(input.min)) input.value = parseInt(input.min);
   if (input.value > parseInt(input.max)) input.value = parseInt(input.max);
 
-  chrome.storage.local.set({[input.id] : input.value})
+  chrome.storage.local.set({[input.id] : +input.value})
   if (input.id != "pomointerval") {
     createAlert("Changes will be applied to your next session", true);
   }

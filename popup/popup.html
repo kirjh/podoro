@@ -163,6 +163,10 @@
           <div class="tabhead">
             <span class="tabtitle">TASKS</span>     
           </div>
+            <div id="createtask">
+              <button>Add</button>
+            </div>
+
           <div class="vergrid">
             <div class="subtext">Version</div>
             <div class="subtext version"><a class="githublink" href="https://github.com/kirjh/podoro" title="Check out the Github repository!" target="_blank">0.0.0</a></div>
@@ -187,12 +191,12 @@
               <span class="progresstext">Sessions</span> 
               <div class="progressdiv">
                 <div class = "progressbubble">
-                  <div class="progresstext" id="yesterdaycount">0</div>
+                  <div class="progresstext" id="dailystreak">0</div>
                 </div>
               </div>
               <div class="progressdiv">
                 <div class = "progressbubble">
-                  <div class="progresstext" id="todaycount">0</div>
+                  <div class="progresstext" id="dailysessions">0</div>
                 </div>
               </div>
               <span class="progresstext">Days</span> 
@@ -204,15 +208,15 @@
             </div>
             <div class="statwrap">
               <span class="psub">Short breaks</span>
-              <span class="pstat">0</span>
+              <span class="pstat" id="dailyshortbreaks">0</span>
             </div>
             <div class="statwrap">
               <span class="psub">Long breaks</span>
-              <span class="pstat">0</span>
+              <span class="pstat" id="dailylongbreaks">0</span>
             </div>
             <div class="statwrap">
               <span class="psub">Tasks completed</span>
-              <span class="pstat">0</span>
+              <span class="pstat" id="dailytasks">0</span>
             </div>
             <!--
             <div id="pgoal">

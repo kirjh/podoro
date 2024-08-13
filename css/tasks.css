@@ -1,0 +1,119 @@
+
+/*::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--tabBG);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 1rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}*/
+
+#addtask {
+  margin-top: 0.25rem;
+  text-align: center;
+}
+
+#createtaskdiv {
+  display: flex;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.taskinput {
+  width: 100%;
+  font-size: 1.1em;
+  
+  border-radius: 2em;
+  border: solid;
+  border-width: 1px;
+
+  color: var(--fontText);
+  fill: var(--fontText);
+  background-color: var(--background);
+  border-color: var(--border);
+
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+}
+
+.taskinput:focus {
+  background-color: transparent;
+  outline:none;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 1px;
+  min-height: 0;
+  overflow-y: scroll;
+  margin: 0 0.5rem 0 0.5rem;
+  padding: 0;
+ 
+}
+ul li {
+  display: flex;
+  cursor: pointer;
+  list-style-type: none;
+  font-size: 1.1em;
+  margin: 0 0 0.25rem 0;
+  
+  border-radius: 2em;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  color: var(--fontText);
+}
+
+ul li:hover {
+  background-color: var(--background);
+}
+
+.complete {
+  background-color: var(--background);
+}
+
+ul li:active {
+  background-color: var(--tabBG);
+}
+
+.complete .tasktext {
+  color: var(--fontSubtext);
+  text-decoration: line-through;
+}
+
+.tasktext {
+  display: flex;
+  flex: 2 1 auto;
+  overflow: hidden;
+  padding: 0.1em 0.25em 0.1em 0.75em;
+}
+
+.closetask {
+  display: flex;
+
+  padding-top: 0.1em;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  border-radius: 0 2em 2em 0;
+}
+
+.closetask:hover {
+  background-color: var(--accent);
+}
+
+.closetask:active {
+  background-color: var(--background);
+}

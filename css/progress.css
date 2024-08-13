@@ -47,16 +47,11 @@
   margin: auto;
 }
 
-/* new code */
-
-#pbody {
-  padding: 0.25rem;
-}
-
 .ptext {
   font-size: 1.1em;
   text-align: left;
   margin-left: 0.75rem;
+  margin-right: 0.75rem;
 
   color: var(--fontText);
   fill: var(--fontText);
@@ -120,7 +115,6 @@
 #dailycontainer {
   margin-left: 0.75rem;
   margin-right: 0.75rem;
-  margin-bottom: 0.5rem;
   position: relative;
 }
 

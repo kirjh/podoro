@@ -17,7 +17,7 @@
 ******************************************************************************/
 
 import { getDate, setDate } from "./time.js";
-export { sendMessage, setTheme, setCounter, toggleAuto, checkDate, increaseDailyProgress, updateStats };
+export { sendMessage, setTheme, setCounter, toggleAuto, checkDate, increaseDailyProgress, updateStats, addTask, closeTask, completeTask };
 
 /*****************************************************************************/
 
@@ -123,4 +123,53 @@ const updateStats = async (alarm) => {
   await chrome.storage.local.set({[stat] : storage[stat]})
   sendMessage("checkDate");
 }
-  
+
+/*****************************************************************************/
+
+const addTask = async (text) => {
+  const storage = await chrome.storage.local.get("tasks");
+  const guid = Date.now().toString();
+
+  if (!storage.tasks) storage.tasks = {};
+
+  storage.tasks[guid] = {
+    text: text,
+    guid: guid,
+    complete: false
+  };
+
+  await chrome.storage.local.set({tasks: storage.tasks});
+  return storage.tasks[guid];
+}
+
+/*****************************************************************************/
+
+const closeTask = async (guid) => {
+  const storage = await chrome.storage.local.get("tasks");
+
+  delete storage.tasks[guid]
+
+  await chrome.storage.local.set({tasks: storage.tasks});
+  return guid;
+}
+
+/*****************************************************************************/
+
+const completeTask = async (guid) => {
+  const storage = await chrome.storage.local.get(["tasks", "dailytasks"]);
+  if (!storage.dailytasks) storage.dailytasks = 0;
+
+  if (storage.tasks[guid].complete) {
+    storage.tasks[guid].complete = false;
+    storage.dailytasks = storage.dailytasks > 0 ? storage.dailytasks - 1 : 0;
+    console.log(storage.dailytasks + " reduced");
+  } else {
+    storage.tasks[guid].complete = true;
+    storage.dailytasks++;
+  }
+
+  await chrome.storage.local.set({tasks: storage.tasks, dailytasks: storage.dailytasks});
+  sendMessage("checkDate");
+
+  return {complete: storage.tasks[guid].complete, guid: guid};
+}

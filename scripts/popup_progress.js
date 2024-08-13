@@ -34,8 +34,8 @@ const updateBreakText = (num) => {
 
 const updateDailyProgress = async () => {
   const progressbar = document.getElementById("dailyprogress");
-  const storage = await chrome.storage.local.get(["dailyprogress", "goal", "dailyshortbreaks", "dailylongbreaks", "dailysessions", "dailystreak"]);
-  for (const stat of ["dailyshortbreaks", "dailylongbreaks", "dailysessions", "dailystreak"]) {
+  const storage = await chrome.storage.local.get(["dailyprogress", "goal", "dailyshortbreaks", "dailylongbreaks", "dailysessions", "dailystreak", "dailytasks"]);
+  for (const stat of ["dailyshortbreaks", "dailylongbreaks", "dailysessions", "dailystreak", "dailytasks"]) {
     const statElement = document.getElementById(stat);
     if (!storage[stat]) storage[stat] = 0;
     statElement.innerHTML = storage[stat];

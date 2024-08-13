@@ -24,8 +24,8 @@ import { updateBreakText } from "./popup_progress.js"
 /*****************************************************************************/
 
 //  @param:  (string) parameter of the request
-const sendMessage = (param) => {
-  chrome.runtime.sendMessage({backendRequest: param})
+const sendMessage = (request, param) => {
+  chrome.runtime.sendMessage({backendRequest: request, param: param})
     .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
 }
 

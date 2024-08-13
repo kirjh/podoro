@@ -17,7 +17,7 @@
 ******************************************************************************/
 
 import { alarmList, createAlarm, startSession, pauseSession, resumeSession, clearAlarm } from "./alarms.js";
-import { sendMessage, setTheme, setCounter, toggleAuto, checkDate, increaseDailyProgress, updateStats } from "./background_functions.js";
+import { sendMessage, setTheme, setCounter, toggleAuto, checkDate, increaseDailyProgress, updateStats, addTask, closeTask, completeTask } from "./background_functions.js";
 
 /*****************************************************************************/
 
@@ -145,28 +145,31 @@ chrome.storage.onChanged.addListener((changes) => {
 
 //  Returns: return value of called function
 const runBackend = {
-  startTimer: async () => {return await startSession();},
-  resumeTimer: async () => {return await resumeSession();},
-  pauseTimer: async () => {return await pauseSession();},
+  startTimer: async (param) => {return await startSession();},
+  resumeTimer: async (param) => {return await resumeSession();},
+  pauseTimer: async (param) => {return await pauseSession();},
   
-  stopTimer: async () => {setCounter(0); 
+  stopTimer: async (param) => {setCounter(0); 
                           sendMessage("setCounter", null);
                           await chrome.storage.local.set({activeAlarm: null});
                           return await clearAlarm();},
 
-  theme: async () => {return await setTheme();},
-  toggleauto: async () => {return await toggleAuto();},
-  setCounter: async () => {return setCounter(0);},
-  checkDate: async () => {return await checkDate();}
+  theme: async (param) => {return await setTheme();},
+  toggleauto: async (param) => {return await toggleAuto();},
+  setCounter: async (param) => {return setCounter(0);},
+  checkDate: async (param) => {return await checkDate();},
+  
+  addTask: async (param) => {return await addTask(param)},
+  closeTask: async (param) => {return await closeTask(param);},
+  completeTask: async (param) => {return await completeTask(param);}
 }
 
 /*****************************************************************************/
 
-const processBackendRequest = (async (request) => {
-  const param = await runBackend[request]();
-  console.log(request);
+const processBackendRequest = (async (request, param) => {
+  const returnParam = await runBackend[request](param);
 
-  sendMessage(request, param);
+  sendMessage(request, returnParam);
 });
 
 // Start timer
@@ -180,5 +183,5 @@ const processBackendRequest = (async (request) => {
 chrome.runtime.onMessage.addListener(async (message) => {
   if (!message.backendRequest) return;
   
-  processBackendRequest(message.backendRequest);
+  processBackendRequest(message.backendRequest, message.param);
 });

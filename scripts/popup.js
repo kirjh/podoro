@@ -23,6 +23,7 @@ import { changeTheme, toggleAuto } from "./popup_settings.js";
 import {changeButtonColour, togglePrimaryButton, toggleStopButton} from "./popup_button.js";
 import JSON from '../manifest.json' with {type: 'json'};
 import { updateDailyProgress } from "./popup_progress.js";
+import { createTask, addTask, closeTask, completeTask, updateTasks } from "./popup_tasks.js";
 
 /*****************************************************************************/
 
@@ -40,6 +41,10 @@ const runFrontend = {
   theme: (param) => {changeTheme(param);},
   toggleauto: (param) => {toggleAuto(param);},
   checkDate: (param) => {updateDailyProgress()},
+
+  addTask: (param) => {addTask(param);},
+  closeTask: (param) => {closeTask(param);},
+  completeTask: (param) => {completeTask(param);}
 }
 
 /*****************************************************************************/
@@ -55,6 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const toggleSettingList = document.getElementsByClassName("togglesettings");
   const versionLinks = document.getElementsByClassName("githublink");
   const header = document.getElementById("toolbutton");
+  const taskInput = document.getElementById("createtask");
 
   //const borderElements = document.getElementsByClassName("lightborder");
 
@@ -103,6 +109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   setInterval(updateTime, 1000);
   updateProgress();
   updateDailyProgress();
+  updateTasks();
   sendMessage("checkDate");
 
   // Listeners
@@ -118,12 +125,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     button.addEventListener('click', ()=> {actionHandler(button);});
   }
   for (const button of toggleSettingList) {
-    button.addEventListener('click', ()=> {toggleHandler(button)});
+    button.addEventListener('click', async ()=> {toggleHandler(button);});
   }
   for (const input of inputList) {
     document.getElementById(input.id).value = storedTime[input.id];
     input.addEventListener('change', ()=> {inputChange(input);});
   }
+  taskInput.addEventListener('change', ()=> {createTask();});
 
   // Message handler passes message onto the relevant function
   // Use to sync background updates to instance of itself

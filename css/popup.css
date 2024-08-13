@@ -3,6 +3,7 @@
 @import "./tools.css";
 @import "./theme.css";
 @import "./progress.css";
+@import "./tasks.css";
 
 /* Body */
 body {
@@ -48,6 +49,13 @@ body {
   fill: var(--fontText);
 }
 
+.tabbody {
+  display: flex;
+  flex: 1 auto;
+  flex-direction:column;
+  padding: 0.25rem;
+}
+
 .togglecontainer {
   display: none;
   border-right: dashed;
@@ -66,7 +74,6 @@ body {
   display: grid;
   grid-template-columns: auto auto;
   margin: 0.5rem;
-  margin-top: auto;
 }
 
 .subtext {

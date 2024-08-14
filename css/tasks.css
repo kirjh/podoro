@@ -116,6 +116,7 @@ ul li:active {
 .tasktext {
   display: flex;
   flex: 2 1 auto;
+  white-space: nowrap;
   overflow: hidden;
   padding: 0.1em 0.25em 0.1em 0.75em;
 }

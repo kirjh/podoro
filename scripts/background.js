@@ -32,17 +32,17 @@ const notif = {
   pomowork: {
     iconUrl: "../icons/work_zoe.png",
     title: "Focus Time!",
-    message: " minute focus session starts now"
+    message: "focus session"
   },
   pomobreak: {
     iconUrl: "../icons/break_zoe.png",
     title: "Break Time!",
-    message: " minute break starts now"
+    message: "break"
   },
   pomobreaklong: {
     iconUrl: "../icons/long_break_zoe.png",
     title: "Long Break Time!",
-    message: " minute break starts now"
+    message: "break"
   }
 }
 
@@ -94,7 +94,10 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
   // Create Notification
   notifTemplate.iconUrl = notif[alarmName].iconUrl;
   notifTemplate.title = notif[alarmName].title;
-  notifTemplate.message = time.toString().concat(notif[alarmName].message);
+  if (storage.toggleauto) 
+    notifTemplate.message = `Your ${time} minute ${notif[alarmName].message} starts now.`;
+  else
+  notifTemplate.message = `Your ${time} minute ${notif[alarmName].message} is ready.`;
   createNotification(notifTemplate);
 
   // Create alarm

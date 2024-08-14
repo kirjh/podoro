@@ -66,8 +66,7 @@
   stroke-dasharray: 360;
   stroke-dashoffset: 360;
   
-  /*animation: hand 0.75s;*/
-  transition: 0.75s;
+  transition: stroke-dashoffset 0.75s;
 }
 
 #svghand {
@@ -81,18 +80,7 @@
 
   stroke-dasharray: 360;
   stroke-dashoffset: 360;
-  
-  /*animation: hand 0.75s;*/
-  transition: 0.75s;
-}
-
-@keyframes hand {
-  from {
-      stroke-dashoffset: 360;
-  }
-  to {
-      stroke-dashoffset: 270;
-  }
+  transition: stroke-dashoffset 0.75s;
 }
 
 /* Counter */

@@ -61,6 +61,7 @@ const addTask = (input) => {
   const close = document.createElement("span");
 
   text.appendChild(textNode);
+  text.title = input.text;
   text.className = "tasktext";
   text.addEventListener("click", (e)=>{sendMessage("completeTask", e.currentTarget.parentNode.id);});
 

@@ -23,8 +23,12 @@
           </div>
           <div class="clocktab">
             <div class="clock">
-              <div class="clockdial"></div>
-              <div class="pointer" id="clockPointer"></div>
+              <svg class="svgclock" xmlns="http://www.w3.org/2000/svg">
+                <circle id="svgdial" cx="6em" cy="6em" r="6em" />
+                <circle id="svgbg" cx="6em" cy="6em" r="4.5em" />
+                <circle id="svghandborder" cx="6em" cy="6em" r="4.5em" />
+                <circle id="svghand" cx="6em" cy="6em" r="4.5em" />
+              </svg>
             </div>
             <div class="textcontainer">
               <span class="time" id="timeDisplay">00</span>

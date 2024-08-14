@@ -45,19 +45,20 @@ const getTimeFromStorage = async () => {
 // converted into minutes remaining by subtracting Date.now()
 const updateTime = async () => {
   const timeDisplay = document.getElementById("timeDisplay");
-  const clockPointer = document.getElementById("clockPointer");
   const storage = await chrome.storage.local.get("currentAlarm");
   const alarm = await alarmExists();
+
+  const svghand = document.getElementById("svghand");
+  const svghandborder = document.getElementById("svghandborder");
   
   let time;
-
-  // Determine if daily refresh has passed
   
   // If an active alarm does not exist, display current value of 
   // the pomowork setting.
   if (!alarm) {
     timeDisplay.innerHTML = (!document.getElementById("pomowork").value) ? 0 : document.getElementById("pomowork").value;
-    clockPointer.style.setProperty("transform", "rotate(0)");
+    svghand.style.setProperty("stroke-dashoffset", 360);
+    svghandborder.style.setProperty("stroke-dashoffset", 360);
     return;
   }
 
@@ -67,8 +68,9 @@ const updateTime = async () => {
   if (time > storage.currentAlarm) time = storage.currentAlarm;
 
   timeDisplay.innerHTML = Math.ceil(time);
-  clockPointer.style.setProperty("transform", `rotate(${-((360/storage.currentAlarm)*time)}deg)`);
-  //console.log(`-((360/${storage.currentAlarm})*${time} = ${-((360/storage.currentAlarm)*time)}`)
+  svghand.style.setProperty("stroke-dashoffset", ((360/storage.currentAlarm)*time));
+  svghandborder.style.setProperty("stroke-dashoffset", ((360/storage.currentAlarm)*time));
+  //console.log(`((360/[${storage.currentAlarm}])*[${time}] = ${((360/storage.currentAlarm)*time)}`)
   return;
 }
 

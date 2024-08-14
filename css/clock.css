@@ -12,28 +12,6 @@
   height: 12em;
   position: absolute;
   border-radius: 50%;
-  border: solid;
-  border-width: 1px;
-  background-color: #756a69;
-
-  border-color: var(--border);
-}
-
-.pointer {
-  position: absolute; 
-  left: 5em;
-  top: 0.5em;
-  width: 1.5em;
-  height: 1.5em;
-
-  border: solid;
-  border-width: 0.25em;
-  border-color: var(--tabBG);
-  border-radius: 50%;
-  transition: transform 1s;
-  transform-origin: 0.95em 5.5em;
-
-  background-color: var(--accent);
 }
 
 .textcontainer {
@@ -61,18 +39,62 @@
   display: block;
 }
 
-.clockdial {
-  left: 1.25em;
-  top: 1.25em;
-
-  width: 9em;
-  height: 9em;
-  position: absolute;
-  border-radius: 50%;
-  border: solid;
-  border-width: 0.25em;
-  border-color: var(--tabBG);
+.svgclock {
+  width: 12em;
+  height: 12em;
 }
+
+#svgdial {
+  fill: #756a69;
+}
+
+#svgbg {
+  fill: none;
+  stroke-width: 0.5em;
+  stroke: var(--tabBG);
+}
+
+#svghandborder {
+  fill: none;
+  stroke-width: 1em;
+  stroke-linecap: round;
+  stroke: var(--tabBG);
+
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+
+  stroke-dasharray: 360;
+  stroke-dashoffset: 360;
+  
+  /*animation: hand 0.75s;*/
+  transition: 0.75s;
+}
+
+#svghand {
+  fill: none;
+  stroke-width: 0.5em;
+  stroke-linecap: round;
+  stroke: var(--accent);
+
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+
+  stroke-dasharray: 360;
+  stroke-dashoffset: 360;
+  
+  /*animation: hand 0.75s;*/
+  transition: 0.75s;
+}
+
+@keyframes hand {
+  from {
+      stroke-dashoffset: 360;
+  }
+  to {
+      stroke-dashoffset: 270;
+  }
+}
+
 /* Counter */
 #pomodorocontainer {
   margin-left: 1rem;

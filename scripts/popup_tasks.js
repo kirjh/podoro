@@ -29,11 +29,11 @@ const completeTask = (task) => {
     e.classList.add("complete")
   else
     e.classList.remove("complete")
-  //e.classList.contains("complete") ? e.classList.remove("complete") : e.classList.add("complete");
 }
 
 /*****************************************************************************/
 
+// @guid  (string) id of task item
 const closeTask = (guid) => {
   const e = document.getElementById(guid);
   console.log(`remove${e}`);
@@ -43,6 +43,7 @@ const closeTask = (guid) => {
 
 /*****************************************************************************/
 
+// @input  (object)  details of user task
 const addTask = (input) => {
   let textNode = document.createTextNode(input.text);
 

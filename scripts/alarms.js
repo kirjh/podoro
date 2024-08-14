@@ -16,7 +16,9 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { alarmList, alarmExists, clearAlarm, createAlarm, startSession, pauseSession, resumeSession};
+export { alarmList, alarmExists, clearAlarm, createAlarm, startSession, pauseSession, resumeSession, increaseAlarmLength };
+
+import { createAlert } from "./popup_handler.js";
 
 const alarmList = {
   timeInputs: ["pomowork", "pomobreak", "pomobreaklong", "pomointerval", "goal"]
@@ -105,6 +107,32 @@ const resumeSession = async() => {
 
   chrome.storage.local.set({paused: false});
   return null;
+}
+
+/*****************************************************************************/
+
+// Chrome API does not allow changes to be made to alarms, so
+// the original alarm must be deleted and replaced with a new alarm.
+const increaseAlarmLength = async () => {
+  const alarm = await alarmExists();
+  const alarmLength = await chrome.storage.local.get("currentAlarm").then((r) => {return r.currentAlarm});
+
+  if (!alarm || alarm.paused) {
+    createAlert("Cannot adjust time when there are no active sessions");
+    return;
+  }
+
+  let time = (alarm.scheduledTime-Date.now());
+  await chrome.alarms.clear(alarm.name);
+  
+  if (time + 60000 < alarmLength * 60000) {
+    time += 60000
+  } else {
+    createAlert("Cannot adjust time past the session's original length");
+  }
+  if (time < 60000) time = 60000;
+
+  createAlarm(alarm.name, time/60000)
 }
 
 /*****************************************************************************/

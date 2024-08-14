@@ -16,7 +16,9 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { changeTheme, toggleAuto };
+export { changeTheme, toggleAuto, inputChange, updateInput };
+
+import { createAlert } from "./popup_handler.js";
 
 /*****************************************************************************/
 
@@ -49,8 +51,36 @@ const changeTheme = (theme) => {
 }
 
 /*****************************************************************************/
+
+//  @value:  (boolean) auto-start session is enabled
 const toggleAuto = (value) => {
   const toggle = document.getElementById("toggleauto");
   toggle.checked = value;
   return;
+}
+
+/*****************************************************************************/
+
+//  @inputListItem:  (DOM object) input
+const inputChange = (inputListItem) => {
+  const input = document.getElementById(inputListItem.id);
+
+  input.value = (isNaN(parseFloat(input.value))) ? input.min : Math.round(parseFloat(input.value));
+  if (input.value < parseInt(input.min)) input.value = parseInt(input.min);
+  if (input.value > parseInt(input.max)) input.value = parseInt(input.max);
+
+  chrome.storage.local.set({[input.id] : +input.value})
+  if (input.id != "pomointerval") {
+    createAlert("Changes will be applied to your next session", true);
+  }
+  input.blur();
+}
+
+/*****************************************************************************/
+
+//  @key    (string) input 
+//  @value  (string) new value of input
+const updateInput = (key, value) => {
+  const input = document.getElementById(key);
+  input.value = value;
 }

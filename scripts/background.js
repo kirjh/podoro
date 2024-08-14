@@ -17,7 +17,7 @@
 ******************************************************************************/
 
 import { alarmList, createAlarm, startSession, pauseSession, resumeSession, clearAlarm } from "./alarms.js";
-import { sendMessage, setTheme, setCounter, toggleAuto, checkDate, increaseDailyProgress, updateStats, addTask, closeTask, completeTask } from "./background_functions.js";
+import { sendMessage, countSessions, setTheme, setCounter, toggleAuto, checkDate, increaseDailyProgress, updateStats, addTask, closeTask, completeTask } from "./background_functions.js";
 
 /*****************************************************************************/
 
@@ -58,24 +58,6 @@ const createNotification = (msg) => {
 
 /*****************************************************************************/
 
-//  @alarm  (object) alarm
-//
-//  Returns: true if interval divides count cleanly, false otherwise
-const countSessions = async (alarm) => {
-  const storage = await chrome.storage.local.get("pomointerval");
-  const sessionStorage = await chrome.storage.session.get("pomocount");
-  
-  if (!sessionStorage.pomocount) sessionStorage.pomocount = 0;
-  sessionStorage.pomocount += 1;
-
-  await setCounter(sessionStorage.pomocount);
-
-  if (sessionStorage.pomocount % storage.pomointerval == 0) return true;
-  return false;
-}
-
-/*****************************************************************************/
-
 chrome.alarms.onAlarm.addListener(async (alarm)=> {
   console.log(`${alarm.name} has triggered`);
 
@@ -109,6 +91,7 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
   time = await chrome.storage.local.get([alarmName]);
   time = time[alarmName];
 
+  // Create Notification
   notifTemplate.iconUrl = notif[alarmName].iconUrl;
   notifTemplate.title = notif[alarmName].title;
   notifTemplate.message = time.toString().concat(notif[alarmName].message);
@@ -172,13 +155,7 @@ const processBackendRequest = (async (request, param) => {
   sendMessage(request, returnParam);
 });
 
-// Start timer
-// Stop timer
-// Pause timer
-// Dark mode
-// Reset progress
-// Tasks
-// Update settings?
+/*****************************************************************************/
 
 chrome.runtime.onMessage.addListener(async (message) => {
   if (!message.backendRequest) return;

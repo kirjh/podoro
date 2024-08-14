@@ -16,10 +16,9 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { toggleHandler, toggleTools, sendMessage, updateInput, menuHandler, actionHandler, inputChange, increaseAlarmLength, updateProgress };
+export { createAlert, toggleHandler, toggleTools, sendMessage, menuHandler };
 
-import { alarmExists, createAlarm } from "./alarms.js";
-import { updateBreakText } from "./popup_progress.js"
+import { alarmExists } from "./alarms.js";
 
 /*****************************************************************************/
 
@@ -51,29 +50,6 @@ const toggleHandler = (button) => {
     case "toggleauto":
       sendMessage("toggleauto");
       break;
-    default:
-      break;
-  }
-}
-
-/*****************************************************************************/
-
-//  @button:  (DOM object) menu button
-//  @args:    (array)      arguments
-const actionHandler = (button, args) => {
-  switch (button.id) {
-    case "theme":
-      sendMessage("theme");
-      break;
-    case "reset":
-      sendMessage("setCounter")
-      createAlert("Reseting number of pomodoros completed");
-      break;
-    case "increment":
-      increaseAlarmLength();
-      break;
-    case "block": 
-      toggleBlock();
     default:
       break;
   }
@@ -146,90 +122,6 @@ const toggleTab = (element, display, forceDisplay = false) => {
   }
   element.style.display = "none";
   return false;
-}
-
-/*****************************************************************************/
-
-//  @inputListItem:  (DOM object) input
-const inputChange = (inputListItem) => {
-  const input = document.getElementById(inputListItem.id);
-
-  input.value = (isNaN(parseFloat(input.value))) ? input.min : Math.round(parseFloat(input.value));
-  if (input.value < parseInt(input.min)) input.value = parseInt(input.min);
-  if (input.value > parseInt(input.max)) input.value = parseInt(input.max);
-
-  chrome.storage.local.set({[input.id] : +input.value})
-  if (input.id != "pomointerval") {
-    createAlert("Changes will be applied to your next session", true);
-  }
-  input.blur();
-}
-
-/*****************************************************************************/
-
-//  @key    (string) input 
-//  @value  (string) new value of input
-const updateInput = (key, value) => {
-  const input = document.getElementById(key);
-  input.value = value;
-}
-
-/*****************************************************************************/
-
-// Chrome API does not allow changes to be made to alarms, so
-// the original alarm must be deleted and replaced with a new alarm.
-const increaseAlarmLength = async () => {
-  const alarm = await alarmExists();
-  const alarmLength = await chrome.storage.local.get("currentAlarm").then((r) => {return r.currentAlarm});
-
-  if (!alarm || alarm.paused) {
-    createAlert("Cannot adjust time when there are no active sessions");
-    return;
-  }
-
-  let time = (alarm.scheduledTime-Date.now());
-  await chrome.alarms.clear(alarm.name);
-  
-  if (time + 60000 < alarmLength * 60000) {
-    time += 60000
-  } else {
-    createAlert("Cannot adjust time past the session's original length");
-  }
-  if (time < 60000) time = 60000;
-
-  createAlarm(alarm.name, time/60000)
-}
-
-/*****************************************************************************/
-
-const toggleBlock = () => {
-  createAlert("Error: function not implemented");
-}
-
-/*****************************************************************************/
-
-//  @intervalLength:  (number) long break interval
-const updateProgress = async (intervalLength = null) => {
-  if (!intervalLength) {
-    const storage = await chrome.storage.local.get("pomointerval");
-    intervalLength = storage.pomointerval;
-  }
-  const progressBar = document.getElementById("currentprogress");
-  const sessionStorage = await chrome.storage.session.get("pomocount");
-  const alarm = await alarmExists();
-  if (!alarm) {
-    progressBar.style.width = "0%";
-    updateBreakText(intervalLength);
-    return;
-  }
-  if (alarm.name == "pomobreaklong") {
-    progressBar.style.width = "100%";
-    updateBreakText();
-    return;
-  }
-  const progress = ((sessionStorage.pomocount % intervalLength) / intervalLength) * 100;
-  progressBar.style.width = `${progress}%`;
-  updateBreakText(intervalLength - (sessionStorage.pomocount % intervalLength));
 }
 
 /*****************************************************************************/

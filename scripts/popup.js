@@ -18,11 +18,11 @@
 
 import { alarmExists } from "./alarms.js";
 import { getTimeFromStorage, updateTime } from "./time.js";
-import { toggleHandler, toggleTools, sendMessage, updateInput, menuHandler, actionHandler, inputChange, updateProgress } from "./popup_handler.js";
-import { changeTheme, toggleAuto } from "./popup_settings.js";
+import { toggleHandler, toggleTools, sendMessage, menuHandler, } from "./popup_handler.js";
+import { changeTheme, toggleAuto, updateInput, inputChange } from "./popup_settings.js";
 import {changeButtonColour, togglePrimaryButton, toggleStopButton} from "./popup_button.js";
 import JSON from '../manifest.json' with {type: 'json'};
-import { updateDailyProgress } from "./popup_progress.js";
+import { updateProgress, updateDailyProgress } from "./popup_progress.js";
 import { createTask, addTask, closeTask, completeTask, updateTasks } from "./popup_tasks.js";
 
 /*****************************************************************************/
@@ -55,7 +55,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const primaryButton = document.getElementsByClassName("alarmbutton")[0];
   const stopButton = document.getElementsByClassName("stopbutton")[0];
   const inputList = document.getElementsByClassName("timeinput");
-  const actionButtonList = document.getElementsByClassName("toolicon");
   const toggleButtonList = document.getElementsByClassName("darktoolicon");
   const toggleSettingList = document.getElementsByClassName("togglesettings");
   const versionLinks = document.getElementsByClassName("githublink");
@@ -72,8 +71,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Retrive data from storage
   const storedTime = await getTimeFromStorage();
   const storage = await chrome.storage.local.get(["theme", "toggleauto"]);
-  //const sessionStorage = await chrome.storage.session.get("pomocount");
-  //if (!sessionStorage.pomocount) sessionStorage.pomocount = 0;
 
   const alarm = await alarmExists();
   
@@ -86,23 +83,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   } else {
     changeButtonColour("pomowork");
-    // chrome.storage.local.set({paused: false});
   }
   if (storage.theme && storage.theme == "dark")
     changeTheme(false);
   if (storage.toggleauto)
     toggleAuto(true);
-
-
-  /*
-  setTimeout(()=> {
-    for (const element of borderElements) {
-      element.classList.add("animatedbackground");
-    }
-    primaryButton.classList.add("animatedbackground");
-    stopButton.classList.add("animatedbackground");
-  },500);
-  */
 
   togglePrimaryButton(primaryButton.id);
   updateTime();
@@ -121,9 +106,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   for (const button of toggleButtonList) {
     button.addEventListener('click', ()=> {menuHandler(button);});
   }
-  for (const button of actionButtonList) {
-    button.addEventListener('click', ()=> {actionHandler(button);});
-  }
   for (const button of toggleSettingList) {
     button.addEventListener('click', async ()=> {toggleHandler(button);});
   }
@@ -134,7 +116,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   taskInput.addEventListener('change', ()=> {createTask();});
 
   // Message handler passes message onto the relevant function
-  // Use to sync background updates to instance of itself
+  // Use to sync background updates to an instance
   chrome.runtime.onMessage.addListener((message) => {
     if (message.frontendRequest) {
       runFrontend[message.frontendRequest](message.param);

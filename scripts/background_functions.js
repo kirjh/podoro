@@ -17,7 +17,7 @@
 ******************************************************************************/
 
 import { getDate, setDate } from "./time.js";
-export { sendMessage, setTheme, setCounter, toggleAuto, checkDate, increaseDailyProgress, updateStats, addTask, closeTask, completeTask };
+export { sendMessage, countSessions, setTheme, setCounter, toggleAuto, checkDate, increaseDailyProgress, updateStats, addTask, closeTask, completeTask };
 
 /*****************************************************************************/
 
@@ -27,6 +27,24 @@ const sendMessage = (func, param) => {
   chrome.runtime.sendMessage({frontendRequest: func, param: param})
       .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
 }
+
+/*****************************************************************************/
+
+//  @alarm  (object) alarm
+//
+//  Returns: true if interval divides count cleanly, false otherwise
+const countSessions = async (alarm) => {
+  const storage = await chrome.storage.local.get(["pomointerval", "pomocount"]);
+  
+  if (!storage.pomocount) storage.pomocount = 0;
+  storage.pomocount += 1;
+
+  await setCounter(storage.pomocount);
+
+  if (storage.pomocount % storage.pomointerval == 0) return true;
+  return false;
+}
+
 
 /*****************************************************************************/
 
@@ -46,7 +64,7 @@ const setTheme = async () => {
   
 //  @pomodoro:  (number) number of pomodoros elapsed
 const setCounter = async (pomodoro) => {
-  await chrome.storage.session.set({pomocount: pomodoro});
+  await chrome.storage.local.set({pomocount: pomodoro});
   return null;
 }
 
@@ -126,6 +144,7 @@ const updateStats = async (alarm) => {
 
 /*****************************************************************************/
 
+// @text  (string) text input given by user
 const addTask = async (text) => {
   const storage = await chrome.storage.local.get("tasks");
   const guid = Date.now().toString();
@@ -144,6 +163,7 @@ const addTask = async (text) => {
 
 /*****************************************************************************/
 
+// @guid  (string) id of task item
 const closeTask = async (guid) => {
   const storage = await chrome.storage.local.get("tasks");
 
@@ -155,6 +175,7 @@ const closeTask = async (guid) => {
 
 /*****************************************************************************/
 
+// @guid  (string) id of task item
 const completeTask = async (guid) => {
   const storage = await chrome.storage.local.get(["tasks", "dailytasks"]);
   if (!storage.dailytasks) storage.dailytasks = 0;

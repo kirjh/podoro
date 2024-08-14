@@ -16,18 +16,45 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { updateBreakText, updateDailyProgress }
+export { updateProgress, updateDailyProgress }
+import { alarmExists } from "./alarms.js";
 
 /*****************************************************************************/
 
 //  @num:  (integer) sessions remaining until long break; can be null value
-const updateBreakText = (num) => {
+const updateBreakText = (num = null) => {
   const text = document.getElementById("nexttextbox");
   if (!num) {
       text.innerText = "Enjoy the break!";
       return;
   }
   text.innerText = "Long break in " + (num > 1 ? `${num} sessions` : "1 session");
+}
+
+/*****************************************************************************/
+
+//  @intervalLength:  (number) long break interval
+const updateProgress = async (intervalLength = null) => {
+  if (!intervalLength) {
+    const storage = await chrome.storage.local.get("pomointerval");
+    intervalLength = storage.pomointerval;
+  }
+  const progressBar = document.getElementById("currentprogress");
+  const sessionStorage = await chrome.storage.local.get("pomocount");
+  const alarm = await alarmExists();
+  if (!alarm) {
+    progressBar.style.width = "0%";
+    updateBreakText(intervalLength);
+    return;
+  }
+  if (alarm.name == "pomobreaklong") {
+    progressBar.style.width = "100%";
+    updateBreakText();
+    return;
+  }
+  const progress = ((sessionStorage.pomocount % intervalLength) / intervalLength) * 100;
+  progressBar.style.width = `${progress}%`;
+  updateBreakText(intervalLength - (sessionStorage.pomocount % intervalLength));
 }
 
 /*****************************************************************************/

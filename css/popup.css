@@ -44,6 +44,7 @@ body {
   font-size: 1.2em;
   font-weight: 700;
   margin-left: 0.75rem;
+  cursor: default;
 
   color: var(--fontText);
   fill: var(--fontText);

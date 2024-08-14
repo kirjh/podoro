@@ -8,6 +8,7 @@
 .progresstext {
   font-size: 1.1em;
   margin: 0em;
+  cursor: default;
 
   color: var(--fontText);
   fill: var(--fontText);
@@ -90,6 +91,7 @@
 #dailytext {
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
+  cursor: default;
 }
 
 #pgoal {

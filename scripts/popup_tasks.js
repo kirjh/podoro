@@ -16,11 +16,20 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { createTask, addTask, completeTask, closeTask, updateTasks };
+export { countTasks, createTask, addTask, completeTask, closeTask, updateTasks };
 import { sendMessage } from "./popup_handler.js";
 
 /*****************************************************************************/
 
+// @number  (integer) number of tasks active
+const countTasks = (number) => {
+  const e = document.getElementById("taskcount");
+  e.innerHTML = `${number}/25`;
+}
+
+/*****************************************************************************/
+
+// @task  (object) task object
 const completeTask = (task) => {
   const e = document.getElementById(task.guid);
   console.log(`complete${e}`);
@@ -73,9 +82,11 @@ const addTask = (input) => {
 
 /*****************************************************************************/
 
-const createTask = () => {
+const createTask = async () => {
   const text = document.getElementById("createtask").value;
   if (!text) return;
+  const storage = await chrome.storage.local.get("tasks");
+  if (Object.keys(storage.tasks).length >= 25) return;
 
   sendMessage("addTask", text);
 }
@@ -86,7 +97,7 @@ const updateTasks = async () => {
   const storage = await chrome.storage.local.get("tasks");
   if (!storage.tasks) return;
 
-  console.log(storage.tasks);
+  countTasks(Object.keys(storage.tasks).length);
   for (const task in storage.tasks) {
     console.log(storage.tasks[task]);
     addTask(storage.tasks[task]);

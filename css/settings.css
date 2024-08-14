@@ -40,7 +40,6 @@
   display: block;
   text-align: center;
   margin: 0em;
-  cursor: help;
 
   color: var(--fontText);
   fill: var(--fontText);
@@ -112,6 +111,7 @@ input::-webkit-inner-spin-button {
   display: inline-block;
   text-align: left;
   margin: 0em;
+  cursor: default;
 
   color: var(--fontText);
   fill: var(--fontText);

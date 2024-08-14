@@ -158,6 +158,7 @@ const addTask = async (text) => {
   };
 
   await chrome.storage.local.set({tasks: storage.tasks});
+  sendMessage("countTasks", Object.keys(storage.tasks).length);
   return storage.tasks[guid];
 }
 
@@ -170,6 +171,7 @@ const closeTask = async (guid) => {
   delete storage.tasks[guid]
 
   await chrome.storage.local.set({tasks: storage.tasks});
+  sendMessage("countTasks", Object.keys(storage.tasks).length);
   return guid;
 }
 

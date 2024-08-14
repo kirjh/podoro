@@ -23,7 +23,7 @@ import { changeTheme, toggleAuto, updateInput, inputChange } from "./popup_setti
 import {changeButtonColour, togglePrimaryButton, toggleStopButton} from "./popup_button.js";
 import JSON from '../manifest.json' with {type: 'json'};
 import { updateProgress, updateDailyProgress } from "./popup_progress.js";
-import { createTask, addTask, closeTask, completeTask, updateTasks } from "./popup_tasks.js";
+import { countTasks, createTask, addTask, closeTask, completeTask, updateTasks } from "./popup_tasks.js";
 
 /*****************************************************************************/
 
@@ -44,7 +44,8 @@ const runFrontend = {
 
   addTask: (param) => {addTask(param);},
   closeTask: (param) => {closeTask(param);},
-  completeTask: (param) => {completeTask(param);}
+  completeTask: (param) => {completeTask(param);},
+  countTasks: (param) => {countTasks(param);}
 }
 
 /*****************************************************************************/

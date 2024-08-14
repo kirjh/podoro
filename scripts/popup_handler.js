@@ -64,7 +64,7 @@ const menuHandler = (button) => {
   const togglebuttonList = document.getElementsByClassName("darktoolicon");
   
   if (button.id == "help") {
-    chrome.tabs.create({"url": "https://github.com/kirjh/podoro/wiki"});
+    chrome.tabs.create({"url": "https://github.com/kirjh/podoro"});
     return;
   }
 

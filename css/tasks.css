@@ -16,9 +16,28 @@
   background: #555;
 }*/
 
+.ttext {
+  font-size: 1.1em;
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+
+  color: var(--fontText);
+  fill: var(--fontText);
+}
+
 #addtask {
+  display: flex;
   margin-top: 0.25rem;
-  text-align: center;
+  text-align: left;
+  cursor: default;
+}
+
+#taskcount {
+  display: flex;
+  margin-top: 0.25rem;
+  margin-left: auto;
+  text-align: right;
+  cursor: default;
 }
 
 #createtaskdiv {

@@ -18,8 +18,6 @@
 
 export { changeTheme, toggleAuto, inputChange, updateInput };
 
-import { createAlert } from "./popup_handler.js";
-
 /*****************************************************************************/
 
 //  @theme:  (boolean) theme is light
@@ -68,9 +66,6 @@ const inputChange = (inputListItem) => {
   if (input.value > parseInt(input.max)) input.value = parseInt(input.max);
 
   chrome.storage.local.set({[input.id] : +input.value})
-  if (input.id != "pomointerval") {
-    createAlert("Changes will be applied to your next session", true);
-  }
   input.blur();
 }
 

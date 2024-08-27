@@ -43,15 +43,33 @@ const changeButtonColour = (alarmName) => {
 
   switch (alarmName) {
     case "pomobreak":
-      chrome.action.setIcon({path: "../icons/green_pomo64.png"});
+      chrome.action.setIcon({
+        path: {
+          "16":"../icons/green_icon_16.png",
+          "32":"../icons/green_icon_32.png",
+          "64":"../icons/green_icon_64.png"
+        }
+      });
       colour.style.setProperty("--accent", "#66be68");
       break;
     case "pomobreaklong":
-      chrome.action.setIcon({path: "../icons/blue_pomo64.png"});
+      chrome.action.setIcon({
+        path: {
+          "16":"../icons/blue_icon_16.png",
+          "32":"../icons/blue_icon_32.png",
+          "64":"../icons/blue_icon_64.png"
+        }
+      });
       colour.style.setProperty("--accent", "#689dd6");
       break;
     default:
-      chrome.action.setIcon({path: "../icons/pomo64.png"});
+      chrome.action.setIcon({
+        path: {
+          "16":"../icons/red_icon_16.png",
+          "32":"../icons/red_icon_32.png",
+          "64":"../icons/red_icon_64.png"
+        }
+      });
       colour.style.setProperty("--accent", "#d66868");
       break;
   }

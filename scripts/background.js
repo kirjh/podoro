@@ -18,30 +18,25 @@
 
 import { alarmList, createAlarm, startSession, pauseSession, resumeSession, clearAlarm } from "./alarms.js";
 import { sendMessage, countSessions, setTheme, setCounter, toggleAuto, checkDate, increaseDailyProgress, updateStats, addTask, closeTask, completeTask } from "./background_functions.js";
+import { alarmExists } from "./alarms.js";
+
+let notifId = null;
 
 /*****************************************************************************/
-
-const notifTemplate = {
-  type: "basic",
-  iconUrl: "../icons/work_zoe.png",
-  title:"default",
-  message: "default"
-}
-
 const notif = {
   pomowork: {
-    iconUrl: "../icons/work_zoe.png",
-    title: "Focus Time!",
+    iconUrl: "../icons/red_icon_256.png",
+    title: "Focus Time",
     message: "focus session"
   },
   pomobreak: {
-    iconUrl: "../icons/break_zoe.png",
-    title: "Break Time!",
+    iconUrl: "../icons/green_icon_256.png",
+    title: "Break Time",
     message: "break"
   },
   pomobreaklong: {
-    iconUrl: "../icons/long_break_zoe.png",
-    title: "Long Break Time!",
+    iconUrl: "../icons/blue_icon_256.png",
+    title: "Break Time",
     message: "break"
   }
 }
@@ -50,12 +45,39 @@ const notif = {
 
 // @msg (string) notification message
 const createNotification = (msg) => {
-  chrome.notifications.create("pomoalarm", msg, (notifId) => {
-    setTimeout(() => {chrome.notifications.clear(notifId);}, 30000);
+  chrome.notifications.create("pomoalarm", msg, (id) => {
+    notifId = id;
   });
   return;
 }
 
+const createButtonNotification = (msg) => {
+  chrome.notifications.create("pomoalarm", {
+    type: msg.type,
+    iconUrl: msg.iconUrl,
+    title: msg.title,
+    message: msg.message,
+    buttons: [{
+      title: "Start Now"
+    }, {
+      title: "Later"
+    }]
+  }, (id) => {
+    notifId = id;
+  });
+  return;
+}
+
+/*****************************************************************************/
+
+chrome.notifications.onButtonClicked.addListener(async (id, button)=>{
+  if (id != notifId || button != 0) return;
+  const storage = await chrome.storage.local.get(["paused"]);
+  if (storage.paused) {
+    await resumeSession();
+    sendMessage("resumeTimer");
+  }
+});
 /*****************************************************************************/
 
 chrome.alarms.onAlarm.addListener(async (alarm)=> {
@@ -74,16 +96,34 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
       await increaseDailyProgress();
       if (breakTime) {
         alarmName = "pomobreaklong";
-        chrome.action.setIcon({path: "../icons/blue_pomo64.png"});
+        chrome.action.setIcon({
+          path: {
+            "16":"../icons/blue_icon_16.png",
+            "32":"../icons/blue_icon_32.png",
+            "64":"../icons/blue_icon_64.png",
+          }
+        });
         setCounter(0);
       } else {
         alarmName = "pomobreak";
-        chrome.action.setIcon({path: "../icons/green_pomo64.png"});
+        chrome.action.setIcon({
+          path: {
+            "16":"../icons/green_icon_16.png",
+            "32":"../icons/green_icon_32.png",
+            "64":"../icons/green_icon_64.png",
+          }
+        });
       }
       break;
     default:
       alarmName = "pomowork";
-      chrome.action.setIcon({path: "../icons/pomo64.png"});
+      chrome.action.setIcon({
+        path: {
+          "16":"../icons/red_icon_16.png",
+          "32":"../icons/red_icon_32.png",
+          "64":"../icons/red_icon_64.png"
+        }
+      });
       break;
   }
 
@@ -92,13 +132,19 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
   time = time[alarmName];
 
   // Create Notification
+  const notifTemplate = new Object();
+  notifTemplate.type = "basic";
   notifTemplate.iconUrl = notif[alarmName].iconUrl;
   notifTemplate.title = notif[alarmName].title;
-  if (storage.toggleauto) 
+  if (storage.toggleauto) {
     notifTemplate.message = `Your ${time} minute ${notif[alarmName].message} starts now.`;
-  else
-  notifTemplate.message = `Your ${time} minute ${notif[alarmName].message} is ready.`;
-  createNotification(notifTemplate);
+    createNotification(notifTemplate);
+  } else {
+    notifTemplate.message = `Your ${time} minute ${notif[alarmName].message} is ready.`;
+    createButtonNotification(notifTemplate);
+  }
+
+  
 
   // Create alarm
   chrome.storage.local.set({["currentAlarm"] : time});
@@ -164,4 +210,40 @@ chrome.runtime.onMessage.addListener(async (message) => {
   if (!message.backendRequest) return;
   
   processBackendRequest(message.backendRequest, message.param);
+});
+
+/*****************************************************************************/
+
+// Change icon on browser start
+chrome.tabs.onActivated.addListener(async () => {
+  const alarm = await alarmExists();
+  switch (alarm.name) {
+    case "pomobreak":
+      chrome.action.setIcon({
+        path: {
+          "16":"../icons/green_icon_16.png",
+          "32":"../icons/green_icon_32.png",
+          "64":"../icons/green_icon_64.png"
+        }
+      });
+      break;
+    case "pomobreaklong":
+      chrome.action.setIcon({
+        path: {
+          "16":"../icons/blue_icon_16.png",
+          "32":"../icons/blue_icon_32.png",
+          "64":"../icons/blue_icon_64.png"
+        }
+      });
+      break;
+    default:
+      chrome.action.setIcon({
+        path: {
+          "16":"../icons/red_icon_16.png",
+          "32":"../icons/red_icon_32.png",
+          "64":"../icons/red_icon_64.png"
+        }
+      });
+      break;
+  }
 });

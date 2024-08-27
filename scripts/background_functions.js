@@ -110,7 +110,7 @@ const increaseDailyProgress = async () => {
 
   storage.dailystreak++;
 
-  if (storage.dailyprogress >= storage.goal && date - storage.lastdailystreak == 1) {
+  if (storage.dailyprogress >= storage.goal && date - storage.lastdailystreak >= 1) {
     console.log("yeehaw" + (storage.dailystreak) + "/" + date)
     await chrome.storage.local.set({dailystreak : storage.dailystreak, lastdailystreak : date});
   }

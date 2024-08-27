@@ -216,7 +216,9 @@ chrome.runtime.onMessage.addListener(async (message) => {
 
 // Change icon on browser start
 chrome.tabs.onActivated.addListener(async () => {
-  const alarm = await alarmExists();
+  let alarm = await alarmExists();
+  if (!alarm) alarm = {name: "pomowork"};
+
   switch (alarm.name) {
     case "pomobreak":
       chrome.action.setIcon({

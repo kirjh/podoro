@@ -3,9 +3,13 @@
   display: block;
 }
 
-#settingsmenu {
+#inputmenu {
   display: grid;
   grid-template-columns: 50% 50%;
+  margin: 0.5rem 0.5rem 0.25rem 0.5rem;
+}
+
+#togglemenu {
   margin: 0.5rem;
 }
 
@@ -28,7 +32,7 @@
 
   top: 0;
   bottom: 0;
-  margin: auto 0.35em;
+  margin: auto 0.28em;
 }
 
 .menutext {
@@ -36,7 +40,9 @@
   display: block;
   text-align: center;
   margin: 0em;
-  cursor: help;
+
+  color: var(--fontText);
+  fill: var(--fontText);
 }
 
 .menuinput {
@@ -48,6 +54,11 @@
   border-radius: 2em;
   border: solid;
   border-width: 1px;
+
+  color: var(--fontText);
+  fill: var(--fontText);
+  background-color: var(--background);
+  border-color: var(--border);
 }
 
 .menuinput:focus {
@@ -69,7 +80,7 @@ input::-webkit-inner-spin-button {
   
   color: #fff;
   background-color: rgba(0,0,0,0.8);
-
+  
   display: grid;
   grid-template-columns: auto auto;
 }
@@ -88,9 +99,88 @@ input::-webkit-inner-spin-button {
   cursor: pointer;
   text-align: right;
   font-size: 1.2em;
-  transition: background-color 0.5s;
 }
 
-#helppopup button:hover {
-  background-color: #d66868;
+/* Switch */
+.divider {
+  margin: 0.75rem 0.5rem 0.5rem;
+}
+
+.switchtext {
+  font-size: 1.1em;
+  display: inline-block;
+  text-align: left;
+  margin: 0em;
+  cursor: default;
+
+  color: var(--fontText);
+  fill: var(--fontText);
+}
+
+.switch {
+  position: relative;
+  float: right;
+  width: 2.9em;
+  height: 1.5em;
+  
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  border: solid;
+  border-width: 1px;
+  border-radius: 1.2em;
+
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+ 
+  background-color: var(--background);
+  border-color: var(--border);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.3em;
+  width: 1.3em;
+  left: 0.1em;
+  bottom: 0em;
+  background-color: #918483;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(1.3em);
+  -ms-transform: translateX(1.3em);
+  transform: translateX(1.3em);
+}
+
+input:checked + .slider {
+  background-color: rgba(0,0,0,0);
+}
+
+.mika {
+  flex: 1;
+  overflow: hidden;
+}
+
+.balls {
+  display:block;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
 }

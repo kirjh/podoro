@@ -17,71 +17,67 @@
 ******************************************************************************/
 
 import { alarmList, createAlarm, startSession, pauseSession, resumeSession, clearAlarm } from "./alarms.js";
+import { sendMessage, countSessions, setTheme, setCounter, toggleAuto, checkDate, increaseDailyProgress, updateStats, addTask, closeTask, completeTask } from "./background_functions.js";
+import { alarmExists } from "./alarms.js";
+
+let notifId = null;
 
 /*****************************************************************************/
-
-const notifTemplate = {
-  type: "basic",
-  iconUrl: "../icons/work_zoe.png",
-  title:"default",
-  message: "default"
-}
-
 const notif = {
   pomowork: {
-    iconUrl: "../icons/work_zoe.png",
-    title: "Focus Time!",
-    message: " minute focus session starts now"
+    iconUrl: "../icons/red_icon_256.png",
+    title: "Focus Time",
+    message: "focus session"
   },
   pomobreak: {
-    iconUrl: "../icons/break_zoe.png",
-    title: "Break Time!",
-    message: " minute break starts now"
+    iconUrl: "../icons/green_icon_256.png",
+    title: "Break Time",
+    message: "break"
   },
   pomobreaklong: {
-    iconUrl: "../icons/long_break_zoe.png",
-    title: "Long Break Time!",
-    message: " minute break starts now"
+    iconUrl: "../icons/blue_icon_256.png",
+    title: "Break Time",
+    message: "break"
   }
-}
-
-/*****************************************************************************/
-
-//  @func   (string) function name
-//  @param  (object) parameters
-const sendMessage = (func, param) => {
-  chrome.runtime.sendMessage({frontendRequest: func, param: param})
-      .catch((e) => {console.log(`[${e}]\n Likely popup is not active`)});
 }
 
 /*****************************************************************************/
 
 // @msg (string) notification message
 const createNotification = (msg) => {
-  chrome.notifications.create("pomoalarm", msg, (notifId) => {
-    setTimeout(() => {chrome.notifications.clear(notifId);}, 30000);
+  chrome.notifications.create("pomoalarm", msg, (id) => {
+    notifId = id;
+  });
+  return;
+}
+
+const createButtonNotification = (msg) => {
+  chrome.notifications.create("pomoalarm", {
+    type: msg.type,
+    iconUrl: msg.iconUrl,
+    title: msg.title,
+    message: msg.message,
+    buttons: [{
+      title: "Start Now"
+    }, {
+      title: "Later"
+    }]
+  }, (id) => {
+    notifId = id;
   });
   return;
 }
 
 /*****************************************************************************/
 
-//  @alarm  (object) alarm
-//
-//  Returns: true if interval divides count cleanly, false otherwise
-const countSessions = async (alarm) => {
-  const storage = await chrome.storage.local.get("pomointerval");
-  const sessionStorage = await chrome.storage.session.get("pomocount");
-  
-  if (!sessionStorage.pomocount) sessionStorage.pomocount = 0;
-  sessionStorage.pomocount += 1;
-
-  await setCounter(sessionStorage.pomocount);
-
-  if (sessionStorage.pomocount % storage.pomointerval == 0) return true;
-  return false;
-}
-
+chrome.notifications.onButtonClicked.addListener(async (id, button)=>{
+  if (id != notifId || button != 0) return;
+  const storage = await chrome.storage.local.get(["paused"]);
+  if (storage.paused) {
+    await resumeSession();
+    sendMessage("resumeTimer");
+  }
+});
 /*****************************************************************************/
 
 chrome.alarms.onAlarm.addListener(async (alarm)=> {
@@ -89,22 +85,45 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
 
   let time;
   let alarmName;
+  const storage = await chrome.storage.local.get(["toggleauto"]);
+  await processBackendRequest("checkDate");
+  await updateStats(alarm.name);
 
   // Toggle next alarm
   switch (alarm.name) {
     case "pomowork":
       const breakTime = await countSessions(alarm);
+      await increaseDailyProgress();
       if (breakTime) {
         alarmName = "pomobreaklong";
-        chrome.action.setIcon({path: "../icons/blue_pomo64.png"});
+        chrome.action.setIcon({
+          path: {
+            "16":"../icons/blue_icon_16.png",
+            "32":"../icons/blue_icon_32.png",
+            "64":"../icons/blue_icon_64.png",
+          }
+        });
+        setCounter(0);
       } else {
         alarmName = "pomobreak";
-        chrome.action.setIcon({path: "../icons/green_pomo64.png"});
+        chrome.action.setIcon({
+          path: {
+            "16":"../icons/green_icon_16.png",
+            "32":"../icons/green_icon_32.png",
+            "64":"../icons/green_icon_64.png",
+          }
+        });
       }
       break;
     default:
       alarmName = "pomowork";
-      chrome.action.setIcon({path: "../icons/pomo64.png"});
+      chrome.action.setIcon({
+        path: {
+          "16":"../icons/red_icon_16.png",
+          "32":"../icons/red_icon_32.png",
+          "64":"../icons/red_icon_64.png"
+        }
+      });
       break;
   }
 
@@ -112,41 +131,34 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
   time = await chrome.storage.local.get([alarmName]);
   time = time[alarmName];
 
+  // Create Notification
+  const notifTemplate = new Object();
+  notifTemplate.type = "basic";
   notifTemplate.iconUrl = notif[alarmName].iconUrl;
   notifTemplate.title = notif[alarmName].title;
-  notifTemplate.message = time.toString().concat(notif[alarmName].message);
-  createNotification(notifTemplate);
+  if (storage.toggleauto) {
+    notifTemplate.message = `Your ${time} minute ${notif[alarmName].message} starts now.`;
+    createNotification(notifTemplate);
+  } else {
+    notifTemplate.message = `Your ${time} minute ${notif[alarmName].message} is ready.`;
+    createButtonNotification(notifTemplate);
+  }
+
+  
 
   // Create alarm
   chrome.storage.local.set({["currentAlarm"] : time});
   await createAlarm(alarmName, parseInt(time));
 
-  sendMessage("setSecret", time);
   sendMessage("changeButtonColour", alarmName);
   sendMessage("setCounter", null);
-});
 
-/*****************************************************************************/
-
-const setTheme = async () => {
-  const storage = await chrome.storage.local.get("theme");
-
-  if (storage.theme == "dark") {
-    chrome.storage.local.set({theme: "light"});
-    return true;
-  } else {
-    chrome.storage.local.set({theme: "dark"});
-    return false;
+  if (!storage.toggleauto) {
+    await pauseSession();
+    sendMessage("pauseTimer");
   }
-}
-
-/*****************************************************************************/
-
-//  @pomodoro:  (number) number of pomodoros elapsed
-const setCounter = async (pomodoro) => {
-  await chrome.storage.session.set({pomocount: pomodoro});
-  return null;
-}
+    
+});
 
 /*****************************************************************************/
 
@@ -165,32 +177,75 @@ chrome.storage.onChanged.addListener((changes) => {
 
 //  Returns: return value of called function
 const runBackend = {
-  startTimer: async () => {return await startSession();},
-  resumeTimer: async () => {return await resumeSession();},
-  pauseTimer: async () => {return await pauseSession();},
+  startTimer: async (param) => {return await startSession();},
+  resumeTimer: async (param) => {return await resumeSession();},
+  pauseTimer: async (param) => {return await pauseSession();},
   
-  stopTimer: async () => {setCounter(0); 
+  stopTimer: async (param) => {setCounter(0); 
                           sendMessage("setCounter", null);
+                          await chrome.storage.local.set({activeAlarm: null});
                           return await clearAlarm();},
 
-  theme: async () => {return await setTheme();},
-  setCounter: async () => {return setCounter(0);}
+  theme: async (param) => {return await setTheme();},
+  toggleauto: async (param) => {return await toggleAuto();},
+  setCounter: async (param) => {return setCounter(0);},
+  checkDate: async (param) => {return await checkDate();},
+  
+  addTask: async (param) => {return await addTask(param)},
+  closeTask: async (param) => {return await closeTask(param);},
+  completeTask: async (param) => {return await completeTask(param);}
 }
-// Start timer
-// Stop timer
-// Pause timer
-// Dark mode
-// Reset progress
-// Tasks
-// Update settings?
+
+/*****************************************************************************/
+
+const processBackendRequest = (async (request, param) => {
+  const returnParam = await runBackend[request](param);
+
+  sendMessage(request, returnParam);
+});
+
+/*****************************************************************************/
 
 chrome.runtime.onMessage.addListener(async (message) => {
   if (!message.backendRequest) return;
-
-  const param = await runBackend[message.backendRequest]();
-  console.log(message.backendRequest);
-  message.backendRequest;
-
-  sendMessage(message.backendRequest, param);
   
+  processBackendRequest(message.backendRequest, message.param);
+});
+
+/*****************************************************************************/
+
+// Change icon on browser start
+chrome.tabs.onActivated.addListener(async () => {
+  let alarm = await alarmExists();
+  if (!alarm) alarm = {name: "pomowork"};
+
+  switch (alarm.name) {
+    case "pomobreak":
+      chrome.action.setIcon({
+        path: {
+          "16":"../icons/green_icon_16.png",
+          "32":"../icons/green_icon_32.png",
+          "64":"../icons/green_icon_64.png"
+        }
+      });
+      break;
+    case "pomobreaklong":
+      chrome.action.setIcon({
+        path: {
+          "16":"../icons/blue_icon_16.png",
+          "32":"../icons/blue_icon_32.png",
+          "64":"../icons/blue_icon_64.png"
+        }
+      });
+      break;
+    default:
+      chrome.action.setIcon({
+        path: {
+          "16":"../icons/red_icon_16.png",
+          "32":"../icons/red_icon_32.png",
+          "64":"../icons/red_icon_64.png"
+        }
+      });
+      break;
+  }
 });

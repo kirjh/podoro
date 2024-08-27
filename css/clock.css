@@ -12,28 +12,16 @@
   height: 12em;
   position: absolute;
   border-radius: 50%;
-  border: solid;
-  border-width: 1px;
-  background-color: #756a69;
-}
-
-.pointer {
-  left: 5.25em;
-  top: 0.75em;
-  width: 1.5em;
-  height: 1.5em;
-  position: absolute;
-
-  border-radius: 50%;
-  transition: transform 1s;
-  transform-origin: 0.75em 5.25em;
-
-  background-color: #e87f7f;
 }
 
 .textcontainer {
   position: absolute;
   color: #fff;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .time {
@@ -51,10 +39,50 @@
   display: block;
 }
 
-.secret {
-  position: absolute;
-  display: none;
+.svgclock {
+  width: 12em;
+  height: 12em;
 }
+
+#svgdial {
+  fill: #756a69;
+}
+
+#svgbg {
+  fill: none;
+  stroke-width: 0.5em;
+  stroke: var(--tabBG);
+}
+
+#svghandborder {
+  fill: none;
+  stroke-width: 1em;
+  stroke-linecap: round;
+  stroke: var(--tabBG);
+
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+
+  stroke-dasharray: 360;
+  stroke-dashoffset: 360;
+  
+  transition: stroke-dashoffset 0.75s;
+}
+
+#svghand {
+  fill: none;
+  stroke-width: 0.5em;
+  stroke-linecap: round;
+  stroke: var(--accent);
+
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+
+  stroke-dasharray: 360;
+  stroke-dashoffset: 360;
+  transition: stroke-dashoffset 0.75s;
+}
+
 /* Counter */
 #pomodorocontainer {
   margin-left: 1rem;
@@ -68,6 +96,8 @@
   border-radius: 4em;
   width: 100%;
   height: 0.5em;
+
+  background-color: var(--background);
 }
 
 #currentprogress {
@@ -96,7 +126,7 @@
 .alarmbutton,
 .alarmbuttonactive,
 .stopbutton {
-  background-color: #d66868;
+  background-color: var(--accent);
   color: #fff;
   fill: #fff;
 
@@ -105,9 +135,9 @@
   cursor: pointer;
   border-width: 1px;
   border-style: solid;
-  border-color: #d66868;
+  border-color: var(--accent);
 }
-
+/*
 .greenalarm {
   background-color: #66be68;
   border-color: #66be68;
@@ -117,7 +147,7 @@
   background-color: #689dd6;
   border-color: #689dd6;
 }
-
+*/
 .alarmbuttonactive {
   border-radius: 2em 0 0 2em;
   display: inline;
@@ -139,12 +169,12 @@
 .alarmbutton:hover,
 .alarmbuttonactive:hover,
 .stopbuttonactive:hover {
-  color: #5b5a59;
-  fill: #5b5a59;
+  color: var(--fontText);
+  fill: var(--fontText);
   background-color: transparent;
   
   border-style: solid;
-  border-color: #777574;
+  border-color: var(--border);
 }
 
 .alarmbuttonactive:hover {
@@ -158,8 +188,8 @@
 .alarmbutton:active,
 .alarmbuttonactive:active,
 .stopbuttonactive:active  {
-  background-color: #d66868;
+  background-color: var(--accent);
   color: #fff;
   fill: #fff;
-  border-color: #d66868;
+  border-color: var(--accent);
 }

@@ -52,7 +52,7 @@ const updateTime = async () => {
   const svghandborder = document.getElementById("svghandborder");
   
   let time;
-  
+
   // If an active alarm does not exist, display current value of 
   // the pomowork setting.
   if (!alarm) {
@@ -62,8 +62,9 @@ const updateTime = async () => {
     return;
   }
 
-  time = (alarm.scheduledTime-Date.now())/60000; //Math.ceil((alarm.scheduledTime-Date.now())/60000);
+  time = (alarm.scheduledTime-Date.now())/60000;
 
+  if (!storage.currentAlarm) storage.currentAlarm = 0;
   storage.currentAlarm = parseInt(storage.currentAlarm)
   if (time > storage.currentAlarm) time = storage.currentAlarm;
 

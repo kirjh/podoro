@@ -16,9 +16,10 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { createAlert, toggleHandler, toggleTools, sendMessage, menuHandler };
+export { createAlert, toggleHandler, toggleTools, sendMessage, menuHandler, resetHandler };
 
 import { alarmExists } from "./alarms.js";
+import { updateProgress, updateDailyProgress } from "./popup_progress.js";
 
 /*****************************************************************************/
 
@@ -68,6 +69,9 @@ const menuHandler = (button) => {
     return;
   }
 
+  updateProgress();
+  updateDailyProgress();
+
   const tabOpened = toggleTab(tab, "flex");
   toggleTab(container, "flex", tabOpened);
   
@@ -114,14 +118,36 @@ const createAlert = async (msg, alarmMustExist=false) => {
 //  @display:    (string)     display property
 //  @forceDisplay:  (boolean)    force display property 
 //
-//  Returns: true if tab was opened, false otherwise
+//  Returns: true if tab was opened, false if tab was closed
 const toggleTab = (element, display, forceDisplay = false) => {
   if (forceDisplay || !element.style.display || element.style.display == "none") {
     element.style.display = display;
     return true;
   }
   element.style.display = "none";
+  
   return false;
+}
+
+/*****************************************************************************/
+
+//  @button:  (DOM object) reset button
+const resetHandler = (button) => {
+  if (!button.classList.contains("confirmreset")) {
+    button.classList.add("confirmreset");
+    return;
+  }
+  button.classList.remove("confirmreset");
+  switch (button.id) {
+    case "resetsettings":
+      sendMessage("resetSettings");
+      break;
+    case "resetprogress":
+      sendMessage("resetProgress");
+      break;
+    default:
+      break;
+  }
 }
 
 /*****************************************************************************/

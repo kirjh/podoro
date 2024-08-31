@@ -16,14 +16,14 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { updateProgress, updateDailyProgress }
+export { updateProgress, updateDailyProgress, resetProgress }
 import { alarmExists } from "./alarms.js";
 
 /*****************************************************************************/
 
 //  @num:  (integer) sessions remaining until long break; can be null value
 const updateBreakText = (num = null) => {
-  const text = document.getElementById("nexttextbox");
+  const text = document.getElementById("nextsessiontrack");
   if (!num) {
       text.innerText = "Enjoy the break!";
       return;
@@ -41,6 +41,7 @@ const updateProgress = async (intervalLength = null) => {
   }
   const progressBar = document.getElementById("currentprogress");
   const sessionStorage = await chrome.storage.local.get("pomocount");
+  if (!sessionStorage.pomocount) sessionStorage.pomocount = 0;
   const alarm = await alarmExists();
   if (!alarm) {
     progressBar.style.width = "0%";
@@ -75,3 +76,19 @@ const updateDailyProgress = async () => {
   progressbar.style.width = `${storage.dailyprogress > storage.goal ? 100 : storage.dailyprogress / storage.goal * 100}%`;
 }
 
+/*****************************************************************************/
+
+//  @settings  (object) list of progress and values
+const resetProgress = async (progress) => {
+  for (const stat in progress) {
+    console.log("reset: " + stat);
+    const statElement = document.getElementById(stat);
+    if (stat == "dailyprogress")
+      statElement.style.width = `0`;
+    else
+      statElement.innerHTML = 0;
+    
+  }
+}
+
+/*****************************************************************************/

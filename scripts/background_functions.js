@@ -17,7 +17,7 @@
 ******************************************************************************/
 
 import { getDate, setDate } from "./time.js";
-export { sendMessage, countSessions, setTheme, setCounter, toggleAuto, checkDate, increaseDailyProgress, updateStats, addTask, closeTask, completeTask };
+export { sendMessage, countSessions, setTheme, setCounter, toggleAuto, checkDate, increaseDailyProgress, updateStats, addTask, closeTask, completeTask, resetSettings, resetProgress };
 
 /*****************************************************************************/
 
@@ -196,3 +196,35 @@ const completeTask = async (guid) => {
 
   return {complete: storage.tasks[guid].complete, guid: guid};
 }
+
+/*****************************************************************************/
+
+const resetSettings = async () => {
+  const settings = {
+    pomowork: 25,
+    pomobreak: 5,
+    pomobreaklong: 15,
+    pomointerval: 4,
+    goal: 4
+  }
+  await chrome.storage.local.set(settings);
+  return settings;
+}
+
+/*****************************************************************************/
+
+const resetProgress = async () => {
+  const progress = {
+    dailylongbreaks: 0,
+    dailyshortbreaks: 0,
+    dailysessions: 0,
+    dailyprogress: 0,
+    dailytasks: 0,
+    dailystreak: 0
+  }
+  await chrome.storage.local.set(progress);
+  console.log("e");
+  return progress;
+}
+
+/*****************************************************************************/

@@ -17,7 +17,7 @@
 ******************************************************************************/
 
 import { alarmList, createAlarm, startSession, pauseSession, resumeSession, clearAlarm } from "./alarms.js";
-import { sendMessage, countSessions, setTheme, setCounter, toggleAuto, checkDate, increaseDailyProgress, updateStats, addTask, closeTask, completeTask } from "./background_functions.js";
+import { sendMessage, countSessions, setTheme, setCounter, toggleAuto, checkDate, increaseDailyProgress, updateStats, addTask, closeTask, completeTask, resetSettings, resetProgress } from "./background_functions.js";
 import { alarmExists } from "./alarms.js";
 
 let notifId = null;
@@ -193,7 +193,10 @@ const runBackend = {
   
   addTask: async (param) => {return await addTask(param)},
   closeTask: async (param) => {return await closeTask(param);},
-  completeTask: async (param) => {return await completeTask(param);}
+  completeTask: async (param) => {return await completeTask(param);},
+
+  resetSettings: async (param) => {return await resetSettings();},
+  resetProgress: async (param) => {return await resetProgress();}
 }
 
 /*****************************************************************************/

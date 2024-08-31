@@ -52,7 +52,9 @@ body {
 
 .tabbody {
   display: flex;
-  flex: 1 auto;
+  flex: 1 1 1px;
+  min-height: 0;
+  overflow-y: scroll;
   flex-direction:column;
   padding: 0.25rem;
 }

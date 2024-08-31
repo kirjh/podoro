@@ -18,11 +18,11 @@
 
 import { alarmExists } from "./alarms.js";
 import { getTimeFromStorage, updateTime } from "./time.js";
-import { toggleHandler, toggleTools, sendMessage, menuHandler, } from "./popup_handler.js";
-import { changeTheme, toggleAuto, updateInput, inputChange } from "./popup_settings.js";
+import { toggleHandler, toggleTools, sendMessage, menuHandler, resetHandler } from "./popup_handler.js";
+import { changeTheme, toggleAuto, updateInput, inputChange, resetSettings } from "./popup_settings.js";
 import {changeButtonColour, togglePrimaryButton, toggleStopButton} from "./popup_button.js";
 import JSON from '../manifest.json' with {type: 'json'};
-import { updateProgress, updateDailyProgress } from "./popup_progress.js";
+import { updateProgress, updateDailyProgress, resetProgress } from "./popup_progress.js";
 import { countTasks, createTask, addTask, closeTask, completeTask, updateTasks } from "./popup_tasks.js";
 
 /*****************************************************************************/
@@ -45,7 +45,10 @@ const runFrontend = {
   addTask: (param) => {addTask(param);},
   closeTask: (param) => {closeTask(param);},
   completeTask: (param) => {completeTask(param);},
-  countTasks: (param) => {countTasks(param);}
+  countTasks: (param) => {countTasks(param);},
+
+  resetSettings: async (param) => {resetSettings(param);},
+  resetProgress: async (param) => {resetProgress(param);}
 }
 
 /*****************************************************************************/
@@ -56,6 +59,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const primaryButton = document.getElementsByClassName("alarmbutton")[0];
   const stopButton = document.getElementsByClassName("stopbutton")[0];
   const inputList = document.getElementsByClassName("timeinput");
+  const resetList = document.getElementsByClassName("resetbutton");
   const toggleButtonList = document.getElementsByClassName("darktoolicon");
   const toggleSettingList = document.getElementsByClassName("togglesettings");
   const versionLinks = document.getElementsByClassName("githublink");
@@ -109,6 +113,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   for (const button of toggleSettingList) {
     button.addEventListener('click', async ()=> {toggleHandler(button);});
+  }
+  for (const button of resetList) {
+    button.addEventListener('mouseleave', function () {this.classList.remove("confirmreset")});
+    button.addEventListener('click', async ()=> {resetHandler(button);});
+    
   }
   for (const input of inputList) {
     document.getElementById(input.id).value = storedTime[input.id];

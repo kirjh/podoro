@@ -87,7 +87,7 @@ const createTask = async () => {
   const text = document.getElementById("createtask").value;
   if (!text) return;
   const storage = await chrome.storage.local.get("tasks");
-  if (Object.keys(storage.tasks).length >= 25) return;
+  if (storage.tasks && Object.keys(storage.tasks).length >= 25) return;
 
   sendMessage("addTask", text);
 }

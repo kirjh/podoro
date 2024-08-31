@@ -16,7 +16,7 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-export { changeTheme, toggleAuto, inputChange, updateInput };
+export { changeTheme, toggleAuto, inputChange, updateInput, resetSettings };
 
 /*****************************************************************************/
 
@@ -77,3 +77,15 @@ const updateInput = (key, value) => {
   const input = document.getElementById(key);
   input.value = value;
 }
+
+/*****************************************************************************/
+
+//  @settings  (object) list of settings and values
+const resetSettings = (settings) => {
+  for (const setting in settings) {
+    const input = document.getElementById(setting);
+    input.value = settings[setting];
+  }
+}
+
+/*****************************************************************************/

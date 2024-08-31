@@ -96,65 +96,66 @@
           <div class="tabhead">
             <span class="tabtitle">SETTINGS</span>     
           </div>
-        <div class="mika"> <!--delete-->
+          <div class="tabbody">
+            <div id="inputmenu">
+              <div class="lengthsetting">
+                <label class="menutext" for="pomowork" title="Change length of a work session">Pomodoro</label>
+                <div class="inputdiv">
+                  <span class="inputicon red"></span>
+                  <input type="number" class= "menuinput timeinput" id="pomowork" name="pomowork" value="25" min="1" max="60">
+                </div>
+              </div>
+              <div class="lengthsetting">
+                <label class="menutext" for="pomobreak" title="Change length of a short break">Short Break</label>
+                <div class="inputdiv">
+                  <span class="inputicon green"></span>
+                  <input type="number" class= "menuinput timeinput" id="pomobreak" name="pomobreak" value="5" min="1" max="60">
+                </div>
+              </div>
+              <div class="lengthsetting">
+                <label class="menutext" for="pomointerval" title="Change number of pomodoros to complete before a long break">Sessions</label>
+                <div class="inputdiv">
+                  <span class="inputicon"></span>
+                  <input type="number" class= "menuinput timeinput" id="pomointerval" name="pomointerval" value="4" min="1" max="60">
+                </div>
+              </div>
+              <div class="lengthsetting">
+                <label class="menutext" for="pomobreaklong" title="Change length of a long break session">Long Break</label>
+                <div class="inputdiv">
+                  <span class="inputicon blue"></span>
+                  <input type="number" class= "menuinput timeinput" id="pomobreaklong" name="pomobreaklong" value="15" min="1" max="60">
+                </div>
+              </div>
+            </div>
 
-          <div id="inputmenu">
             <div class="lengthsetting">
-              <label class="menutext" for="pomowork" title="Change length of a work session">Pomodoro</label>
-              <div class="inputdiv">
-                <span class="inputicon red"></span>
-                <input type="number" class= "menuinput timeinput" id="pomowork" name="pomowork" value="25" min="1" max="60">
+              <label class="menutext" for="goal" title="Change daily session goal">Daily Goal</label>
+              <div class="inputdiv" style="width: 47%; margin: auto">
+                <input type="number" class= "menuinput timeinput" id="goal" name="goal" value="4" min="1" max="60">
               </div>
             </div>
-            <div class="lengthsetting">
-              <label class="menutext" for="pomobreak" title="Change length of a short break">Short Break</label>
-              <div class="inputdiv">
-                <span class="inputicon green"></span>
-                <input type="number" class= "menuinput timeinput" id="pomobreak" name="pomobreak" value="5" min="1" max="60">
-              </div>
+            <div>
+              <button class="resetbutton" id="resetsettings"><u>Reset</u></button>
             </div>
-            <div class="lengthsetting">
-              <label class="menutext" for="pomointerval" title="Change number of pomodoros to complete before a long break">Sessions</label>
-              <div class="inputdiv">
-                <span class="inputicon"></span>
-                <input type="number" class= "menuinput timeinput" id="pomointerval" name="pomointerval" value="4" min="1" max="60">
+
+            <div id="togglemenu">
+              <div class="divider">
+                <span class="switchtext" title="Automatically start sessions">Auto-Start</span>
+                <label class="switch">
+                  <input type="checkbox" class="togglesettings" id="toggleauto">
+                  <span class="slider"></span>
+                </label>
               </div>
-            </div>
-            <div class="lengthsetting">
-              <label class="menutext" for="pomobreaklong" title="Change length of a long break session">Long Break</label>
-              <div class="inputdiv">
-                <span class="inputicon blue"></span>
-                <input type="number" class= "menuinput timeinput" id="pomobreaklong" name="pomobreaklong" value="15" min="1" max="60">
+
+              <div class="divider">
+                <span class="switchtext" title="Toggle dark mode">Dark Mode</span>
+                <label class="switch">
+                  <input type="checkbox" class="togglesettings" id="toggletheme">
+                  <span class="slider"></span>
+                </label>
               </div>
             </div>
           </div>
-
-          <div class="lengthsetting" style="margin: 0 0.5rem 0.5rem 0.5rem">
-            <label class="menutext" for="goal" title="Change daily session goal">Daily Goal</label>
-            <div class="inputdiv" style="width: 47%; margin: auto">
-              <input type="number" class= "menuinput timeinput" id="goal" name="goal" value="4" min="1" max="60">
-            </div>
-          </div>
-
-          <div id="togglemenu">
-            <div class="divider">
-              <span class="switchtext" title="Automatically start sessions">Auto-Start</span>
-              <label class="switch">
-                <input type="checkbox" class="togglesettings" id="toggleauto">
-                <span class="slider"></span>
-              </label>
-            </div>
-
-            <div class="divider">
-              <span class="switchtext" title="Toggle dark mode">Dark Mode</span>
-              <label class="switch">
-                <input type="checkbox" class="togglesettings" id="toggletheme">
-                <span class="slider"></span>
-              </label>
-            </div>
-          </div>
-
-          </div> <!--delete-->
 
           <div class="vergrid">
             <div class="subtext">Version</div>
@@ -216,7 +217,7 @@
             </div>
             <div class="dailywrap">
               <span class="ptext">Daily Stats</span><br/>
-              <span class="ptext psub" id="nexttextbox">Long break in 0 sessions</span>
+              <span class="ptext psub" id="nextsessiontrack">Long break in 0 sessions</span>
             </div>
             <div class="statwrap">
               <span class="psub">Short breaks</span>
@@ -230,7 +231,10 @@
               <span class="psub">Tasks completed</span>
               <span class="pstat" id="dailytasks">0</span>
             </div>
-            
+
+            <div style="margin-top: 0.75rem">
+              <button class="resetbutton" id="resetprogress"><u>Reset</u></button>
+            </div>
           </div>
           <div class="vergrid">
             <div class="subtext">Version</div>

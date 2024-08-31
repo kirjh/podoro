@@ -1,47 +1,43 @@
-## What's New: 0.9.3 (18/01/2023)
-* [Overhaul of user interface](https://github.com/kirjh/podoro/commit/f4a31c4e0c91044825275d3b33a723512d8b6574)
-  * New light and dark themes
-  * Separate UI elements into organized tabs
-  * Extension icon updates to the colour of the current session
-  * Buttons update to the colour of the current session
-* Refactor code
-  * Overhaul of css styling method to allow for changing UI theme
+## What's New: 0.9.5 (30/8/2024)
+* Localized Fonts
+* Implemented progress tab
+  * Tracks daily sessions, breaks, long breaks, and tasks completed
+  * Tracks daily streaks for hitting session goals
+* Implemented tasks tab
+  * Users may create, check off, and remove up to 25 tasks
+* Added function to toggle session automatically starting
+* Changed notifications presentation
+* Changed clock face
+* Simplified toolbar tab
+* Tabs now allow scrolling instead of overflowing container
+* Minor UI tweaks
+* Refactored code
 
 # Podoro Timer
-A pomodoro timer, built into your browser
+A pomodoro timer built into your browser.
 
 ***
 
-## <img src="./icons/pomo64.png" width="16px" /> Installation
-*in progress*
-
-## <img src="./icons/pomo64.png" width="16px" /> About 
-Browser tab space is invaluable when studying, and shouldn't be cluttered by studying tools. Podoro tucks away into the browser's task bar, saving space while still providing a fully functional timer. The extension by default follows the conventional pomodoro technique:
+## <img src="./icons/red_icon_64.png" width="16px" /> About 
+Browser tab space is invaluable when studying, and shouldn't be cluttered by studying tools. Podoro tucks away into the browser's task bar, saving space while still providing a fully functional timer. The extension by default follows the following format for studying.
 > Four **25 minute** pomodoro sessions with **5 minute** short breaks inbetween followed by one **15 minute** long break afterwards.
 
-However, you can freely adjust the formula to suit any need.
-
-## <img src="./icons/pomo64.png" width="16px" /> Features
-* __Complete pomodoro functionality__
+## <img src="./icons/red_icon_64.png" width="16px" /> Features
+* __Pomodoro timer__
   * 25 minute pomodoro sessions
   * 5 minute short breaks
   * 15 minute long breaks
+* __To-do list__
+  * Create and track tasks within the extension
+* __Progress tracker__
+  * Track the number of sessions completed and breaks taken throughout the day
 * __User customization__
-  * Freely adjust each timer and session to fit any study schedule
-  * Toggle between light and dark mode
-* __Additional features__
-  * Need more time? Add a little more time to the current timer
-  * Keep track of pomodoro sessions completed
-  * ~~Block social media sites while in working~~*
-  * ~~Keep track of tasks~~*
-  * ~~Track pomodoros completed daily~~*
+  * Adjustable session and break lengths
 
-\*Not yet implemented
-
-## <img src="./icons/pomo64.png" width="16px" /> License
+## <img src="./icons/red_icon_64.png" width="16px" /> License
 [GNU GPLv3](https://github.com/kirjh/podoro/blob/main/LICENSE.txt)
 
 <p align="center">
-  <img src="./icons/pomo128.png" width="64" /> <br /> 
+  <img src="./icons/red_icon_64.png" width="64" /> <br /> 
   kirjh/podoro
 </p>

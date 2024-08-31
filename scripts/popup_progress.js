@@ -66,6 +66,7 @@ const updateDailyProgress = async () => {
   for (const stat of ["dailyshortbreaks", "dailylongbreaks", "dailysessions", "dailystreak", "dailytasks"]) {
     const statElement = document.getElementById(stat);
     if (!storage[stat]) storage[stat] = 0;
+    if (storage[stat] > 99999) storage[stat] = 99999;
     statElement.innerHTML = storage[stat];
   }
 

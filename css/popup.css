@@ -5,9 +5,14 @@
 @import "./progress.css";
 @import "./tasks.css";
 
+@font-face {
+  font-family: Nunito;
+  src: url("../fonts/Nunito-VariableFont_wght.ttf");
+}
+
 /* Body */
 body {
-  font-family: Nunito, Roboto, Arial, Helvetica, sans-serif;
+  font-family: Nunito, Arial, Helvetica, sans-serif;
   margin: 0;
 
   background-color: var(--background);

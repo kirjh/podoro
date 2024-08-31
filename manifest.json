@@ -1,6 +1,6 @@
 {
   "name": "Podoro Timer",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "manifest_version": 3,
   "description":  "A pomodoro timer built into your browser.",
   "permissions": [

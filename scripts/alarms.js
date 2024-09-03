@@ -80,15 +80,21 @@ const createAlarm = async (name, time) => {
 
 /*****************************************************************************/
 
-const pauseSession = async() => {
+//  @newalarm  (boolean) true if function is called at the beginning of a session
+const pauseSession = async(newalarm) => {
   console.log("pausing alarms");
   const alarm = await alarmExists();
   if (!alarm) return;
   
   clearAlarm();
 
-  // Convert unix time to time in milliseconds
-  alarm.scheduledTime -= Date.now();
+  if (newalarm) {
+    const storage = await chrome.storage.local.get("currentAlarm");
+    alarm.scheduledTime = storage.currentAlarm * 60000;
+  } else {
+    // Convert unix time to time in milliseconds
+    alarm.scheduledTime -= Date.now();
+  } 
   alarm.paused = true;
 
   await chrome.storage.local.set({paused: true, activeAlarm: alarm});

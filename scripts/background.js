@@ -47,6 +47,7 @@ const notif = {
 const createNotification = (msg) => {
   chrome.notifications.create("pomoalarm", msg, (id) => {
     notifId = id;
+    setTimeout(() => {chrome.notifications.clear(id)}, 30000);
   });
   return;
 }
@@ -64,6 +65,7 @@ const createButtonNotification = (msg) => {
     }]
   }, (id) => {
     notifId = id;
+    setTimeout(() => {chrome.notifications.clear(id)}, 30000);
   });
   return;
 }
@@ -154,7 +156,7 @@ chrome.alarms.onAlarm.addListener(async (alarm)=> {
   sendMessage("setCounter", null);
 
   if (!storage.toggleauto) {
-    await pauseSession();
+    await pauseSession(true);
     sendMessage("pauseTimer");
   }
     

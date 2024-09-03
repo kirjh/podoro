@@ -52,25 +52,29 @@ const updateTime = async () => {
   const svghandborder = document.getElementById("svghandborder");
   
   let time;
+  let circumference = svghand.r.baseVal.value * 2 * Math.PI;
 
   // If an active alarm does not exist, display current value of 
   // the pomowork setting.
   if (!alarm) {
     timeDisplay.innerHTML = (!document.getElementById("pomowork").value) ? 0 : document.getElementById("pomowork").value;
-    svghand.style.setProperty("stroke-dashoffset", 360);
-    svghandborder.style.setProperty("stroke-dashoffset", 360);
+    svghand.style.strokeDasharray = `${circumference} ${circumference}`;
+    svghand.style.strokeDashoffset = `${circumference}`;
+    svghandborder.style.strokeDasharray = `${circumference} ${circumference}`;
+    svghandborder.style.strokeDashoffset = `${circumference}`;
     return;
   }
 
   time = (alarm.scheduledTime-Date.now())/60000;
 
-  if (!storage.currentAlarm) storage.currentAlarm = 0;
-  storage.currentAlarm = parseInt(storage.currentAlarm)
+  if (!storage.currentAlarm) storage.currentAlarm = time;
   if (time > storage.currentAlarm) time = storage.currentAlarm;
 
+  let offset = circumference - (1- time / storage.currentAlarm) * circumference;
+
   timeDisplay.innerHTML = Math.ceil(time);
-  svghand.style.setProperty("stroke-dashoffset", ((360/storage.currentAlarm)*time));
-  svghandborder.style.setProperty("stroke-dashoffset", ((360/storage.currentAlarm)*time));
+  svghand.style.setProperty("stroke-dashoffset", offset);
+  svghandborder.style.setProperty("stroke-dashoffset", offset);
   //console.log(`((360/[${storage.currentAlarm}])*[${time}] = ${((360/storage.currentAlarm)*time)}`)
   return;
 }

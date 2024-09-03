@@ -63,8 +63,8 @@
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
 
-  stroke-dasharray: 360;
-  stroke-dashoffset: 360;
+  stroke-dasharray: calc(pi * 9em);
+  stroke-dashoffset: calc(pi * 9em);
   
   transition: stroke-dashoffset 0.5s;
 }
@@ -78,8 +78,8 @@
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
 
-  stroke-dasharray: 360;
-  stroke-dashoffset: 360;
+  stroke-dasharray: calc(pi * 9em);
+  stroke-dashoffset: calc(pi * 9em);
   transition: stroke-dashoffset 0.5s;
 }
 
